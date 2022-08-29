@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client{% endblock %}
+
+{% block body %}
+    <h1>Client</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ client.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ client.Nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ client.Prenom }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ client.Pays }}</td>
+            </tr>
+            <tr>
+                <th>Telephone</th>
+                <td>{{ client.Telephone }}</td>
+            </tr>
+            <tr>
+                <th>Add1</th>
+                <td>{{ client.Add1 }}</td>
+            </tr>
+            <tr>
+                <th>Add2</th>
+                <td>{{ client.Add2 }}</td>
+            </tr>
+            <tr>
+                <th>Permis</th>
+                <td>{{ client.Permis }}</td>
+            </tr>
+            <tr>
+                <th>Date_Permis</th>
+                <td>{{ client.DatePermis ? client.DatePermis|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CIN</th>
+                <td>{{ client.CIN }}</td>
+            </tr>
+            <tr>
+                <th>Date_CIN</th>
+                <td>{{ client.DateCIN ? client.DateCIN|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_Naissance</th>
+                <td>{{ client.DateNaissance ? client.DateNaissance|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_client_index') }}">back to list</a>
+
+    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+
+    {{ include('client/_delete_form.html.twig') }}
+{% endblock %}
