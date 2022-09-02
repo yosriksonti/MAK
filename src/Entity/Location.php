@@ -67,6 +67,18 @@ class Location
      */
     private $Status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="Locations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Client;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Vehicule::class, inversedBy="Locations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Vehicule;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -190,5 +202,33 @@ class Location
         $this->Status = $Status;
 
         return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->Client;
+    }
+
+    public function setClient(?Client $Client): self
+    {
+        $this->Client = $Client;
+
+        return $this;
+    }
+
+    public function getVehicule(): ?Vehicule
+    {
+        return $this->Vehicule;
+    }
+
+    public function setVehicule(?Vehicule $Vehicule): self
+    {
+        $this->Vehicule = $Vehicule;
+
+        return $this;
+    }
+
+    public function __toString() : ?string {
+        return $this->id;
     }
 }

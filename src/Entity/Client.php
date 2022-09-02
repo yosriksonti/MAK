@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,6 +73,22 @@ class Client
      * @ORM\Column(type="date")
      */
     private $Date_Naissance;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="Client")
+     */
+    private $Locations;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $User;
+
+    public function __construct()
+    {
+        $this->Locations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -207,5 +225,51 @@ class Client
         $this->Date_Naissance = $Date_Naissance;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->Locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->Locations->contains($location)) {
+            $this->Locations[] = $location;
+            $location->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->Locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getClient() === $this) {
+                $location->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(User $User): self
+    {
+        $this->User = $User;
+
+        return $this;
+    }
+
+    public function __toString() : ?string {
+        return $this->Nom;
     }
 }

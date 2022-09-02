@@ -2,35 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
+use App\Entity\Park;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ClientType extends AbstractType
+class ParkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('Nom')
-            ->add('Prenom')
-            ->add('Pays')
-            ->add('Telephone')
-            ->add('Add1')
-            ->add('Add2')
-            ->add('Permis')
-            ->add('Date_Permis')
-            ->add('CIN')
-            ->add('Date_CIN')
-            ->add('Date_Naissance')
-            ->add('User')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Client::class,
+            'data_class' => Park::class,
         ]);
     }
 }
