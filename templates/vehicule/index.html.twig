@@ -1,0 +1,154 @@
+{% extends "dashboard/index.html.twig" %}
+{% block content %}
+    <main>
+        <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+            <div class="container-fluid px-4">
+                <div class="page-header-content">
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="col-auto mb-3">
+                            <h1 class="page-header-title">
+                                <div class="page-header-icon">
+                                    <i data-feather="eye"></i>
+                                </div>
+                                Vehicules list                                                                                                                 
+                            </h1>
+                        </div>
+                        <div class="col-12 col-xl-auto mb-3">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ path('vehicule_new') }}">
+                                <i class="me-1" data-feather="user-plus"></i>
+                                Add New Vehicule                             
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main page content-->
+        <div class="container-fluid px-4">
+            <div class="card">
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Marque
+                                </th>
+                                <th>
+                                    Modele
+                                </th>
+                                <th>
+                                    Categorie
+                                </th>
+                                <th>
+                                    Boite
+                                </th>
+                                <th>
+                                    Carb
+                                </th>
+                                <th>
+                                    Nb_Places
+                                </th>
+                                <th>
+                                    Nb_Portes
+                                </th>
+                                <th>
+                                    Nb_Val
+                                </th>
+                                <th>
+                                    Caut
+                                </th>
+                                <th>
+                                    Clim
+                                </th>
+                                <th>
+                                    Desc
+                                </th>
+                                <th>
+                                    Desc_Det
+                                </th>
+                                <th>
+                                    Photo_Def
+                                </th>
+                                <th>
+                                    Photo_reel
+                                </th>
+                                <th>
+                                    Photo_Saison
+                                </th>
+                                <th>
+                                    actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vehicule in vehicules %}
+                                <tr>
+                                    <td>
+                                        {{ vehicule.Marque }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Modele }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Categorie }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Boite }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Carb }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.NbPlaces }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.NbPortes }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.NbVal }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Caut }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Clim ? 'Yes' : 'No' }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.Description }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.DescriptionDet }}
+                                    </td>
+                                    <td>
+                                        {{ vehicule.PhotoDef }}
+                                    </td>
+                                    <td>
+                                        <img src="{{ vich_uploader_asset(vehicule, 'imageFile') }}" width="50px" />
+
+                                    </td>
+                                    <td>
+                                        {{ vehicule.PhotoSaison }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('vehicule_show', {'id': vehicule.id}) }}">
+                                            show
+                                        </a>
+                                        <a href="{{ path('vehicule_edit', {'id': vehicule.id}) }}">
+                                            edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="17">
+                                        no records found
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

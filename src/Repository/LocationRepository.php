@@ -16,23 +16,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LocationRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Location::class);
+        parent::__construct($managerRegistry, Location::class);
     }
 
-    public function add(Location $entity, bool $flush = false): void
+    public function add(Location $location, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($location);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
 
-    public function remove(Location $entity, bool $flush = false): void
+    public function remove(Location $location, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove($location);
 
         if ($flush) {
             $this->getEntityManager()->flush();

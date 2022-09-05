@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<title>Vehicule</title>
+
+{% block body %}
+    <h1>Vehicule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vehicule.id }}</td>
+            </tr>
+            <tr>
+                <th>Marque</th>
+                <td>{{ vehicule.Marque }}</td>
+            </tr>
+            <tr>
+                <th>Modele</th>
+                <td>{{ vehicule.Modele }}</td>
+            </tr>
+            <tr>
+                <th>Categorie</th>
+                <td>{{ vehicule.Categorie }}</td>
+            </tr>
+            <tr>
+                <th>Boite</th>
+                <td>{{ vehicule.Boite }}</td>
+            </tr>
+            <tr>
+                <th>Carb</th>
+                <td>{{ vehicule.Carb }}</td>
+            </tr>
+            <tr>
+                <th>Nb_Places</th>
+                <td>{{ vehicule.NbPlaces }}</td>
+            </tr>
+            <tr>
+                <th>Nb_Portes</th>
+                <td>{{ vehicule.NbPortes }}</td>
+            </tr>
+            <tr>
+                <th>Nb_Val</th>
+                <td>{{ vehicule.NbVal }}</td>
+            </tr>
+            <tr>
+                <th>Caut</th>
+                <td>{{ vehicule.Caut }}</td>
+            </tr>
+            <tr>
+                <th>Clim</th>
+                <td>{{ vehicule.Clim ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ vehicule.Description }}</td>
+            </tr>
+            <tr>
+                <th>Description_Det</th>
+                <td>{{ vehicule.DescriptionDet }}</td>
+            </tr>
+            <tr>
+                <th>Photo_Def</th>
+                <td>{{ vehicule.PhotoDef }}</td>
+            </tr>
+            <tr>
+                <th>Photo_reel</th>
+                <td>{{ vehicule.PhotoReel }}</td>
+            </tr>
+            <tr>
+                <th>Photo_Saison</th>
+                <td>{{ vehicule.PhotoSaison }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('vehicule_index') }}">back to list</a>
+
+    <a href="{{ path('vehicule_edit', {'id': vehicule.id}) }}">edit</a>
+
+    {{ include('vehicule/_delete_form.html.twig') }}
+{% endblock %}

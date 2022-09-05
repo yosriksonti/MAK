@@ -16,23 +16,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ParkRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Park::class);
+        parent::__construct($managerRegistry, Park::class);
     }
 
-    public function add(Park $entity, bool $flush = false): void
+    public function add(Park $park, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($park);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
 
-    public function remove(Park $entity, bool $flush = false): void
+    public function remove(Park $park, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove($park);
 
         if ($flush) {
             $this->getEntityManager()->flush();

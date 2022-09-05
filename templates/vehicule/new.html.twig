@@ -1,0 +1,9 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block content %}
+    <h1>Create new Vehicule</h1>
+
+    {{ include('vehicule/_form.html.twig') }}
+
+    <a href="{{ path('vehicule_index') }}">back to list</a>
+{% endblock %}

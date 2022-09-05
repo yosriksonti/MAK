@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -161,14 +162,14 @@ class Client
         return $this;
     }
 
-    public function getDatePermis(): ?\DateTimeInterface
+    public function getDatePermis(): ?DateTimeInterface
     {
         return $this->Date_Permis;
     }
 
-    public function setDatePermis(\DateTimeInterface $Date_Permis): self
+    public function setDatePermis(DateTimeInterface $dateTime): self
     {
-        $this->Date_Permis = $Date_Permis;
+        $this->Date_Permis = $dateTime;
 
         return $this;
     }
@@ -185,26 +186,26 @@ class Client
         return $this;
     }
 
-    public function getDateCIN(): ?\DateTimeInterface
+    public function getDateCIN(): ?DateTimeInterface
     {
         return $this->Date_CIN;
     }
 
-    public function setDateCIN(\DateTimeInterface $Date_CIN): self
+    public function setDateCIN(DateTimeInterface $dateTime): self
     {
-        $this->Date_CIN = $Date_CIN;
+        $this->Date_CIN = $dateTime;
 
         return $this;
     }
 
-    public function getDateNaissance(): ?\DateTimeInterface
+    public function getDateNaissance(): ?DateTimeInterface
     {
         return $this->Date_Naissance;
     }
 
-    public function setDateNaissance(\DateTimeInterface $Date_Naissance): self
+    public function setDateNaissance(DateTimeInterface $dateTime): self
     {
-        $this->Date_Naissance = $Date_Naissance;
+        $this->Date_Naissance = $dateTime;
 
         return $this;
     }

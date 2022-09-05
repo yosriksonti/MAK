@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use App\Repository\VehiculeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=VehiculeRepository::class)
+ * @Vich\Uploadable
  */
 class Vehicule
 {
@@ -85,7 +89,15 @@ class Vehicule
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Photo_reel;
+    private $Photo_Reel;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="Vehicule_image", fileNameProperty="Photo_Reel")
+     * 
+     * @var File|null
+     */
+    private ?File $imageFile = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -253,14 +265,28 @@ class Vehicule
         return $this;
     }
 
-    public function getPhotoReel(): ?string
+    public function getImageFile(): ?File
     {
-        return $this->Photo_reel;
+        return $this->imageFile;
     }
 
-    public function setPhotoReel(string $Photo_reel): self
+    public function setImageFile(?File $imageFile = null): void
     {
-        $this->Photo_reel = $Photo_reel;
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+    }
+
+    public function getPhotoReel(): ?string
+    {
+        return $this->Photo_Reel;
+    }
+
+    public function setPhotoReel(string $Photo_Reel): self
+    {
+        $this->Photo_Reel = $Photo_Reel;
 
         return $this;
     }
