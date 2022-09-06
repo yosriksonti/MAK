@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use App\Repository\VehiculeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -103,6 +105,22 @@ class Vehicule
      * @ORM\Column(type="string", length=255)
      */
     private $Photo_Saison;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="Vehicule")
+     */
+    private $Locations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Park::class, inversedBy="Vehicules")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Park;
+
+    public function __construct()
+    {
+        $this->Locations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -301,5 +319,50 @@ class Vehicule
         $this->Photo_Saison = $Photo_Saison;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->Locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->Locations->contains($location)) {
+            $this->Locations[] = $location;
+            $location->setVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->Locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getVehicule() === $this) {
+                $location->setVehicule(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPark(): ?Park
+    {
+        return $this->Park;
+    }
+
+    public function setPark(?Park $Park): self
+    {
+        $this->Park = $Park;
+
+        return $this;
+    }
+    public function __toString() : ?string {
+        return $this->id;
     }
 }

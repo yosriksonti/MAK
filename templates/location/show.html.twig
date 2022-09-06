@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Location{% endblock %}
+
+{% block body %}
+    <h1>Location</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ location.id }}</td>
+            </tr>
+            <tr>
+                <th>Num</th>
+                <td>{{ location.Num }}</td>
+            </tr>
+            <tr>
+                <th>IP</th>
+                <td>{{ location.IP }}</td>
+            </tr>
+            <tr>
+                <th>Date_Res</th>
+                <td>{{ location.DateRes ? location.DateRes|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_Loc</th>
+                <td>{{ location.DateLoc ? location.DateLoc|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_Retour</th>
+                <td>{{ location.DateRetour ? location.DateRetour|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ location.Montant }}</td>
+            </tr>
+            <tr>
+                <th>Avance</th>
+                <td>{{ location.Avance }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ location.Type }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ location.Etat }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ location.Status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_location_index') }}">back to list</a>
+
+    <a href="{{ path('app_location_edit', {'id': location.id}) }}">edit</a>
+
+    {{ include('location/_delete_form.html.twig') }}
+{% endblock %}

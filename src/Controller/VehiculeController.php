@@ -84,7 +84,7 @@ class VehiculeController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->request->get('_token'))) {
             $vehiculeRepository->remove($vehicule, true);
         }
-
+        
         return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
     }
 }

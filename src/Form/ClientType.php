@@ -23,6 +23,7 @@ class ClientType extends AbstractType
             ->add('CIN')
             ->add('Date_CIN')
             ->add('Date_Naissance')
+            ->add('User')
         ;
     }
 
