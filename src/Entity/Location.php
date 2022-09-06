@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -108,38 +109,38 @@ class Location
         return $this;
     }
 
-    public function getDateRes(): ?\DateTimeInterface
+    public function getDateRes(): ?DateTimeInterface
     {
         return $this->Date_Res;
     }
 
-    public function setDateRes(\DateTimeInterface $Date_Res): self
+    public function setDateRes(DateTimeInterface $dateTime): self
     {
-        $this->Date_Res = $Date_Res;
+        $this->Date_Res = $dateTime;
 
         return $this;
     }
 
-    public function getDateLoc(): ?\DateTimeInterface
+    public function getDateLoc(): ?DateTimeInterface
     {
         return $this->Date_Loc;
     }
 
-    public function setDateLoc(\DateTimeInterface $Date_Loc): self
+    public function setDateLoc(DateTimeInterface $dateTime): self
     {
-        $this->Date_Loc = $Date_Loc;
+        $this->Date_Loc = $dateTime;
 
         return $this;
     }
 
-    public function getDateRetour(): ?\DateTimeInterface
+    public function getDateRetour(): ?DateTimeInterface
     {
         return $this->Date_Retour;
     }
 
-    public function setDateRetour(\DateTimeInterface $Date_Retour): self
+    public function setDateRetour(DateTimeInterface $dateTime): self
     {
-        $this->Date_Retour = $Date_Retour;
+        $this->Date_Retour = $dateTime;
 
         return $this;
     }

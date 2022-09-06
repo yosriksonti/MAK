@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class VehiculeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_vehicule_index", methods={"GET"})
+     * @Route("/", name="vehicule_index", methods={"GET"})
      */
     public function index(VehiculeRepository $vehiculeRepository): Response
     {
@@ -26,7 +26,7 @@ class VehiculeController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_vehicule_new", methods={"GET", "POST"})
+     * @Route("/new", name="vehicule_new", methods={"GET", "POST"})
      */
     public function new(Request $request, VehiculeRepository $vehiculeRepository): Response
     {
@@ -37,7 +37,7 @@ class VehiculeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $vehiculeRepository->add($vehicule, true);
 
-            return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('vehicule/new.html.twig', [
@@ -47,7 +47,7 @@ class VehiculeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_vehicule_show", methods={"GET"})
+     * @Route("/{id}", name="vehicule_show", methods={"GET"})
      */
     public function show(Vehicule $vehicule): Response
     {
@@ -57,7 +57,7 @@ class VehiculeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_vehicule_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="vehicule_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Vehicule $vehicule, VehiculeRepository $vehiculeRepository): Response
     {
@@ -67,7 +67,7 @@ class VehiculeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $vehiculeRepository->add($vehicule, true);
 
-            return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('vehicule/edit.html.twig', [
@@ -77,14 +77,14 @@ class VehiculeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_vehicule_delete", methods={"POST"})
+     * @Route("/{id}", name="vehicule_delete", methods={"POST"})
      */
     public function delete(Request $request, Vehicule $vehicule, VehiculeRepository $vehiculeRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->request->get('_token'))) {
             $vehiculeRepository->remove($vehicule, true);
         }
-
-        return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
+        
+        return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
     }
 }

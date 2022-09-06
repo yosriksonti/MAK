@@ -16,23 +16,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VehiculeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Vehicule::class);
+        parent::__construct($managerRegistry, Vehicule::class);
     }
 
-    public function add(Vehicule $entity, bool $flush = false): void
+    public function add(Vehicule $vehicule, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($vehicule);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
 
-    public function remove(Vehicule $entity, bool $flush = false): void
+    public function remove(Vehicule $vehicule, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove($vehicule);
 
         if ($flush) {
             $this->getEntityManager()->flush();

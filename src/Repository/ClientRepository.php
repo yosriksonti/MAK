@@ -16,23 +16,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ClientRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Client::class);
+        parent::__construct($managerRegistry, Client::class);
     }
 
-    public function add(Client $entity, bool $flush = false): void
+    public function add(Client $client, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($client);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
 
-    public function remove(Client $entity, bool $flush = false): void
+    public function remove(Client $client, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove($client);
 
         if ($flush) {
             $this->getEntityManager()->flush();

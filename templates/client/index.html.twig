@@ -1,55 +1,350 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Client index{% endblock %}
-
-{% block body %}
-    <h1>Client index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Pays</th>
-                <th>Telephone</th>
-                <th>Add1</th>
-                <th>Add2</th>
-                <th>Permis</th>
-                <th>Date_Permis</th>
-                <th>CIN</th>
-                <th>Date_CIN</th>
-                <th>Date_Naissance</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for client in clients %}
-            <tr>
-                <td>{{ client.id }}</td>
-                <td>{{ client.Nom }}</td>
-                <td>{{ client.Prenom }}</td>
-                <td>{{ client.Pays }}</td>
-                <td>{{ client.Telephone }}</td>
-                <td>{{ client.Add1 }}</td>
-                <td>{{ client.Add2 }}</td>
-                <td>{{ client.Permis }}</td>
-                <td>{{ client.DatePermis ? client.DatePermis|date('Y-m-d') : '' }}</td>
-                <td>{{ client.CIN }}</td>
-                <td>{{ client.DateCIN ? client.DateCIN|date('Y-m-d') : '' }}</td>
-                <td>{{ client.DateNaissance ? client.DateNaissance|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_client_show', {'id': client.id}) }}">show</a>
-                    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="13">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_client_new') }}">Create new</a>
+{% extends "dashboard/index.html.twig" %}
+{% block content %}
+    <main>
+        <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+            <div class="container-fluid px-4">
+                <div class="page-header-content">
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="col-auto mb-3">
+                            <h1 class="page-header-title">
+                                <div class="page-header-icon">
+                                    <i data-feather="user"></i>
+                                </div>
+                                Users List
+                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                            
+                                                                                                                                                                                                        
+                                                                                                                                                                    
+                                                                                                                                
+                                                                                            
+                                                        
+                            </h1>
+                        </div>
+                        <div class="col-12 col-xl-auto mb-3">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ path('client_new') }}">
+                                <i class="me-1" data-feather="user-plus"></i>
+                                Add New User
+                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                            
+                                                                                                                                                                                                        
+                                                                                                                                                                    
+                                                                                                                                
+                                                                                            
+                                                        
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main page content-->
+        <div class="container-fluid px-4">
+            <div class="card">
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <tr>
+                                    <th>
+                                        Nom
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Prenom
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Pays
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Telephone
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Add1
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Add2
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Permis
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Date_Permis
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        CIN
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Date_CIN
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        Date_Naissance
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                    <th>
+                                        actions
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                            
+                                                                                                                                                                
+                                                                                                                    
+                                                                        
+                                    </th>
+                                </tr>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    Nom
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Prenom
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Pays
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Telephone
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Add1
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Add2
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Permis
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Date_Permis
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    CIN
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Date_CIN
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    Date_Naissance
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                                <th>
+                                    actions
+                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                            
+                                                                                                                                                
+                                                                                                        
+                                                                
+                                </th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for client in clients %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar me-2">
+                                                <img class="avatar-img img-fluid" src="{{ asset('back-office/assets/img/illustrations/profiles/profile-2.png') }}" />
+                                            </div>
+                                            {{ client.Nom }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ client.Prenom }}
+                                    </td>
+                                    <td>
+                                        {{ client.Pays }}
+                                    </td>
+                                    <td>
+                                        {{ client.Telephone }}
+                                    </td>
+                                    <td>
+                                        {{ client.Add1 }}
+                                    </td>
+                                    <td>
+                                        {{ client.Add2 }}
+                                    </td>
+                                    <td>
+                                        {{ client.Permis }}
+                                    </td>
+                                    <td>
+                                        {{ client.DatePermis ? client.DatePermis|date('Y-m-d') : '' }}
+                                    </td>
+                                    <td>
+                                        {{ client.CIN }}
+                                    </td>
+                                    <td>
+                                        {{ client.DateCIN ? client.DateCIN|date('Y-m-d') : '' }}
+                                    </td>
+                                    <td>
+                                        {{ client.DateNaissance ? client.DateNaissance|date('Y-m-d') : '' }}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('client_edit', {'id': client.id}) }}">
+                                            <i data-feather="edit"></i>
+                                        </a>
+                                        {{ include('client/_delete_form.html.twig') }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}
