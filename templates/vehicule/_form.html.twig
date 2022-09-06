@@ -1,4 +1,3 @@
-{{ form_start(form) }}
 <div class="row">
     <div class="col-xl-4">
         <div class="card mb-4">
@@ -43,6 +42,7 @@
     </div>
     <div class="col-xl-8">
         <div class="card mb-4">
+            {{ form_start(form) }}
             <div class="card-header">
                 Vehicule Details                      
             </div>
@@ -151,9 +151,10 @@
                 <button class="btn">
                     {{ button_label|default('Save') }}
                 </button>
-                {{ form_end(form) }}
             </div>
+                {{ form_end(form) }}
         </div>
     </div>
+</div>
 
                         
