@@ -74,7 +74,7 @@ class Vehicule
     private $Clim;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
     private $Description;
 
@@ -99,7 +99,23 @@ class Vehicule
      * 
      * @var File|null
      */
-    private ?File $imageFile = null;
+    private ?File $Reel = null;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="Vehicule_image", fileNameProperty="Photo_Def")
+     * 
+     * @var File|null
+     */
+    private ?File $Def = null;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="Vehicule_image", fileNameProperty="Photo_Saison")
+     * 
+     * @var File|null
+     */
+    private ?File $Saison = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -283,16 +299,44 @@ class Vehicule
         return $this;
     }
 
-    public function getImageFile(): ?File
+    public function getReel(): ?File
     {
-        return $this->imageFile;
+        return $this->Reel;
     }
 
-    public function setImageFile(?File $imageFile = null): void
+    public function setReel(?File $reel = null): void
     {
-        $this->imageFile = $imageFile;
+        $this->Reel = $reel;
 
-        if (null !== $imageFile) {
+        if (null !== $reel) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+    }
+
+    public function getDef(): ?File
+    {
+        return $this->Def;
+    }
+
+    public function setDef(?File $def = null): void
+    {
+        $this->Def = $def;
+
+        if (null !== $def) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+    }
+
+    public function getSaison(): ?File
+    {
+        return $this->Saison;
+    }
+
+    public function setSaison(?File $saison = null): void
+    {
+        $this->Saison = $saison;
+
+        if (null !== $saison) {
             $this->updatedAt = new DateTimeImmutable();
         }
     }
@@ -362,7 +406,7 @@ class Vehicule
 
         return $this;
     }
-    public function __toString() : ?string {
+    public function __toString() : string {
         return $this->id;
     }
 }

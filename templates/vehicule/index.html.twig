@@ -120,14 +120,14 @@
                                         {{ vehicule.DescriptionDet }}
                                     </td>
                                     <td>
-                                        {{ vehicule.PhotoDef }}
+                                        <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" width="50px" height="25px" />
                                     </td>
                                     <td>
-                                        <img src="{{ vich_uploader_asset(vehicule, 'imageFile') }}" width="50px" />
+                                        <img src="{{ vich_uploader_asset(vehicule, 'Reel') }}" width="50px" height="25x" />
 
                                     </td>
                                     <td>
-                                        {{ vehicule.PhotoSaison }}
+                                        <img src="{{ vich_uploader_asset(vehicule, 'Saison') }}" width="50px" height="25px" />
                                     </td>
                                     <td>
                                         <a href="{{ path('vehicule_show', {'id': vehicule.id}) }}">
