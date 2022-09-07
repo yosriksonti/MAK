@@ -65,7 +65,7 @@ class VehiculeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $vehiculeRepository->add($vehicule, true);
+            $vehiculeRepository->add($vehicule, true);        
 
             return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -84,7 +84,7 @@ class VehiculeController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->request->get('_token'))) {
             $vehiculeRepository->remove($vehicule, true);
         }
-        
         return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
+        
     }
 }

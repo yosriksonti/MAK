@@ -80,12 +80,6 @@ class Client
      */
     private $Locations;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $User;
-
     public function __construct()
     {
         $this->Locations = new ArrayCollection();
@@ -258,17 +252,17 @@ class Client
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->User;
-    }
+    // public function getUser(): ?User
+    // {
+    //     return $this->User;
+    // }
 
-    public function setUser(User $User): self
-    {
-        $this->User = $User;
+    // public function setUser(User $User): self
+    // {
+    //     $this->User = $User;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function __toString() : string {
         return $this->Nom;

@@ -1,4 +1,137 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                Vehicule Details                                              
+                            
+            </div>
+            <div class="card-body">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        {{ form_label(form. Num, ' Num', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                   
+                                                
+                        {{ form_widget(form. Num, {'attr':{'class':'form-control' }}
+                        ) }}                               
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.Date_Res, 'Date reservation', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                   
+                                                
+                        {{ form_widget(form.Date_Res, {'attr':{'class':'form-control ps-0' }}
+                        ) }}                               
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Date_Res) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.Date_Loc, 'Date_Loc', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                  
+                                                
+                        {{ form_widget(form.Date_Loc, {'attr':{'class':'form-control' }}
+                        ) }}                              
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Date_Loc) }}
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-4">
+                        {{ form_label(form.Date_Retour, 'Date_Retour', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                  
+                                                
+                        {{ form_widget(form.Date_Retour, {'attr':{'class':'form-control' }}
+                        ) }}                               
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Date_Retour) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.Montant, 'Montant', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                  
+                                                
+                        {{ form_widget(form.Montant, {'attr':{'class':'form-control' }}
+                        ) }}                                
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Montant) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.Avance, 'Avance', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                  
+                                                
+                        {{ form_widget(form.Avance, {'attr':{'class':'form-control' }}
+                        ) }}                                
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Avance) }}
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.Type, 'Type', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                   
+                                                
+                        {{ form_widget(form.Type, {'attr':{'class':'form-control' }}
+                        ) }}                                
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Type) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.Status, 'Status', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                  
+                                                
+                        {{ form_widget(form.Status, {'attr':{'class':'form-control' }}
+                        ) }}                              
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Status) }}
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.Client, 'Client') }}
+                        {{ form_widget(form.Client, {'attr':{'class':'form-check-input' }}
+                        ) }}                              
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Client) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.Vehicule, 'Vehicule', {'label_attr':{'class':'small mb-1' }}
+                        ) }}                                 
+                                                
+                        {{ form_widget(form.Vehicule, {'attr':{'class':'form-control' }}
+                        ) }}                               
+                                            
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Vehicule) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <button class="btn">
+            {{ button_label|default('Save') }}
+        </button>
+        {{ form_end(form) }}
+    </div>
+</div>

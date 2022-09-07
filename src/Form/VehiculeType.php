@@ -34,14 +34,26 @@ class VehiculeType extends AbstractType
             ])
             ->add('Description')
             ->add('Description_Det')
-            ->add('Def', FileType::class, [
+            ->add('Def', VichImageType::class, [
                 'required' => false,
+                'image_uri' => false,
+                'delete_label' => false,
+                'allow_delete' => false,
+                'download_label' => false,
             ])
             ->add('Reel', VichImageType::class, [
                 'required' => false,
+                'image_uri' => false,
+                'delete_label' => false,
+                'allow_delete' => false,
+                'download_label' => false,
             ])
             ->add('Saison', VichImageType::class, [
                 'required' => false,
+                'image_uri' => false,
+                'delete_label' => false,
+                'allow_delete' => false,
+                'download_label' => false,
             ])
         ;
     }

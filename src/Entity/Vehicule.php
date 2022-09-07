@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -133,6 +134,14 @@ class Vehicule
      */
     private $Park;
 
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTimeInterface|null
+     */
+    private $updatedAt;
+
+
     public function __construct()
     {
         $this->Locations = new ArrayCollection();
@@ -151,6 +160,19 @@ class Vehicule
     public function setMarque(string $Marque): self
     {
         $this->Marque = $Marque;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -292,7 +314,7 @@ class Vehicule
         return $this->Photo_Def;
     }
 
-    public function setPhotoDef(string $Photo_Def): self
+    public function setPhotoDef(?string $Photo_Def): self
     {
         $this->Photo_Def = $Photo_Def;
 
@@ -308,8 +330,8 @@ class Vehicule
     {
         $this->Reel = $reel;
 
-        if (null !== $reel) {
-            $this->updatedAt = new DateTimeImmutable();
+        if ($reel instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
         }
     }
 
@@ -322,8 +344,8 @@ class Vehicule
     {
         $this->Def = $def;
 
-        if (null !== $def) {
-            $this->updatedAt = new DateTimeImmutable();
+        if ($def instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
         }
     }
 
@@ -336,8 +358,8 @@ class Vehicule
     {
         $this->Saison = $saison;
 
-        if (null !== $saison) {
-            $this->updatedAt = new DateTimeImmutable();
+        if ($saison instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
         }
     }
 
@@ -346,7 +368,7 @@ class Vehicule
         return $this->Photo_Reel;
     }
 
-    public function setPhotoReel(string $Photo_Reel): self
+    public function setPhotoReel(?string $Photo_Reel): self
     {
         $this->Photo_Reel = $Photo_Reel;
 
@@ -358,7 +380,7 @@ class Vehicule
         return $this->Photo_Saison;
     }
 
-    public function setPhotoSaison(string $Photo_Saison): self
+    public function setPhotoSaison(?string $Photo_Saison): self
     {
         $this->Photo_Saison = $Photo_Saison;
 
