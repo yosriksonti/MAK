@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -79,6 +81,16 @@ class Location
      * @ORM\JoinColumn(nullable=false)
      */
     private $Vehicule;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Location")
+     */
+    private $payments;
+
+    public function __construct()
+    {
+        $this->payments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -231,5 +243,35 @@ class Location
 
     public function __toString() : string {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getLocation() === $this) {
+                $payment->setLocation(null);
+            }
+        }
+
+        return $this;
     }
 }
