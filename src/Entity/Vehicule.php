@@ -362,7 +362,9 @@ class Vehicule
 
         return $this;
     }
-    public function __toString() : ?string {
-        return $this->id;
-    }
+
+    /*public function __toString()
+    {
+        return $this->Marque;
+    }*/
 }
