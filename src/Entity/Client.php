@@ -81,14 +81,20 @@ class Client
     private $Locations;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Client")
      */
-    private $User;
+    private $payments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Client")
+     */
+    private $feedback;
 
     public function __construct()
     {
         $this->Locations = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->feedback = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -258,16 +264,79 @@ class Client
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->User;
+    // public function getUser(): ?User
+    // {
+    //     return $this->User;
+    // }
+
+    // public function setUser(User $User): self
+    // {
+    //     $this->User = $User;
+
+    //     return $this;
+    // }
+
+    public function __toString() : string {
+        return $this->Nom;
     }
 
-    public function setUser(User $User): self
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
     {
-        $this->User = $User;
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setClient($this);
+        }
 
         return $this;
     }
 
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getClient() === $this) {
+                $payment->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Feedback>
+     */
+    public function getFeedback(): Collection
+    {
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback[] = $feedback;
+            $feedback->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedback->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getClient() === $this) {
+                $feedback->setClient(null);
+            }
+        }
+
+        return $this;
+    }
 }

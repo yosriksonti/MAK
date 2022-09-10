@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LocationController extends AbstractController
 {
     /**
-     * @Route("/", name="app_location_index", methods={"GET"})
+     * @Route("/", name="location_index", methods={"GET"})
      */
     public function index(LocationRepository $locationRepository): Response
     {
@@ -26,7 +26,7 @@ class LocationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_location_new", methods={"GET", "POST"})
+     * @Route("/new", name="location_new", methods={"GET", "POST"})
      */
     public function new(Request $request, LocationRepository $locationRepository): Response
     {
@@ -37,7 +37,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $locationRepository->add($location, true);
 
-            return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(' location_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('location/new.html.twig', [
@@ -47,7 +47,7 @@ class LocationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_location_show", methods={"GET"})
+     * @Route("/{id}", name="location_show", methods={"GET"})
      */
     public function show(Location $location): Response
     {
@@ -57,7 +57,7 @@ class LocationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_location_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="location_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Location $location, LocationRepository $locationRepository): Response
     {
@@ -67,7 +67,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $locationRepository->add($location, true);
 
-            return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(' location_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('location/edit.html.twig', [
@@ -77,7 +77,7 @@ class LocationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_location_delete", methods={"POST"})
+     * @Route("/{id}", name="location_delete", methods={"POST"})
      */
     public function delete(Request $request, Location $location, LocationRepository $locationRepository): Response
     {
@@ -85,6 +85,6 @@ class LocationController extends AbstractController
             $locationRepository->remove($location, true);
         }
 
-        return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(' location_index', [], Response::HTTP_SEE_OTHER);
     }
 }

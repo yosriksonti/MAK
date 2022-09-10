@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -74,7 +75,7 @@ class Vehicule
     private $Clim;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
     private $Description;
 
@@ -99,7 +100,23 @@ class Vehicule
      * 
      * @var File|null
      */
-    private ?File $imageFile = null;
+    private ?File $Reel = null;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="Vehicule_image", fileNameProperty="Photo_Def")
+     * 
+     * @var File|null
+     */
+    private ?File $Def = null;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="Vehicule_image", fileNameProperty="Photo_Saison")
+     * 
+     * @var File|null
+     */
+    private ?File $Saison = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -117,9 +134,23 @@ class Vehicule
      */
     private $Park;
 
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTimeInterface|null
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Vehicule")
+     */
+    private $feedback;
+
+
     public function __construct()
     {
         $this->Locations = new ArrayCollection();
+        $this->feedback = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,6 +166,19 @@ class Vehicule
     public function setMarque(string $Marque): self
     {
         $this->Marque = $Marque;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -276,24 +320,52 @@ class Vehicule
         return $this->Photo_Def;
     }
 
-    public function setPhotoDef(string $Photo_Def): self
+    public function setPhotoDef(?string $Photo_Def): self
     {
         $this->Photo_Def = $Photo_Def;
 
         return $this;
     }
 
-    public function getImageFile(): ?File
+    public function getReel(): ?File
     {
-        return $this->imageFile;
+        return $this->Reel;
     }
 
-    public function setImageFile(?File $imageFile = null): void
+    public function setReel(?File $reel = null): void
     {
-        $this->imageFile = $imageFile;
+        $this->Reel = $reel;
 
-        if (null !== $imageFile) {
-            $this->updatedAt = new DateTimeImmutable();
+        if ($reel instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
+        }
+    }
+
+    public function getDef(): ?File
+    {
+        return $this->Def;
+    }
+
+    public function setDef(?File $def = null): void
+    {
+        $this->Def = $def;
+
+        if ($def instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
+        }
+    }
+
+    public function getSaison(): ?File
+    {
+        return $this->Saison;
+    }
+
+    public function setSaison(?File $saison = null): void
+    {
+        $this->Saison = $saison;
+
+        if ($saison instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
         }
     }
 
@@ -302,7 +374,7 @@ class Vehicule
         return $this->Photo_Reel;
     }
 
-    public function setPhotoReel(string $Photo_Reel): self
+    public function setPhotoReel(?string $Photo_Reel): self
     {
         $this->Photo_Reel = $Photo_Reel;
 
@@ -314,7 +386,7 @@ class Vehicule
         return $this->Photo_Saison;
     }
 
-    public function setPhotoSaison(string $Photo_Saison): self
+    public function setPhotoSaison(?string $Photo_Saison): self
     {
         $this->Photo_Saison = $Photo_Saison;
 
@@ -362,9 +434,37 @@ class Vehicule
 
         return $this;
     }
+    public function __toString() : string {
+        return $this->id;
+    }
 
-    /*public function __toString()
+    /**
+     * @return Collection<int, Feedback>
+     */
+    public function getFeedback(): Collection
     {
-        return $this->Marque;
-    }*/
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback[] = $feedback;
+            $feedback->setVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedback->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getVehicule() === $this) {
+                $feedback->setVehicule(null);
+            }
+        }
+
+        return $this;
+    }
 }
