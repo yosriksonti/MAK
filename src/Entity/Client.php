@@ -277,7 +277,7 @@ class Client
     // }
 
     public function __toString() : string {
-        return $this->Nom;
+        return $this->id;
     }
 
     /**
