@@ -87,6 +87,26 @@ class Location
      */
     private $payments;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isBabySeat;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPersonalDriver;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isSecondDriver;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isSTW;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
@@ -271,6 +291,54 @@ class Location
                 $payment->setLocation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsBabySeat(): ?bool
+    {
+        return $this->isBabySeat;
+    }
+
+    public function setIsBabySeat(bool $isBabySeat): self
+    {
+        $this->isBabySeat = $isBabySeat;
+
+        return $this;
+    }
+
+    public function isIsPersonalDriver(): ?bool
+    {
+        return $this->isPersonalDriver;
+    }
+
+    public function setIsPersonalDriver(bool $isPersonalDriver): self
+    {
+        $this->isPersonalDriver = $isPersonalDriver;
+
+        return $this;
+    }
+
+    public function isIsSecondDriver(): ?bool
+    {
+        return $this->isSecondDriver;
+    }
+
+    public function setIsSecondDriver(bool $isSecondDriver): self
+    {
+        $this->isSecondDriver = $isSecondDriver;
+
+        return $this;
+    }
+
+    public function isIsSTW(): ?bool
+    {
+        return $this->isSTW;
+    }
+
+    public function setIsSTW(bool $isSTW): self
+    {
+        $this->isSTW = $isSTW;
 
         return $this;
     }

@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class VehiculeType extends AbstractType
 {
@@ -20,12 +22,25 @@ class VehiculeType extends AbstractType
             ->add('Modele')
             ->add('Categorie')
             ->add('Boite')
-            ->add('Carb')
+            ->add('Carb', ChoiceType::class,[
+                'choices' => [
+                    'Essence' => 'Essence',
+                    'Gasoil' => 'Gasoil'
+                ]
+            ])
             ->add('Nb_Places')
             ->add('Nb_Portes')
             ->add('Nb_Val')
-            ->add('Caut')
+            ->add('Caut', NumberType::class)
+            ->add('Prix', NumberType::class)
             ->add('Clim')
+            ->add('isUnlimitedMileage')
+            ->add('isCarInsurance')
+            ->add('isPassengerInsurance')
+            ->add('isVAT')
+            ->add('isFreeCancel')
+            ->add('isFreeUpdate')
+            ->add('Matricule')
             ->add('Park', EntityType::class, [
                 'class' => Park::class,
                 'choice_label' => function($nom){
@@ -34,6 +49,13 @@ class VehiculeType extends AbstractType
             ])
             ->add('Description')
             ->add('Description_Det')
+            ->add('Grise', VichImageType::class, [
+                'required' => false,
+                'image_uri' => false,
+                'delete_label' => false,
+                'allow_delete' => false,
+                'download_label' => false,
+            ])
             ->add('Def', VichImageType::class, [
                 'required' => false,
                 'image_uri' => false,

@@ -1,8 +1,10 @@
-<!DOCTYPE html>
 
-<title>New Promo</title>
+{% extends "dashboard/index.html.twig" %}
+
 
 {% block body %}
+<title>New Promo</title>
+
     <h1>Create new Promo</h1>
 
     {{ include('promo/_form.html.twig') }}

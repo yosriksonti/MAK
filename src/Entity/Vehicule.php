@@ -119,6 +119,14 @@ class Vehicule
     private ?File $Saison = null;
 
     /**
+     *
+     * @Vich\UploadableField(mapping="Vehicule_image", fileNameProperty="CarteGrise")
+     * 
+     * @var File|null
+     */
+    private ?File $Grise = null;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $Photo_Saison;
@@ -145,6 +153,51 @@ class Vehicule
      * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Vehicule")
      */
     private $feedback;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isUnlimitedMileage;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isCarInsurance;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPassengerInsurance;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVAT;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isFreeCancel;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isFreeUpdate;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Matricule;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $CarteGrise;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $Prix;
 
 
     public function __construct()
@@ -341,6 +394,20 @@ class Vehicule
         }
     }
 
+    public function getGrise(): ?File
+    {
+        return $this->Grise;
+    }
+
+    public function setGrise(?File $grise = null): void
+    {
+        $this->Grise = $grise;
+
+        if ($def instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
+        }
+    }
+
     public function getDef(): ?File
     {
         return $this->Def;
@@ -464,6 +531,114 @@ class Vehicule
                 $feedback->setVehicule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsUnlimitedMileage(): ?bool
+    {
+        return $this->isUnlimitedMileage;
+    }
+
+    public function setIsUnlimitedMileage(bool $isUnlimitedMileage): self
+    {
+        $this->isUnlimitedMileage = $isUnlimitedMileage;
+
+        return $this;
+    }
+
+    public function isIsCarInsurance(): ?bool
+    {
+        return $this->isCarInsurance;
+    }
+
+    public function setIsCarInsurance(bool $isCarInsurance): self
+    {
+        $this->isCarInsurance = $isCarInsurance;
+
+        return $this;
+    }
+
+    public function isIsPassengerInsurance(): ?bool
+    {
+        return $this->isPassengerInsurance;
+    }
+
+    public function setIsPassengerInsurance(bool $isPassengerInsurance): self
+    {
+        $this->isPassengerInsurance = $isPassengerInsurance;
+
+        return $this;
+    }
+
+    public function isIsVAT(): ?bool
+    {
+        return $this->isVAT;
+    }
+
+    public function setIsVAT(bool $isVAT): self
+    {
+        $this->isVAT = $isVAT;
+
+        return $this;
+    }
+
+    public function isIsFreeCancel(): ?bool
+    {
+        return $this->isFreeCancel;
+    }
+
+    public function setIsFreeCancel(bool $isFreeCancel): self
+    {
+        $this->isFreeCancel = $isFreeCancel;
+
+        return $this;
+    }
+
+    public function isIsFreeUpdate(): ?bool
+    {
+        return $this->isFreeUpdate;
+    }
+
+    public function setIsFreeUpdate(bool $isFreeUpdate): self
+    {
+        $this->isFreeUpdate = $isFreeUpdate;
+
+        return $this;
+    }
+
+    public function getMatricule(): ?string
+    {
+        return $this->Matricule;
+    }
+
+    public function setMatricule(string $Matricule): self
+    {
+        $this->Matricule = $Matricule;
+
+        return $this;
+    }
+
+    public function getCarteGrise(): ?string
+    {
+        return $this->CarteGrise;
+    }
+
+    public function setCarteGrise(string $CarteGrise): self
+    {
+        $this->CarteGrise = $CarteGrise;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->Prix;
+    }
+
+    public function setPrix(float $Prix): self
+    {
+        $this->Prix = $Prix;
 
         return $this;
     }
