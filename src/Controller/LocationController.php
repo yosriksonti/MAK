@@ -22,6 +22,7 @@ class LocationController extends AbstractController
     {
         return $this->render('location/index.html.twig', [
             'locations' => $locationRepository->findAll(),
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

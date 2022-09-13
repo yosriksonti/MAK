@@ -108,7 +108,7 @@
                                         {{  location.Client }}
                                     </td>
                                     <td>
-                                        {{  location.Vehicule }}
+                                       <a href="{{ url }}/vehicule/{{ location.Vehicule }}">{{ location.Vehicule}}</a>
                                     </td>
                                     <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('location_show', {'id':  location.id}) }}">

@@ -22,6 +22,7 @@ class VehiculeController extends AbstractController
     {
         return $this->render('vehicule/index.html.twig', [
             'vehicules' => $vehiculeRepository->findAll(),
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

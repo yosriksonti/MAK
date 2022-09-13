@@ -22,6 +22,7 @@ class ParkController extends AbstractController
     {
         return $this->render('park/index.html.twig', [
             'parks' => $parkRepository->findAll(),
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

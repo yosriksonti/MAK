@@ -18,6 +18,7 @@ class PromoController extends AbstractController
     {
         return $this->render('promo/index.html.twig', [
             'promos' => $promoRepository->findAll(),
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

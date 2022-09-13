@@ -22,6 +22,7 @@ class ClientController extends AbstractController
     {
         return $this->render('client/index.html.twig', [
             'clients' => $clientRepository->findAll(),
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

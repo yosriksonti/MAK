@@ -31,6 +31,12 @@
                         <thead>
                             <tr>
                                 <th>
+                                    Matricule
+                                </th>
+                                <th>
+                                    Park
+                                </th>
+                                <th>
                                     Marque
                                 </th>
                                 <th>
@@ -43,37 +49,22 @@
                                     Boite
                                 </th>
                                 <th>
-                                    Carb
+                                    Carburant
                                 </th>
                                 <th>
-                                    Nb_Places
+                                    Nb Places
                                 </th>
                                 <th>
-                                    Nb_Portes
+                                    Nb Portes
                                 </th>
                                 <th>
-                                    Nb_Val
+                                    Nb Valises
                                 </th>
                                 <th>
-                                    Caut
+                                    Cautionnement
                                 </th>
                                 <th>
-                                    Clim
-                                </th>
-                                <th>
-                                    Desc
-                                </th>
-                                <th>
-                                    Desc_Det
-                                </th>
-                                <th>
-                                    Photo_Def
-                                </th>
-                                <th>
-                                    Photo_reel
-                                </th>
-                                <th>
-                                    Photo_Saison
+                                    Photo Default
                                 </th>
                                 <th>
                                     actions
@@ -83,6 +74,12 @@
                         <tbody>
                             {% for vehicule in vehicules %}
                                 <tr>
+                                    <td>
+                                        {{ vehicule.Matricule }}
+                                    </td>
+                                    <td>
+                                       <a href="{{ url }}/park/{{ vehicule.Park }}">{{ vehicule.Park}}</a>
+                                    </td>
                                     <td>
                                         {{ vehicule.Marque }}
                                     </td>
@@ -111,23 +108,7 @@
                                         {{ vehicule.Caut }}
                                     </td>
                                     <td>
-                                        {{ vehicule.Clim ? 'Yes' : 'No' }}
-                                    </td>
-                                    <td>
-                                        {{ vehicule.Description }}
-                                    </td>
-                                    <td>
-                                        {{ vehicule.DescriptionDet }}
-                                    </td>
-                                    <td>
                                         <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" width="50px" height="25px" />
-                                    </td>
-                                    <td>
-                                        <img src="{{ vich_uploader_asset(vehicule, 'Reel') }}" width="50px" height="25x" />
-
-                                    </td>
-                                    <td>
-                                        <img src="{{ vich_uploader_asset(vehicule, 'Saison') }}" width="50px" height="25px" />
                                     </td>
                                     <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('vehicule_show', {'id': vehicule.id}) }}">

@@ -18,6 +18,7 @@ class PaymentController extends AbstractController
     {
         return $this->render('payment/index.html.twig', [
             'payments' => $paymentRepository->findAll(),
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 
