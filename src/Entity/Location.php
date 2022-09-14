@@ -119,7 +119,7 @@ class Location
 
     public function getNum(): ?string
     {
-        return $this->IP;
+        return $this->Num;
     }
 
     public function setNum(string $Num): self
@@ -141,16 +141,30 @@ class Location
         return $this;
     }
 
+    public function getDate_Res(): ?string
+    {
+        $newDate = $this->Date_Res->format('d/m/Y');
+        return $newDate;
+    }
+
     public function getDateRes(): ?DateTimeInterface
     {
         return $this->Date_Res;
     }
+    
 
     public function setDateRes(DateTimeInterface $dateTime): self
     {
         $this->Date_Res = $dateTime;
 
         return $this;
+    }
+
+    public function getDate_Loc(): ?string
+    {
+        $newDate = $this->Date_Loc->format('d/m/Y');
+
+        return $newDate;
     }
 
     public function getDateLoc(): ?DateTimeInterface
@@ -163,6 +177,13 @@ class Location
         $this->Date_Loc = $dateTime;
 
         return $this;
+    }
+
+    public function getDate_Retour(): ?string
+    {
+        $newDate = $this->Date_Retour->format('d/m/Y');
+
+        return $newDate;
     }
 
     public function getDateRetour(): ?DateTimeInterface

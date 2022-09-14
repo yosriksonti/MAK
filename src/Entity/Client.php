@@ -186,6 +186,12 @@ class Client
         return $this;
     }
 
+    public function getDate_Permis(): ?string
+    {
+        $newDate = $this->Date_Permis->format('d/m/Y');
+        return $newDate;    
+    }
+
     public function getDatePermis(): ?DateTimeInterface
     {
         return $this->Date_Permis;
@@ -210,6 +216,12 @@ class Client
         return $this;
     }
 
+    public function getDate_CIN(): ?string
+    {
+        $newDate = $this->Date_CIN->format('d/m/Y');
+        return $newDate;    
+    }
+
     public function getDateCIN(): ?DateTimeInterface
     {
         return $this->Date_CIN;
@@ -220,6 +232,12 @@ class Client
         $this->Date_CIN = $dateTime;
 
         return $this;
+    }
+
+    public function getDate_Naissance(): ?string
+    {
+        $newDate = $this->Date_Naissance->format('d/m/Y');
+        return $newDate;    
     }
 
     public function getDateNaissance(): ?DateTimeInterface

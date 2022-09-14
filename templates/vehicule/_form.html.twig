@@ -21,7 +21,7 @@
         </div>
         <div class="card mb-4">
             <div class="card-header">
-                Photo Def          
+                Photo Default          
             </div>
             <div class="card-body text-center">
                 <div class="small font-italic text-muted mb-4">
@@ -113,6 +113,15 @@
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
+                    <div class="col-md-12">
+                        {{ form_label(form.Matricule, 'Matricule', {'label_attr':{'class':'small mb-1' }}) }}                             
+                        {{ form_widget(form.Matricule, {'attr':{'class':'form-control' }}) }}                              
+                        <div class="invalid-feedback">
+                            {{ form_errors(form.Matricule) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
                     <div class="col-md-4">
                         {{ form_label(form.Nb_Places, 'Nb Places', {'label_attr':{'class':'small mb-1' }}) }}                                  
                         {{ form_widget(form.Nb_Places, {'attr':{'class':'form-control' }}) }}                               
@@ -132,7 +141,7 @@
                         {{ form_widget(form.Nb_Val, {'attr':{'class':'form-control' }}) }}                                
                     </div>
                     <div class="invalid-feedback">
-                        {{ form_errors(form.Nb_Places) }}
+                        {{ form_errors(form.Nb_Val) }}
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
@@ -158,6 +167,30 @@
                         {{ form_errors(form.Prix) }}
                     </div>
                 </div>
+                <div class="row gx-3 mb-3">
+                    {{ form_label(form.Description, 'Description', {'label_attr':{'class':'small mb-1' }}) }}                             
+                    {{ form_widget(form.Description, {'attr':{'class':'form-control' }}) }}                              
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Description) }}
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    {{ form_label(form.Description_Det, 'Description_Det', {'label_attr':{'class':'small mb-1' }}) }}                              
+                    {{ form_widget(form.Description_Det, {'attr':{'class':'form-control' }}) }}                              
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Description_Det) }}
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-12">
+                        {{ form_label(form.Park, 'Park', {'label_attr':{'class':'small mb-1' }}) }}                             
+                        {{ form_widget(form.Park, {'attr':{'class':'form-control' }}) }}                              
+                        <div class="invalid-feedback">
+                            {{ form_errors(form.Park) }}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row gx-3 mb-3">
                     <div class="col-md-4">
                         {{ form_label(form.isUnlimitedMileage, 'Mileage Illimité', {'label_attr':{'class':'small mb-1' }}) }}
@@ -205,38 +238,6 @@
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
-                    <div class="col-md-12">
-                        {{ form_label(form.Matricule, 'Matricule', {'label_attr':{'class':'small mb-1' }}) }}                             
-                        {{ form_widget(form.Matricule, {'attr':{'class':'form-control' }}) }}                              
-                        <div class="invalid-feedback">
-                            {{ form_errors(form.Matricule) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    {{ form_label(form.Description, 'Description', {'label_attr':{'class':'small mb-1' }}) }}                             
-                    {{ form_widget(form.Description, {'attr':{'class':'form-control' }}) }}                              
-                    <div class="invalid-feedback">
-                        {{ form_errors(form.Description) }}
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    {{ form_label(form.Description_Det, 'Description_Det', {'label_attr':{'class':'small mb-1' }}) }}                              
-                    {{ form_widget(form.Description_Det, {'attr':{'class':'form-control' }}) }}                              
-                    <div class="invalid-feedback">
-                        {{ form_errors(form.Description_Det) }}
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-12">
-                        {{ form_label(form.Park, 'Park', {'label_attr':{'class':'small mb-1' }}) }}                             
-                        {{ form_widget(form.Park, {'attr':{'class':'form-control' }}) }}                              
-                        <div class="invalid-feedback">
-                            {{ form_errors(form.Park) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
                     <div class="col-md-6">
                         {{ form_label(form.isVAT, 'TTC', {'label_attr':{'class':'small mb-1' }}) }}       
                         {{ form_widget(form.isVAT, {'attr':{'class':'form-check-input' }}) }}                              
@@ -245,8 +246,8 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn">
-                    {{ button_label|default('Save') }}
+                <button class="fw-500 btn btn-primary">
+                        {{ button_label|default('Sauvgarder') }}
                 </button>
             </div>
             {{ form_end(form) }}

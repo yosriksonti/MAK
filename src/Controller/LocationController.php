@@ -54,6 +54,7 @@ class LocationController extends AbstractController
     {
         return $this->render('location/show.html.twig', [
             'location' => $location,
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

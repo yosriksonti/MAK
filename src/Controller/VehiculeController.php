@@ -54,6 +54,7 @@ class VehiculeController extends AbstractController
     {
         return $this->render('vehicule/show.html.twig', [
             'vehicule' => $vehicule,
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

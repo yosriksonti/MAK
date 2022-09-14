@@ -53,6 +53,7 @@ class ParkController extends AbstractController
     {
         return $this->render('park/show.html.twig', [
             'park' => $park,
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 
