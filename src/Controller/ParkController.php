@@ -16,18 +16,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParkController extends AbstractController
 {
     /**
-     * @Route("/", name="app_park_index", methods={"GET"})
+     * @Route("/", name="park_index", methods={"GET"})
      */
     public function index(ParkRepository $parkRepository): Response
     {
         return $this->render('park/index.html.twig', [
-            'parks' => $parkRepository->findAll(),
-            'url' => $_ENV["APP_URL"]
+            'parks' => $parkRepository->findAll()
         ]);
     }
 
     /**
-     * @Route("/new", name="app_park_new", methods={"GET", "POST"})
+     * @Route("/new", name="park_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ParkRepository $parkRepository): Response
     {
@@ -38,7 +37,7 @@ class ParkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $parkRepository->add($park, true);
 
-            return $this->redirectToRoute('app_park_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('park_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('park/new.html.twig', [
@@ -48,7 +47,7 @@ class ParkController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_park_show", methods={"GET"})
+     * @Route("/{id}", name="park_show", methods={"GET"})
      */
     public function show(Park $park): Response
     {
@@ -58,7 +57,7 @@ class ParkController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_park_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="park_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Park $park, ParkRepository $parkRepository): Response
     {
@@ -68,7 +67,7 @@ class ParkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $parkRepository->add($park, true);
 
-            return $this->redirectToRoute('app_park_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('park_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('park/edit.html.twig', [
@@ -78,7 +77,7 @@ class ParkController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_park_delete", methods={"POST"})
+     * @Route("/{id}", name="park_delete", methods={"POST"})
      */
     public function delete(Request $request, Park $park, ParkRepository $parkRepository): Response
     {
@@ -86,6 +85,6 @@ class ParkController extends AbstractController
             $parkRepository->remove($park, true);
         }
 
-        return $this->redirectToRoute('app_park_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('park_index', [], Response::HTTP_SEE_OTHER);
     }
 }

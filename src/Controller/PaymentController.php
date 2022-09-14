@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/payment')]
 class PaymentController extends AbstractController
 {
-    #[Route('/', name: 'app_payment_index', methods: ['GET'])]
+    #[Route('/', name: 'payment_index', methods: ['GET'])]
     public function index(PaymentRepository $paymentRepository): Response
     {
         return $this->render('payment/index.html.twig', [
@@ -22,7 +22,7 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_payment_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'payment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PaymentRepository $paymentRepository): Response
     {
         $payment = new Payment();
@@ -32,7 +32,7 @@ class PaymentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $paymentRepository->add($payment, true);
 
-            return $this->redirectToRoute('app_payment_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('payment_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('payment/new.html.twig', [
@@ -41,7 +41,7 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_payment_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'payment_show', methods: ['GET'])]
     public function show(Payment $payment): Response
     {
         return $this->render('payment/show.html.twig', [
@@ -49,7 +49,7 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_payment_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'payment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Payment $payment, PaymentRepository $paymentRepository): Response
     {
         $form = $this->createForm(Payment2Type::class, $payment);
@@ -58,7 +58,7 @@ class PaymentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $paymentRepository->add($payment, true);
 
-            return $this->redirectToRoute('app_payment_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('payment_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('payment/edit.html.twig', [
@@ -67,13 +67,13 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_payment_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'payment_delete', methods: ['POST'])]
     public function delete(Request $request, Payment $payment, PaymentRepository $paymentRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$payment->getId(), $request->request->get('_token'))) {
             $paymentRepository->remove($payment, true);
         }
 
-        return $this->redirectToRoute('app_payment_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('payment_index', [], Response::HTTP_SEE_OTHER);
     }
 }

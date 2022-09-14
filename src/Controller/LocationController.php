@@ -38,7 +38,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $locationRepository->add($location, true);
 
-            return $this->redirectToRoute(' location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('location_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('location/new.html.twig', [
@@ -68,7 +68,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $locationRepository->add($location, true);
 
-            return $this->redirectToRoute(' location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('location_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('location/edit.html.twig', [
@@ -86,6 +86,6 @@ class LocationController extends AbstractController
             $locationRepository->remove($location, true);
         }
 
-        return $this->redirectToRoute(' location_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('location_index', [], Response::HTTP_SEE_OTHER);
     }
 }

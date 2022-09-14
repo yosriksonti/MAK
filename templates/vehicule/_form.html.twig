@@ -160,7 +160,7 @@
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-4">
-                        {{ form_label(form.isUnlimitedMileage, 'Mileage Illimité') }}
+                        {{ form_label(form.isUnlimitedMileage, 'Mileage Illimité', {'label_attr':{'class':'small mb-1' }}) }}
                         {{ form_widget(form.isUnlimitedMileage, {'attr':{'class':'form-check-input' }}) }}                              
                     </div>
                     <div class="invalid-feedback">
@@ -174,7 +174,7 @@
                         {{ form_errors(form.isCarInsurance) }}
                     </div>
                     <div class="col-md-4">
-                        {{ form_label(form.isPassengerInsurance, 'Assurance Passager') }}
+                        {{ form_label(form.isPassengerInsurance, 'Assurance Passager', {'label_attr':{'class':'small mb-1' }}) }}
                         {{ form_widget(form.isPassengerInsurance, {'attr':{'class':'form-check-input' }}) }}                              
                     </div>
                     <div class="invalid-feedback">
@@ -183,14 +183,14 @@
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-4">
-                        {{ form_label(form.Clim, 'Climatisation') }}
+                        {{ form_label(form.Clim, 'Climatisation', {'label_attr':{'class':'small mb-1' }}) }}
                         {{ form_widget(form.Clim, {'attr':{'class':'form-check-input' }}) }}                              
                     </div>
                     <div class="invalid-feedback">
                         {{ form_errors(form.Clim) }}
                     </div>
                     <div class="col-md-4">
-                        {{ form_label(form.isFreeCancel, 'Annulation Gratuite') }}
+                        {{ form_label(form.isFreeCancel, 'Annulation Gratuite', {'label_attr':{'class':'small mb-1' }}) }}
                         {{ form_widget(form.isFreeCancel, {'attr':{'class':'form-check-input' }}) }}                              
                     </div>
                     <div class="invalid-feedback">

@@ -2,8 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Client;
 use App\Entity\Location;
+use App\Entity\Vehicule;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,16 +18,36 @@ class LocationType extends AbstractType
         $builder
             ->add('Num')
             ->add('IP')
-            ->add('Date_Res')
-            ->add('Date_Loc')
-            ->add('Date_Retour')
+            ->add('Date_Res', DateType::class, [ 
+                'widget' => 'single_text',
+                ])
+            ->add('Date_Loc', DateType::class, [ 
+                'widget' => 'single_text',
+                ])
+            ->add('Date_Retour', DateType::class, [ 
+                'widget' => 'single_text',
+                ])
             ->add('Montant')
             ->add('Avance')
             ->add('Type')
             ->add('Etat')
             ->add('Status')
-            ->add('Client')
-            ->add('Vehicule')
+            ->add('Client', EntityType::class, [
+                'class' => Client::class,
+                'choice_label' => function($nom){
+                    return $nom->getNom();
+                },
+            ])
+            ->add('Vehicule', EntityType::class, [
+                'class' => Vehicule::class,
+                'choice_label' => function($nom){
+                    return $nom->getMarque();
+                },
+            ])
+            ->add('isBabySeat')
+            ->add('isPersonalDriver')
+            ->add('isSecondDriver')
+            ->add('isSTW')
         ;
     }
 
