@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Depence</title>
+
+{% block body %}
+    <h1>Edit Depence</h1>
+
+    {{ include('depence/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('depence_index') }}">back to list</a>
+
+    {{ include('depence/_delete_form.html.twig') }}
+{% endblock %}

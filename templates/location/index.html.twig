@@ -105,10 +105,10 @@
                                         {{  location.Status ? 'Yes' : 'No' }}
                                     </td>
                                     <td>
-                                        {{  location.Client.getNom() }}
+                                       <a class="text-muted me-3" href="{{ url }}/client/{{ location.Client }}">{{ location.Client.Nom }}</a>
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/vehicule/{{ location.Vehicule }}">{{ location.Vehicule.getMarque() }}</a>
+                                       <a class="text-muted me-3" href="{{ url }}/vehicule/{{ location.Vehicule }}">{{ location.Vehicule.Modele }} : {{ location.Vehicule.Matricule }}</a>
                                     </td>
                                     <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('location_show', {'id':  location.id}) }}">

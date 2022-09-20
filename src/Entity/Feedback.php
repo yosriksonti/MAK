@@ -28,12 +28,6 @@ class Feedback
     private $createdOn;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Vehicule::class, inversedBy="feedback")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $Vehicule;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="feedback")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -69,18 +63,6 @@ class Feedback
     public function setCreatedOn(\DateTimeInterface $createdOn): self
     {
         $this->createdOn = $createdOn;
-
-        return $this;
-    }
-
-    public function getVehicule(): ?Vehicule
-    {
-        return $this->Vehicule;
-    }
-
-    public function setVehicule(?Vehicule $Vehicule): self
-    {
-        $this->Vehicule = $Vehicule;
 
         return $this;
     }

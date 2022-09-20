@@ -150,11 +150,6 @@ class Vehicule
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Vehicule")
-     */
-    private $feedback;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $isUnlimitedMileage;
@@ -199,11 +194,17 @@ class Vehicule
      */
     private $Prix;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Depence::class, mappedBy="Vehicule")
+     */
+    private $depences;
+
 
     public function __construct()
     {
         $this->Locations = new ArrayCollection();
         $this->feedback = new ArrayCollection();
+        $this->depences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -505,36 +506,6 @@ class Vehicule
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Feedback>
-     */
-    public function getFeedback(): Collection
-    {
-        return $this->feedback;
-    }
-
-    public function addFeedback(Feedback $feedback): self
-    {
-        if (!$this->feedback->contains($feedback)) {
-            $this->feedback[] = $feedback;
-            $feedback->setVehicule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFeedback(Feedback $feedback): self
-    {
-        if ($this->feedback->removeElement($feedback)) {
-            // set the owning side to null (unless already changed)
-            if ($feedback->getVehicule() === $this) {
-                $feedback->setVehicule(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function isIsUnlimitedMileage(): ?bool
     {
         return $this->isUnlimitedMileage;
@@ -639,6 +610,36 @@ class Vehicule
     public function setPrix(float $Prix): self
     {
         $this->Prix = $Prix;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Depence>
+     */
+    public function getDepences(): Collection
+    {
+        return $this->depences;
+    }
+
+    public function addDepence(Depence $depence): self
+    {
+        if (!$this->depences->contains($depence)) {
+            $this->depences[] = $depence;
+            $depence->setVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepence(Depence $depence): self
+    {
+        if ($this->depences->removeElement($depence)) {
+            // set the owning side to null (unless already changed)
+            if ($depence->getVehicule() === $this) {
+                $depence->setVehicule(null);
+            }
+        }
 
         return $this;
     }
