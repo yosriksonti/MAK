@@ -31,28 +31,54 @@
                         <div class="card-body">
                             <!-- Form Row-->
                             <div class="row gx-3 mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <h2 class="small mb-1" for="inputFirstName">Num</h2>
                                     <p class=" mb-1" for="inputFirstName">{{ location.Num }}</p>                              
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <h2 class="small mb-1" for="inputFirstName">IP</h2>
                                     <p class=" mb-1" for="inputFirstName">{{ location.IP }}</p>         
+                                </div>
+                                <div class="col-md-4">
+                                    <h2 class="small mb-1" for="inputFirstName">Date de reservation</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.Date_Res }}</p>                                
                                 </div>
                             </div>
                             <hr>
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-4">
-                                    <h2 class="small mb-1" for="inputFirstName">Date de reservation</h2>
-                                    <p class=" mb-1" for="inputFirstName">{{ location.Date_Res }}</p>                                
+                                    <h2 class="small mb-1" for="inputFirstName">Type</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.Type  }}</p>                             
                                 </div>
                                 <div class="col-md-4">
+                                    <h2 class="small mb-1" for="inputFirstName">Etat</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.Etat }}</p>                               
+                                </div>
+                                <div class="col-md-4">
+                                    <h2 class="small mb-1" for="inputFirstName">Status</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.Status }}</p>                                
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Date de location</h2>
                                     <p class=" mb-1" for="inputFirstName">{{ location.Date_Loc }}</p>                               
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Date de retour</h2>
                                     <p class=" mb-1" for="inputFirstName">{{ location.Date_Retour }}</p>                               
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">Agence de depart</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.AgenceDepart.Nom }}</p>                               
+                                </div>
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">Agence de retour</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.AgenceArrive.Nom }}</p>                               
                                 </div>
                             </div>
                             <hr>
@@ -67,21 +93,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-4">
-                                    <h2 class="small mb-1" for="inputFirstName">Type</h2>
-                                    <p class=" mb-1" for="inputFirstName">{{ location.Type }}</p>                             
-                                </div>
-                                <div class="col-md-4">
-                                    <h2 class="small mb-1" for="inputFirstName">Etat</h2>
-                                    <p class=" mb-1" for="inputFirstName">{{ location.Etat }}</p>                               
-                                </div>
-                                <div class="col-md-4">
-                                    <h2 class="small mb-1" for="inputFirstName">Status</h2>
-                                    <p class=" mb-1" for="inputFirstName">{{ location.Status }}</p>                                
-                                </div>
-                            </div>
-                            <hr>
+                            
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Client</h2>

@@ -29,6 +29,26 @@ class Park
      */
     private $Nom;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $DebutHS;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $FinHS;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $DebutBS;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $FinBS;
+
     public function __construct()
     {
         $this->Vehicules = new ArrayCollection();
@@ -83,5 +103,80 @@ class Park
 
     public function __toString() : string {
         return $this->id;
+    }
+    public function getDebut_HS(): ?string
+    {
+        $newDate = $this->DebutHS->format('d/m/Y');
+
+        return $newDate;
+    }
+
+    public function getFin_HS(): ?string
+    {
+        $newDate = $this->FinHS->format('d/m/Y');
+
+        return $newDate;    
+    }
+
+    public function getDebut_BS(): ?string
+    {
+        $newDate = $this->DebutBS->format('d/m/Y');
+
+        return $newDate;
+    }
+
+    public function getFin_BS(): ?string
+    {
+        $newDate = $this->FinBS->format('d/m/Y');
+
+        return $newDate;
+    }
+
+    public function getDebutHS(): ?\DateTimeInterface
+    {
+        return $this->DebutHS;
+    }
+
+    public function setDebutHS(\DateTimeInterface $DebutHS): self
+    {
+        $this->DebutHS = $DebutHS;
+
+        return $this;
+    }
+
+    public function getFinHS(): ?\DateTimeInterface
+    {
+        return $this->FinHS;
+    }
+
+    public function setFinHS(\DateTimeInterface $FinHS): self
+    {
+        $this->FinHS = $FinHS;
+
+        return $this;
+    }
+
+    public function getDebutBS(): ?\DateTimeInterface
+    {
+        return $this->DebutBS;
+    }
+
+    public function setDebutBS(\DateTimeInterface $DebutBS): self
+    {
+        $this->DebutBS = $DebutBS;
+
+        return $this;
+    }
+
+    public function getFinBS(): ?\DateTimeInterface
+    {
+        return $this->FinBS;
+    }
+
+    public function setFinBS(\DateTimeInterface $FinBS): self
+    {
+        $this->FinBS = $FinBS;
+
+        return $this;
     }
 }

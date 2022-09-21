@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Park;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,6 +14,18 @@ class ParkType extends AbstractType
     {
         $builder
             ->add('Nom')
+            ->add('DebutHS',DateType::class, [ 
+                'widget' => 'single_text',
+                ])
+            ->add('FinHS',DateType::class, [ 
+                'widget' => 'single_text',
+                ])
+            ->add('DebutBS',DateType::class, [ 
+                'widget' => 'single_text',
+                ])
+            ->add('FinBS',DateType::class, [ 
+                'widget' => 'single_text',
+                ])
         ;
     }
 
