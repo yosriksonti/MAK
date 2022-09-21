@@ -107,6 +107,18 @@ class Location
      */
     private $isSTW;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Agence::class, inversedBy="locations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Agence_Depart;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Agence::class, inversedBy="locations_arrive")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Agence_Arrive;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
@@ -360,6 +372,30 @@ class Location
     public function setIsSTW(bool $isSTW): self
     {
         $this->isSTW = $isSTW;
+
+        return $this;
+    }
+
+    public function getAgenceDepart(): ?Agence
+    {
+        return $this->Agence_Depart;
+    }
+
+    public function setAgenceDepart(?Agence $Agence_Depart): self
+    {
+        $this->Agence_Depart = $Agence_Depart;
+
+        return $this;
+    }
+
+    public function getAgenceArrive(): ?Agence
+    {
+        return $this->Agence_Arrive;
+    }
+
+    public function setAgenceArrive(?Agence $Agence_Arrive): self
+    {
+        $this->Agence_Arrive = $Agence_Arrive;
 
         return $this;
     }

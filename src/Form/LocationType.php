@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Client;
 use App\Entity\Location;
 use App\Entity\Vehicule;
+use App\Entity\Agence;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -42,6 +43,17 @@ class LocationType extends AbstractType
                 'class' => Vehicule::class,
                 'choice_label' => function($nom){
                     return $nom->getMarque();
+                },
+            ])
+            ->add('Agence_Depart', EntityType::class, [
+                'class' => Agence::class,
+                'choice_label' => function($nom){
+                    return $nom->getNom();
+                },
+            ])->add('Agence_Arrive', EntityType::class, [
+                'class' => Agence::class,
+                'choice_label' => function($nom){
+                    return $nom->getNom();
                 },
             ])
             ->add('isBabySeat')

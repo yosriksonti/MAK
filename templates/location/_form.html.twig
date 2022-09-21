@@ -31,18 +31,34 @@
                         {{ form_errors(form.Date_Res) }}
                     </div>
                     <div class="col-md-4">
-                        {{ form_label(form.Date_Loc, 'Date_Loc', {'label_attr':{'class':'small mb-1' }}) }}                                                         
+                        {{ form_label(form.Date_Loc, 'Date location', {'label_attr':{'class':'small mb-1' }}) }}                                                         
                         {{ form_widget(form.Date_Loc, {'attr':{'class':'form-control' }}) }}                                               
                     </div>
                     <div class="invalid-feedback">
                         {{ form_errors(form.Date_Loc) }}
                     </div>
                     <div class="col-md-4">
-                        {{ form_label(form.Date_Retour, 'Date_Retour', {'label_attr':{'class':'small mb-1' }}) }}                                                       
+                        {{ form_label(form.Date_Retour, 'Date retour', {'label_attr':{'class':'small mb-1' }}) }}                                                       
                         {{ form_widget(form.Date_Retour, {'attr':{'class':'form-control' }}) }}                                                  
                     </div>
                     <div class="invalid-feedback">
                         {{ form_errors(form.Date_Retour) }}
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.Agence_Depart, ' Agence de depart', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_widget(form.Agence_Depart, {'attr':{'class':'form-control' }}) }}                                                 
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Agence_Depart) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.Agence_Arrive, ' Agence de retour', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_widget(form.Agence_Arrive, {'attr':{'class':'form-control' }}) }}                                                 
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Agence_Arrive) }}
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
