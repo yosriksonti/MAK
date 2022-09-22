@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('promo_delete', {'id': promo.id}) }}">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ promo.id) }}">
-    <button class="btn"><i data-feather="trash"></i></button>
-</form>
