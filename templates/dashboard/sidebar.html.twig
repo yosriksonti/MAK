@@ -62,9 +62,11 @@
                 </a>
                 <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
                     <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-                        <a class="nav-link" href="#">
+                        
+                        <a class="nav-link" href="{{ path('admin_index')}}">
                             Admins
-                        </a> 
+                        </a>
+                        {# {% endif %}  #}
                         <a class="nav-link" href="{{ path('client_index')}}">
                             Clients                                 
                         </a>
@@ -128,7 +130,7 @@
                                                 
                 </div>
                 <div class="sidenav-footer-title">
-                    {{ app.user.email }}
+                    {{ app.user.name }} {{ app.user.lastname }}
                                                 
                 </div>
             </div>
