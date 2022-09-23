@@ -10,13 +10,13 @@
                                 <div class="page-header-icon">
                                     <i data-feather="eye"></i>
                                 </div>
-                                 Promotions list                                                                                                                 
+                                 Feedbacks list                                                                                                                 
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
-                            <a class="btn btn-sm btn-light text-primary" href="{{ path('promo_new') }}">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ path('feedback_new') }}">
                                 <i class="me-1" data-feather="user-plus"></i>
-                                Ajouter Promotion                            
+                                Ajouter Feedback                            
                             </a>
                         </div>
                     </div>
@@ -30,43 +30,53 @@
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th width="15%">
-                                    ID
+                                <th>
+                                    Date
                                 </th>
-                                <th width="30%">
-                                    Pourcentage
+                                <th>
+                                    Rating
                                 </th>
-                                <th width="45%">
-                                    Code
+                                <th>
+                                    Client
                                 </th>
-                                <th width="10%">
+                                <th>
+                                    Vehicule
+                                </th>
+                                <th>
+                                    Visible
+                                </th>
+                                <th>
                                     Actions
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for  promo in  promos %}
+                            {% for  feedback in  feedbacks %}
                                 <tr>
-                                    <td width="15%">
-                                        {{  promo.id }}
+                                    <td>
+                                        {{  feedback.created_On }}
                                     </td>
-                                    <td width="30%">
-                                        {{  promo.Pourcentage }}
+                                    <td>
+                                        {{  feedback.Rating }}
                                     </td>
-                                    <td width="45%">
-                                        {{  promo.Code }}
+                                    <td>
+                                       <a class="text-muted me-3" href="{{ url }}/client/{{ feedback.Client.id }}">{{ feedback.Client.CIN }}</a>
                                     </td>
-
-                                    
-                                    <td width="10%">
-                                        <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('promo_show', {'id':  promo.id}) }}">
+                                    <td>
+                                       <a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule ? feedback.Vehicule.id : '' }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a>
+                                    </td>
+                                    <td>
+                                        {{  feedback.Visible ? 'Oui' : 'Non' }}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('feedback_show', {'id':  feedback.id}) }}">
                                             <i data-feather="eye"></i>
                                         </a>
-                                        <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('promo_edit', {'id':  promo.id}) }}">
+                                        <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('feedback_edit', {'id':  feedback.id}) }}">
                                             <i data-feather="edit"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2">
-                                            {{ include('promo/_delete_form.html.twig') }}
+                                            {{ include('feedback/_delete_form.html.twig') }}
                                         </a>
                                     </td>
                                 </tr>

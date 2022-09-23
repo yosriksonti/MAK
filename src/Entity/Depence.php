@@ -79,6 +79,13 @@ class Depence
         return $this;
     }
 
+    public function getDate_F(): ?string
+    {
+        $newDate = $this->Date->format('d/m/Y');
+
+        return $newDate;
+    }
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->Date;

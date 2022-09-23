@@ -170,16 +170,6 @@ class Vehicule
     private $isVAT;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isFreeCancel;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isFreeUpdate;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $Matricule;
@@ -198,6 +188,11 @@ class Vehicule
      * @ORM\OneToMany(targetEntity=Depence::class, mappedBy="Vehicule")
      */
     private $depences;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Vehicule")
+     */
+    private $feedback;
 
 
     public function __construct()
@@ -554,30 +549,6 @@ class Vehicule
         return $this;
     }
 
-    public function isIsFreeCancel(): ?bool
-    {
-        return $this->isFreeCancel;
-    }
-
-    public function setIsFreeCancel(bool $isFreeCancel): self
-    {
-        $this->isFreeCancel = $isFreeCancel;
-
-        return $this;
-    }
-
-    public function isIsFreeUpdate(): ?bool
-    {
-        return $this->isFreeUpdate;
-    }
-
-    public function setIsFreeUpdate(bool $isFreeUpdate): self
-    {
-        $this->isFreeUpdate = $isFreeUpdate;
-
-        return $this;
-    }
-
     public function getMatricule(): ?string
     {
         return $this->Matricule;
@@ -638,6 +609,36 @@ class Vehicule
             // set the owning side to null (unless already changed)
             if ($depence->getVehicule() === $this) {
                 $depence->setVehicule(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Feedback>
+     */
+    public function getFeedback(): Collection
+    {
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback[] = $feedback;
+            $feedback->setVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedback->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getVehicule() === $this) {
+                $feedback->setVehicule(null);
             }
         }
 

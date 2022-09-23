@@ -2,37 +2,43 @@
 
 namespace App\Form;
 
-use App\Entity\Payment;
+use App\Entity\Feedback;
 use App\Entity\Client;
-use App\Entity\Location;
+use App\Entity\Vehicule;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class PaymentType extends AbstractType
+class FeedbackType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sessionId')
-            ->add('status')
-            ->add('total')
+            ->add('Body')
             ->add('createdOn',DateType::class, [ 
                 'widget' => 'single_text',
                 ])
-            ->add('Client', EntityType::class, [
+            ->add('Rating')
+            ->add('Client',EntityType::class, [
                 'class' => Client::class,
                 'choice_label' => function($cin){
                     return $cin->getCIN();
                 },
             ])
-            ->add('Location', EntityType::class, [
-                'class' => Location::class,
-                'choice_label' => function($num){
-                    return $num->getNum();
+            ->add('Vehicule',EntityType::class, [
+                'class' => Vehicule::class,
+                'choice_label' => function($cin){
+                    return $cin->getMatricule();
                 },
+            ])
+            ->add('Visible',ChoiceType::class,[
+                'choices' => [
+                    'Oui' => '1',
+                    'Non' => '0'
+                ]
             ])
         ;
     }
@@ -40,7 +46,7 @@ class PaymentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Payment::class,
+            'data_class' => Feedback::class,
         ]);
     }
 }

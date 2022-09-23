@@ -10,13 +10,13 @@
                                 <div class="page-header-icon">
                                     <i data-feather="user-plus"></i>
                                 </div>
-                                Ajouter Payment                           
+                                Modifier Feedback                           
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
-                            <a class="btn btn-sm btn-light text-primary" href="{{ path('payment_index') }}">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ path('feedback_index') }}">
                                 <i class="me-1" data-feather="arrow-left"></i>
-                                Back to Payment List                           
+                                Back to Feedback List                           
                             </a>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
             </div>
         </header>
         <div class="container-xl px-4 mt-4">
-            {{ include('payment/_form.html.twig') }}
+            {{ include('feedback/_form.html.twig') }}
         </div>
     </main>
 {% endblock %}

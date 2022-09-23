@@ -20,7 +20,12 @@ class VehiculeType extends AbstractType
             ->add('Marque')
             ->add('Modele')
             ->add('Categorie')
-            ->add('Boite')
+            ->add('Boite', ChoiceType::class,[
+                'choices' => [
+                    'Automatique' => 'Automatique',
+                    'Manuelle' => 'Manuelle'
+                ]
+            ])
             ->add('Carb', ChoiceType::class,[
                 'choices' => [
                     'Essence' => 'Essence',
@@ -37,8 +42,6 @@ class VehiculeType extends AbstractType
             ->add('isCarInsurance')
             ->add('isPassengerInsurance')
             ->add('isVAT')
-            ->add('isFreeCancel')
-            ->add('isFreeUpdate')
             ->add('Matricule')
             ->add('Park', EntityType::class, [
                 'class' => Park::class,

@@ -31,10 +31,10 @@
                         <thead>
                             <tr>
                                 <th>
-                                    Montant
+                                    Designation
                                 </th>
                                 <th>
-                                    Designation
+                                    Montant
                                 </th>
                                 <th>
                                     Date
@@ -51,10 +51,10 @@
                             {% for  depence in  depences %}
                                 <tr>
                                     <td>
-                                        {{  depence.Prix }}
+                                        {{  depence.Designation }}
                                     </td>
                                     <td>
-                                        {{  depence.Designation }}
+                                        {{  depence.Prix }} DT
                                     </td>
                                     <td>
                                         {{  depence.Date ? depence.Date|date('Y-m-d') : '' }}

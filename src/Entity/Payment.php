@@ -90,6 +90,14 @@ class Payment
         return $this;
     }
 
+    public function getCreated_On(): ?string
+    {
+        $newDate = $this->createdOn->format('d/m/Y');
+
+        return $newDate;
+    }
+
+
     public function getCreatedOn(): ?\DateTimeInterface
     {
         return $this->createdOn;

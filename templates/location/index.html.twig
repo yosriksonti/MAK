@@ -34,12 +34,6 @@
                                     Num
                                 </th>
                                 <th>
-                                    IP
-                                </th>
-                                <th>
-                                    Date Res
-                                </th>
-                                <th>
                                     Date Loc
                                 </th>
                                 <th>
@@ -52,13 +46,7 @@
                                     Avance
                                 </th>
                                 <th>
-                                    Type
-                                </th>
-                                <th>
                                     Etat
-                                </th>
-                                <th>
-                                    Status
                                 </th>
                                 <th>
                                     Client
@@ -78,31 +66,19 @@
                                         {{  location.Num }}
                                     </td>
                                     <td>
-                                        {{  location.IP }}
-                                    </td>
-                                    <td>
-                                        {{  location.DateRes ? location.DateRes|date('Y-m-d') : '' }}
-                                    </td>
-                                    <td>
                                         {{  location.DateLoc ? location.DateLoc|date('Y-m-d') : '' }}
                                     </td>
                                     <td>
                                         {{  location.DateRetour ? location.DateRetour|date('Y-m-d') : '' }}
                                     </td>
                                     <td>
-                                        {{  location.Montant }}
+                                        {{  location.Montant }} DT
                                     </td>
                                     <td>
-                                        {{  location.Avance }}
-                                    </td>
-                                    <td>
-                                        {{  location.Type }}
+                                        {{  location.Avance }} DT
                                     </td>
                                     <td>
                                         {{  location.Etat }}
-                                    </td>
-                                    <td>
-                                        {{  location.Status ? 'Yes' : 'No' }}
                                     </td>
                                     <td>
                                        <a class="text-muted me-3" href="{{ url }}/client/{{ location.Client }}">{{ location.Client.Nom }}</a>

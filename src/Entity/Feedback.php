@@ -38,6 +38,16 @@ class Feedback
      */
     private $Rating;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Vehicule::class, inversedBy="feedback")
+     */
+    private $Vehicule;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $Visible;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +63,13 @@ class Feedback
         $this->Body = $Body;
 
         return $this;
+    }
+
+    public function getCreated_On(): ?string
+    {
+        $newDate = $this->createdOn->format('d/m/Y');
+
+        return $newDate;
     }
 
     public function getCreatedOn(): ?\DateTimeInterface
@@ -87,6 +104,30 @@ class Feedback
     public function setRating(int $Rating): self
     {
         $this->Rating = $Rating;
+
+        return $this;
+    }
+
+    public function getVehicule(): ?Vehicule
+    {
+        return $this->Vehicule;
+    }
+
+    public function setVehicule(?Vehicule $Vehicule): self
+    {
+        $this->Vehicule = $Vehicule;
+
+        return $this;
+    }
+
+    public function isVisible(): ?bool
+    {
+        return $this->Visible;
+    }
+
+    public function setVisible(bool $Visible): self
+    {
+        $this->Visible = $Visible;
 
         return $this;
     }

@@ -46,6 +46,7 @@ class DepenceController extends AbstractController
     {
         return $this->render('depence/show.html.twig', [
             'depence' => $depence,
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 

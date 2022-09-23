@@ -31,10 +31,13 @@
                         <thead>
                             <tr>
                                 <th width="45%">
-                                    ID
-                                </th>
-                                <th width="45%">
                                     Nom
+                                </th>
+                                <th width="15%">
+                                    Debut HS
+                                </th>
+                                <th width="15%">
+                                    Debut BS
                                 </th>
                                 <th width="10%">
                                     Actions
@@ -45,12 +48,17 @@
                             {% for  park in  parks %}
                                 <tr>
                                     <td width="45%">
-                                        {{  park.id }}
-                                    </td>
-                                    <td width="45%">
                                         {{  park.Nom }}
                                     </td>
-                                    <td width="10%">
+
+                                    <td width="15%">
+                                        {{  park.Debut_HS }}
+                                    </td>
+
+                                    <td width="15%">
+                                        {{  park.Debut_HS }}
+                                    </td>
+                                    <td width="15%">
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('park_show', {'id':  park.id}) }}">
                                             <i data-feather="eye"></i>
                                         </a>

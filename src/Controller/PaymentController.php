@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Payment;
-use App\Form\Payment2Type;
+use App\Form\PaymentType;
 use App\Repository\PaymentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ class PaymentController extends AbstractController
     public function new(Request $request, PaymentRepository $paymentRepository): Response
     {
         $payment = new Payment();
-        $form = $this->createForm(Payment2Type::class, $payment);
+        $form = $this->createForm(PaymentType::class, $payment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -46,13 +46,14 @@ class PaymentController extends AbstractController
     {
         return $this->render('payment/show.html.twig', [
             'payment' => $payment,
+            'url' => $_ENV["APP_URL"]
         ]);
     }
 
     #[Route('/{id}/edit', name: 'payment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Payment $payment, PaymentRepository $paymentRepository): Response
     {
-        $form = $this->createForm(Payment2Type::class, $payment);
+        $form = $this->createForm(PaymentType::class, $payment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
