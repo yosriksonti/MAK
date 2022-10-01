@@ -174,7 +174,7 @@ class Location
 
     public function getDate_Loc(): ?string
     {
-        $newDate = $this->Date_Loc->format('d/m/Y');
+        $newDate = $this->Date_Loc->format('m/d/Y');
 
         return $newDate;
     }
@@ -193,7 +193,7 @@ class Location
 
     public function getDate_Retour(): ?string
     {
-        $newDate = $this->Date_Retour->format('d/m/Y');
+        $newDate = $this->Date_Retour->format('m/d/Y');
 
         return $newDate;
     }
