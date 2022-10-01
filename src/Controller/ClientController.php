@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Entity\User;
 use App\Form\ClientType;
+use App\Form\UserType;
 use App\Repository\ClientRepository;
+use App\Repository\UserRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ClientController extends AbstractController
 {
+
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     /**
      * @Route("/", name="client_index", methods={"GET"})
      */
@@ -36,6 +48,12 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $client->setPassword($this->passwordHasher->hashPassword(
+                $client,
+                $form->get('password')->getData()
+            ));
+
             $clientRepository->add($client, true);
 
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
@@ -63,10 +81,16 @@ class ClientController extends AbstractController
      */
     public function edit(Request $request, Client $client, ClientRepository $clientRepository): Response
     {
-        $form = $this->createForm(ClientType::class, $client);
+        $form = $this->createForm(UserType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $client->setPassword($this->passwordHasher->hashPassword(
+                $client,
+                $form->get('password')->getData()
+            ));
+
             $clientRepository->add($client, true);
 
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);

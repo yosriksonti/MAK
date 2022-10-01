@@ -11,24 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  */
-class Client
+class Client extends User
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Nom;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Prenom;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)

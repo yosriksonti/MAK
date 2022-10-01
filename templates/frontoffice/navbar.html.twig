@@ -1,5 +1,6 @@
 <!-- Header --><!-- Start Topbar -->
       <header class="header">
+      {% if not app.user %}
          <div class="topbar bg-theme">
             <div class="container">
                <div class="row">
@@ -24,13 +25,14 @@
                </div>
             </div>
          </div>
+      {% endif %}
          <div class="navigation-wrapper">
             <div class="container">
                <div class="row">
                   <div class="col-12">
                      <nav>
                         <div class="main-navigation">
-                           <div class="logo"><a href="index.html"><img src="assets/images/logo.png" class="img-fluid" alt="logo"></a></div>
+                           <div class="logo"><a href="index.html"><img src="{{ asset('front-office/assets/images/logo3.png') }}" class="img-fluid" alt="logo"></a></div>
                            <div class="main-menu">
                               <ul class="custom-flex">
                                  <li class="menu-item active"><a href="index.html">Acceuil</a></li>
