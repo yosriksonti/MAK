@@ -1,0 +1,203 @@
+{% extends 'frontoffice/index.html.twig' %}
+{% block content %}
+      <!-- End Subheader --><!-- Start Blog -->
+      <div class="subheader normal-bg section-padding">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <h1 class="text-custom-white">Detailles Vehicule</h1>
+                  <ul class="custom-flex justify-content-center">
+                     <li class="fw-500"><a href="/home" class="text-custom-white">Acceuil</a></li>
+                     <li class="fw-500"><a href="/home/cars" class="text-custom-white">Vehicules</a></li>
+                     <li class="active fw-500">Detailles Vehicule</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- End Subheader --><!-- Start Listing detail -->
+      <section class="section-padding bg-light-white listing-details">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <div class="listing-details-inner  bg-custom-white padding-20">
+                     <div class="row">
+                        <div class="col-lg-8">
+                           <div class="detail-slider-for mb-xl-20 magnific-gallery">
+                              <div class="slide-item"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="image-fit" alt="img"></div>
+                           </div>
+                           <hr>
+                           <div class="listing-meta-sec mb-md-80">
+                              <div class="tabs">
+                                 <ul class="custom-flex nav nav-tabs mb-xl-20">
+                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">Aperçu</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#amenities">Agréments</a></li>
+                                 </ul>
+                                 <div class="tab-content">
+                                    <div class="tab-pane fade active show" id="overview">
+                                       <div class="tab-inner">
+                                          <div class="row">
+                                             <div class="col-md-6">
+                                                <div class="hotel-type mb-xl-20 bg-light-white padding-10">
+                                                   <ul class="custom">
+                                                      <li class="text-light-dark"><label class="no-margin text-custom-blue">Type</label>{{vehicule.Boite}}</li>
+                                                      <li class="text-light-dark"><label class="no-margin text-custom-blue">Categorie</label>{{vehicule.Categorie}}</li>
+                                                      <li class="text-light-dark"><label class="no-margin text-custom-blue">Modele</label>{{vehicule.Marque}} : {{vehicule.Modele}}</li>
+                                                   </ul>
+                                                </div>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <div class="hotel-type mb-xl-20 bg-light-white padding-10">
+                                                   <ul class="custom">
+                                                      <li class="text-light-dark"><label class="no-margin text-custom-blue">Carburant</label>{{vehicule.Carb}}</li>
+                                                      <li class="text-light-dark"><label class="no-margin text-custom-blue">Cautionnement</label>{{vehicule.Caut}} DT</li>
+                                                      <li class="text-light-dark"><label class="no-margin text-custom-blue">Prix</label>{{vehicule.Prix}} DT {{vehicule.isVAT ? "TTC" : "" }}</li>
+                                                   </ul>
+                                                </div>
+                                             </div>
+                                             <div class="col-12">
+                                                <div class="information">
+                                                   <h4 class="text-custom-black">Description</h4>
+                                                   <p class="text-light-dark">{{vehicule.DescriptionDet}}</p>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="amenities">
+                                       <h4 class="text-custom-black">Agréments</h4>
+                                       <ul class="custom amenities row no-gutters mb-xl-20">
+                                          <li class="col-sm-6">
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbPlaces}} Passengers </div>
+                                          </li>
+                                          <li class="col-sm-6">
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbVal}} Valises </div>
+                                          </li>
+                                          <li class="col-sm-6">
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Climatisation : {{vehicule.isClim ? "Oui" : "Non" }} </div>
+                                          </li>
+                                          <li class="col-sm-6">
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Kilométrage Illimité : {{vehicule.isUnlimitedMileage ? "Oui" : "Non" }} </div>
+                                          </li>
+                                          <li class="col-sm-6">
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Assurance Vehicule : {{vehicule.isCarInsurance ? "Oui" : "Non" }}</div>
+                                          </li>
+                                          <li class="col-sm-6">
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Assurance Passager : {{vehicule.isPassengerInsurance ? "Oui" : "Non" }}</div>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-12">
+                                 <div class="blog-details bg-custom-white">
+                                    <hr>
+                                    <!-- post pagination --><!-- comments -->
+                                    <div class="comment-box section-padding-top p-relative">
+                                       <div id="comment-box">
+                                          <h4 class="text-custom-black fw-600">Feedbacks [{{ feedbacks|length}}]</h4>
+                                          <ul class="comments custom">
+                                          {% for feedback in feedbacks %}
+                                             <li class="comment">
+                                                <article>
+                                                   <div class="comment-content">
+                                                      <div class="comment-meta">
+                                                         <div class="comment-meta-header">
+                                                            <h5 class="text-custom-black fw-600 author mb-3">{{ feedback.Client.Nom }} {{ feedback.Client.Prenom }}</h5>
+                                                            <div class="post-date"><p  class="date bg-custom-blue text-custom-white">{{ feedback.created_On}}</p></div>
+                                                         </div>
+                                                         <div class="comment-meta-reply"><p href="" class="comment-reply-link btn-first btn-submit">{{ feedback.Rating}}/5</p></div>
+                                                      </div>
+                                                      <div class="comment">
+                                                         <p class="text-light-dark">{{ feedback.Body }}</p>
+                                                      </div>
+                                                   </div>
+                                                </article>
+                                             </li>
+                                          {% endfor %}
+                                          </ul>
+                                          <div class="comment-respond" id="respond">
+                                             <h4 class="text-custom-black fw-600">Laissez un Feedback</h4>
+                                             <form>
+                                                <div class="row">
+                                                   <div class="col-12">
+                                                      <div class="form-group">
+                                                         <label class="text-custom-black fw-500 fs-14">Feedback</label>
+                                                         <textarea rows="4" name="#" class="form-control form-control-custom" placeholder="Comment"></textarea>
+                                                      </div>
+                                                      <button type="submit" class="btn-first btn-submit">Laissez un Feedback</button>
+                                                   </div>
+                                                </div>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- comments -->
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4">
+                           <div class="row">
+                              <div class="col-12">
+                                 <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
+                                    <h5 class="text-custom-black">Enquiry Now</h5>
+                                    <form action="/home/search">
+                                       <div class="row">
+                                          <div class="col-12">
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Pick Up</label>
+                                                <select class="custom-select form-control form-control-custom" name="AP">
+                                                   {% for  agence in  agences %}
+                                                <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                                {% endfor %}
+                                                </select>                                              
+                                             </div>
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Pick Up Date</label>
+                                                <div class="input-group group-form">
+                                                   <input type="text" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="DP">
+                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                </div>
+                                             </div>
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Drop Off</label>
+                                                <select class="custom-select form-control form-control-custom" name="AD">
+                                                   {% for  agence in  agences %}
+                                                <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                                {% endfor %}
+                                                </select>                                             
+                                             </div>
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Drop Off Date</label>
+                                                <div class="input-group group-form">
+                                                   <input type="text" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="DD">
+                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                </div>
+                                             </div>
+                                             <button type="submit" class="btn-first btn-submit full-width btn-height">Submit</button>
+                                          </div>
+                                       </div>
+                                    </form>
+                                 </div>
+                                 <div class="need-help bx-wrapper padding-20">
+                                    <h5 class="text-custom-black">Besoin d'aide ?</h5>
+                                    <p class="text-light-dark">Nous serions plus qu'heureux de vous aider. Notre équipe de conseillers est à votre service 24h/24 et 7j/7 pour vous aider.</p>
+                                    <ul class="custom">
+                                       <li class="text-custom-blue fs-18"> <i class="fas fa-phone-alt"></i> <a href="#" class="text-light-dark">(+216) 96 900 905</a> </li>
+                                       <li class="text-custom-blue fs-18"> <i class="fas fa-envelope"></i> <a href="#" class="text-light-dark fs-14">k.mohamed@makrentcar.tn</a> </li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- End Listing detail -->
+      {% endblock %}

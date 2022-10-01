@@ -1,0 +1,114 @@
+{% extends 'frontoffice/index.html.twig' %}
+{% block content %}
+      <div class="subheader normal-bg section-padding">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <h1 class="text-custom-white">Recherche</h1>
+                  <ul class="custom-flex justify-content-center">
+                     <li class="fw-500"><a href="index.html" class="text-custom-white">Acceuil</a></li>
+                     <li class="active fw-500">Recherche </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- End Subheader --><!-- Start Blog -->
+      <section class="section-padding bg-light-white">
+         <div class="container">
+            <div class="row">
+               <h6 class="d-none">1</h6>
+               <aside class="col-lg-4">
+                  <div class="sidebar_wrap mb-md-80">
+                     <div class="sidebar">
+                        <div class="sidebar_widgets mb-xl-30">
+                           <div class="widget_title">
+                              <h5 class="no-margin text-custom-white">Modifier Recherche</h5>
+                           </div>
+                           <form>
+                              <div class="form-group"><label class="fs-14 text-custom-black fw-500">Depart</label>
+                                 <select class="custom-select form-control form-control-custom" name="AP" >
+                                    {% for  agence in  agences %}
+                                    <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                    {% endfor %}
+                                 </select> 
+                              </div>
+                              <div class="form-group">
+                                 <label class="fs-14 text-custom-black fw-500">Date Depart</label>
+                                 <div class="input-group group-form">
+                                 <input type="text" name="DP" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" value = "{{ GET['DP'] }}">
+                                 <span class="input-group-append"><i class="far fa-calendar"></i></span>
+                                 </div>
+                              </div>
+                              <div class="form-group"><label class="fs-14 text-custom-black fw-500">Retour</label>
+                                 <select class="custom-select form-control form-control-custom" name="AD">
+                                    {% for  agence in  agences %}
+                                    <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                    {% endfor %}
+                                 </select> 
+                              </div>
+                              <div class="form-group">
+                                 <label class="fs-14 text-custom-black fw-500">Date Retour</label>
+                                 <div class="input-group group-form">
+                                 <input type="text" name="DD" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" value = "{{ GET['DD'] }}">
+                                 <span class="input-group-append"><i class="far fa-calendar"></i></span>
+                                 </div>
+                              </div>
+                              <hr>
+                              <div class="checkbox-group">
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Volkswagen"><span class="checkmark"></span>Volkswagen </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Mercedes"><span class="checkmark"></span>Mercedes </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Kia"><span class="checkmark"></span>Kia </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Hyndai"><span class="checkmark"></span>Hyndai </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Opel"><span class="checkmark"></span>Opel </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Renault"><span class="checkmark"></span>Renault </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Seat"><span class="checkmark"></span>Seat </label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Suzuki"><span class="checkmark"></span>Suzuki </label></div>
+                              </div>
+                              <button type="submit" class="btn-first btn-submit full-width btn-height">Rechercher</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </aside>
+               <div class="col-lg-8">
+                  <div class="row">
+                     <div class="col-12">
+                        <div class="listing-top-heading mb-xl-20">
+                           <h6 class="no-margin text-custom-black">Afiichage {{ vehicules|length }} Resultats</h6>
+                        </div>
+                     </div>
+                     {% for vehicule in vehicules %}
+                     <div class="col-md-12">
+                        <div class="car-grid mb-xl-30">
+                           <div class="car-grid-wrapper car-grid bx-wrapper">
+                              <div class="image-sec animate-img"><a href="#"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"></a></div>
+                              <div class="car-grid-caption padding-20 bg-custom-white p-relative">
+                                 <h4 class="title fs-16"><a href="#" class="text-custom-black">{{ vehicule.Marque }} : {{ vehicule.Modele }}<small class="text-light-dark">Per Day</small></a></h4>
+                                 <span class="price" style="text-align : center"><p><sup style="font-size : 20px">{{ vehicule.Prix }} DT {{vehicule.isVAT ? "TTC" : "" }}</sup></br><sub style="font-size : 14px ; color : black;">+ {{ vehicule.Caut }} DT</br>Cautionnement</sub></p> </span>
+                                 <p><i class='fa fa-gear'></i> {{ vehicule.Boite }} |<i class='fa fa-snowflake'></i> {{ vehicule.Clim ? 'Oui' : 'Non' }} | <i class='fa fa-user'></i> {{ vehicule.NbPlaces }} | <i class='fa fa-briefcase'></i> {{ vehicule.NbVal }}</p>
+                                 <div class="box">
+                                    <div class="column1">
+                                       {% if vehicule.isCarInsurance %}
+                                       <p><i class='fa fa-check-square'></i> Assurance Voiture</p>
+                                       {% endif %}
+                                       {% if vehicule.isPassengerInsurance %}
+                                       <p><i class='fa fa-check-square'></i> Assurance Pasasger</p>
+                                       {% endif %}
+                                       {% if vehicule.isUnlimitedMileage %}
+                                       <p><i class='fa fa-check-square'></i> Kilométrage Illimité</p>
+                                       {% endif %}
+                                    </div>
+                                 </div>
+                                 <div class="action"><a class="btn-second btn-small" href="/home/car/{{ vehicule.id }}">View</a><a class="btn-first btn-submit" href="#">Book</a></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     {% endfor %}
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- End Blog -->
+      {% endblock %}
