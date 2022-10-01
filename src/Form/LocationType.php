@@ -36,7 +36,7 @@ class LocationType extends AbstractType
             ->add('Client', EntityType::class, [
                 'class' => Client::class,
                 'choice_label' => function($nom){
-                    return $nom->getNom();
+                    return $nom->getName();
                 },
             ])
             ->add('Vehicule', EntityType::class, [

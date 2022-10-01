@@ -3,12 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToOne;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user" = "User", "client" = "Client"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -17,27 +22,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
+    protected $discr = 'user';
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $Email;
+    protected $Email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    protected $Name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Lastname;
+    protected $Lastname;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    protected array $roles = [];
+
+    /**
+     * @OneToOne(targetEntity="Client")
+     * @JoinColumn(name="client_id", referencedColumnName="id")
+     */
+    protected $client;
 
     /**
      * @ORM\Column(type="string")
@@ -57,6 +69,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $Email): self
     {
         $this->Email = $Email;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }
