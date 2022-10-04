@@ -30,7 +30,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/search", name="front_office_search")
+     * @Route("/search", name="front_office_search")
      */
     public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
     {
@@ -73,7 +73,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/car/{id}", name="front_office_car")
+     * @Route("/car/{id}", name="front_office_car")
      */
     public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository): Response
     {
@@ -86,7 +86,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/cars", name="front_office_cars")
+     * @Route("/cars", name="front_office_cars")
      */
     public function cars( VehiculeRepository $vehiculeRepository): Response
     {
