@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
+use App\Entity\User;
 use App\Entity\Location;
 use App\Entity\Vehicule;
 use App\Entity\Agence;
@@ -33,8 +33,8 @@ class LocationType extends AbstractType
             ->add('Type')
             ->add('Etat')
             ->add('Status')
-            ->add('Client', EntityType::class, [
-                'class' => Client::class,
+            ->add('User', EntityType::class, [
+                'class' => User::class,
                 'choice_label' => function($nom){
                     return $nom->getName();
                 },

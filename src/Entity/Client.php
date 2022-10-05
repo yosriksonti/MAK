@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use DateTimeInterface;
+
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
+
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
@@ -79,6 +83,7 @@ class Client extends User
      * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Client")
      */
     private $feedback;
+
 
     public function __construct()
     {

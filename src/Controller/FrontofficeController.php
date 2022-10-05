@@ -3,17 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Vehicule;
+use App\Entity\Feedback;
+use App\Form\FeedbackType;
 use App\Repository\AgenceRepository;
 use App\Repository\VehiculeRepository;
 use App\Repository\FeedbackRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontofficeController extends AbstractController
 {
     /**
-     * @Route("/", name="home_index")
+     * @Route("/home", name="home_index")
      */
     public function index(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
     {
@@ -73,15 +76,26 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/car/{id}", name="front_office_car")
+     * @Route("/home/car/{id}", name="front_office_car", methods={"GET", "POST"})
      */
-    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository): Response
+    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, Request $request): Response
     {
+        $feedback = new Feedback();
+        $form = $this->createForm(FeedbackType::class, $feedback);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $feedbackRepository->add($feedback, true);
+            return $this->redirectToRoute('front_office_car', ['id' => $feedback->getVehicule()->getId()], Response::HTTP_SEE_OTHER);
+        }
+
         $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
+        
         return $this->render('frontoffice/car.html.twig', [
             'vehicule' => $vehicule,
             'feedbacks' => $feedbacks,
             'agences' => $agenceRepository->findAll(),
+            'form' => $form->createView()
         ]);
     }
 
