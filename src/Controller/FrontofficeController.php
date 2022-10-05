@@ -12,6 +12,7 @@ use App\Repository\AgenceRepository;
 use App\Repository\VehiculeRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\LocationRepository;
+use App\Repository\PromoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,8 +62,11 @@ class FrontofficeController extends AbstractController
                 if($location_DP<=$DP && $location_DD>=$DP) {
                     $dispo = false;
                 }
-                if($location_DP<=$DD && $location_DD>=$DD) {
+                if($location_DP<=$DD && $location_DD>=$DD ) {
                     $dispo = false;
+                }
+                if( $location_DD<=$DD && $location_DP>=$DP) {
+                    $dispo = false ;
                 }
                 if($isset_mq && !isset($Mq[$vehicule_raw->getMarque()])) {
                     $dispo = false;
@@ -158,7 +162,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/home/preview/{id}", name="front_office_preview", methods={"GET", "POST"})
      */
-    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, Request $request): Response
+    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository, Request $request): Response
     {
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);
@@ -189,12 +193,19 @@ class FrontofficeController extends AbstractController
                 $date2 = new \DateTime($DD);
                 $interval = $date1->diff($date2);
 
+                    
                 $prix = $vehicule->getPrix();
                 $prix = $_GET['BS'] ? $prix+$vehicule->getPark()->getPrixBabySeat() : $prix ;
                 $prix = $_GET['STW'] ? $prix+$vehicule->getPark()->getPrixSTW() : $prix ;
                 $prix = $_GET['PD'] ? $prix+$vehicule->getPark()->getPrixPersonalDriver() : $prix ;
                 $prix = $_GET['SD'] ? $prix+$vehicule->getPark()->getPrixSecondDriver() : $prix ;
-                $prix = $prix * $interval->days + $vehicule->getCaut();
+                if(isset($_GET['Promo'])) {
+                    $promo = $promoRepository->findOneBy(['Code' => $_GET['Promo'] ]);
+                    if(!empty($promo)) {
+                        $prix = $prix - ($prix * $promo->getPourcentage())/100;
+                    }
+                }
+                $prix = $prix * ($interval->days + 1) + $vehicule->getCaut();
                 return $this->render('frontoffice/preview.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),
