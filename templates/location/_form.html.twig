@@ -15,7 +15,7 @@
                         {{ form_errors(form.Num) }}
                     </div>
                     <div class="col-md-6">
-                        {{ form_label(form.IP, ' IP', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_label(form.IP, ' Pays', {'label_attr':{'class':'small mb-1' }}) }}                                                          
                         {{ form_widget(form.IP, {'attr':{'class':'form-control' }}) }}                                                 
                     </div>
                     <div class="invalid-feedback">
@@ -120,28 +120,28 @@
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         {{ form_label(form.isBabySeat, 'Baby seat', {'label_attr':{'class':'small mb-1' }}) }}
-                        {{ form_widget(form.isBabySeat, {'attr':{'class':'form-check-input' }}) }}
+                        {{ form_widget(form.isBabySeat, {'attr':{'class':'form-control' }}) }}
                     </div>                                                    
                     <div class="invalid-feedback">
                         {{ form_errors(form.isBabySeat) }}
                     </div>
                     <div class="col-md-3">
-                        {{ form_label(form.isPersonalDriver, 'Personal driver', {'label_attr':{'class':'small mb-1' }}) }}
-                        {{ form_widget(form.isPersonalDriver, {'attr':{'class':'form-check-input' }}) }}
+                        {{ form_label(form.isPersonalDriver, 'Chauffeur Personnel', {'label_attr':{'class':'small mb-1' }}) }}
+                        {{ form_widget(form.isPersonalDriver, {'attr':{'class':'form-control' }}) }}
                     </div>                                                    
                     <div class="invalid-feedback">
                         {{ form_errors(form.isPersonalDriver) }}
                     </div>
                     <div class="col-md-3">
-                        {{ form_label(form.isSecondDriver, 'Second driver', {'label_attr':{'class':'small mb-1' }}) }}
-                        {{ form_widget(form.isSecondDriver, {'attr':{'class':'form-check-input' }}) }}
+                        {{ form_label(form.isSecondDriver, 'Deuxiéme Chauffeur', {'label_attr':{'class':'small mb-1' }}) }}
+                        {{ form_widget(form.isSecondDriver, {'attr':{'class':'form-control' }}) }}
                     </div>                                                    
                     <div class="invalid-feedback">
                         {{ form_errors(form.isSecondDriver) }}
                     </div>
                     <div class="col-md-3">
-                        {{ form_label(form.isSTW, 'Stw', {'label_attr':{'class':'small mb-1' }}) }}
-                        {{ form_widget(form.isSTW, {'attr':{'class':'form-check-input' }}) }}
+                        {{ form_label(form.isSTW, 'Super Theift Weaver', {'label_attr':{'class':'small mb-1' }}) }}
+                        {{ form_widget(form.isSTW, {'attr':{'class':'form-control' }}) }}
                     </div>                                                    
                     <div class="invalid-feedback">
                         {{ form_errors(form.isSTW) }}

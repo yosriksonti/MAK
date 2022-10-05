@@ -24,7 +24,7 @@
                      <div class="row">
                         <div class="col-lg-8">
                            <div class="detail-slider-for mb-xl-20 magnific-gallery">
-                              <div class="slide-item"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="image-fit" alt="img"></div>
+                              <div class="image-sec animate-img"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="image-fit" alt="img"></div>
                            </div>
                            <hr>
                            <div class="listing-meta-sec mb-md-80">
@@ -124,13 +124,15 @@
                                                 <div hidden="true">
                                                    {{ form_widget(form.Vehicule, {'attr':{'class':'hidden-row' , 'value' : vehicule.id }}) }}                                                 
                                                    {{ form_widget(form.Client, {'attr':{'class':'hidden-row'}}) }}  
-                                                   {{ form_widget(form.Visible, {'attr':{'class':'hidden-row'}, "value" : "0"}) }}                                                                                            
+                                                   {{ form_widget(form.Visible, {'attr':{'class':'hidden-row'}, "value" : "0"}) }}  
+                                                   {{ form_widget(form.createdOn, {'attr':{'class':'hidden-row'}, "value" : today}) }}    
+                                                                                          
                                                 </div>
                                                 <div class="row">
                                                    <div class="col-8">
                                                       <div class="form-group">
                                                          <label class="text-custom-black fw-500 fs-14">Feedback</label>
-                                                         {{ form_widget(form.Body, {'attr':{'class':'form-control form-control-custom', 'rows':'5', 'placeholder':"Comment"}}) }}                                                 
+                                                         {{ form_widget(form.Body, {'attr':{'class':'form-control form-control-custom', 'rows':'4', 'placeholder':"Comment"}}) }}                                                 
                                                       </div>
                                                    </div>
                                                    <div class="col-4">
@@ -138,12 +140,8 @@
                                                          <label class="text-custom-black fw-500 fs-14">Rating</label>
                                                          {{ form_widget(form.Rating, {'attr':{'class':'form-control form-control-custom', 'max':'5','min':'0', 'placeholder':"5"}}) }}                                                 
                                                       </div>
-                                                      <div class="form-group">
-                                                         <label class="text-custom-black fw-500 fs-14">Date</label>
-                                                         {{ form_widget(form.createdOn, {'attr':{'class':'form-control form-control-custom' }}) }}    
-                                                      </div>
+                                                      <button type="submit" class="btn-first btn-submit full-width btn-height">Laissez un Feedback</button>
                                                    </div>
-                                                   <button type="submit" class="btn-first btn-submit full-width btn-height">Laissez un Feedback</button>
                                                 </div>
                                           {{ form_end(form) }}
                                           </div>
@@ -159,7 +157,7 @@
                               <div class="col-12">
                                  <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
                                     <h5 class="text-custom-black">Enquiry Now</h5>
-                                    <form action="/search">
+                                    <form action="/home/booking/{{ vehicule.id }}" method="GET">
                                        <div class="row">
                                           <div class="col-12">
                                              <div class="form-group">
@@ -192,7 +190,7 @@
                                                    <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
                                                 </div>
                                              </div>
-                                             <button type="submit" class="btn-first btn-submit full-width btn-height">Submit</button>
+                                             <button type="submit" class="btn-first btn-submit full-width btn-height">Reserver</button>
                                           </div>
                                        </div>
                                     </form>

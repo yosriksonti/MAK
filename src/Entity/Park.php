@@ -49,6 +49,26 @@ class Park
      */
     private $FinBS;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $PrixBabySeat;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $PrixPersonalDriver;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $PrixSecondDriver;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $PrixSTW;
+
     public function __construct()
     {
         $this->Vehicules = new ArrayCollection();
@@ -176,6 +196,54 @@ class Park
     public function setFinBS(\DateTimeInterface $FinBS): self
     {
         $this->FinBS = $FinBS;
+
+        return $this;
+    }
+
+    public function getPrixBabySeat(): ?float
+    {
+        return $this->PrixBabySeat;
+    }
+
+    public function setPrixBabySeat(float $PrixBabySeat): self
+    {
+        $this->PrixBabySeat = $PrixBabySeat;
+
+        return $this;
+    }
+
+    public function getPrixPersonalDriver(): ?float
+    {
+        return $this->PrixPersonalDriver;
+    }
+
+    public function setPrixPersonalDriver(float $PrixPersonalDriver): self
+    {
+        $this->PrixPersonalDriver = $PrixPersonalDriver;
+
+        return $this;
+    }
+
+    public function getPrixSecondDriver(): ?float
+    {
+        return $this->PrixSecondDriver;
+    }
+
+    public function setPrixSecondDriver(float $PrixSecondDriver): self
+    {
+        $this->PrixSecondDriver = $PrixSecondDriver;
+
+        return $this;
+    }
+
+    public function getPrixSTW(): ?float
+    {
+        return $this->PrixSTW;
+    }
+
+    public function setPrixSTW(float $PrixSTW): self
+    {
+        $this->PrixSTW = $PrixSTW;
 
         return $this;
     }

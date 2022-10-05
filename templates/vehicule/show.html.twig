@@ -176,6 +176,56 @@
                                                     Designation
                                                 </th>
                                                 <th width="30%">
+                                                    Date Location
+                                                </th>
+                                                <th width="30%">
+                                                    Date Reservation
+                                                </th>
+                                                <th width="30%">
+                                                    Montant
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for  location in  vehicule.locations %}
+                                                <tr>
+                                                    <td width="40%">
+                                                        <a href="{{ url }}/location/{{ location.id }}">{{  location.Num }}</a>
+                                                    </td>
+                                                    <td width="30%">
+                                                        {{  location.Date_Loc }}
+                                                    </td>
+                                                    <td width="30%">
+                                                        {{  location.Date_Retour }}
+                                                    </td>
+                                                    <td width="30%">
+                                                        {{  location.Montant }}
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="17">
+                                                        no records found
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (first name)-->
+                                <div class="col-md-12">
+                                    <h2 class="small mb-1" for="inputFirstName">Historique Dépences</h2>
+
+                                    <table id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th width="40%">
+                                                    Designation
+                                                </th>
+                                                <th width="30%">
                                                     Date
                                                 </th>
                                                 <th width="30%">

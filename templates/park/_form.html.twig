@@ -47,6 +47,39 @@
                         {{ form_errors(form.FinBS) }}
                     </div>
                 </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.PrixBabySeat, ' Prix Baby Seat', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_widget(form.PrixBabySeat, {'attr':{'class':'form-control' }}) }}                                                 
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.PrixBabySeat) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.PrixSTW, ' Prix Super Theift Weaver', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_widget(form.PrixSTW, {'attr':{'class':'form-control' }}) }}                                                 
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.PrixSTW) }}
+                    </div>
+                    
+                </div>
+                 <div class="row gx-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.PrixSecondDriver, ' Prix Deuxiéme Chauffeur', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_widget(form.PrixSecondDriver, {'attr':{'class':'form-control' }}) }}                                                 
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.PrixSecondDriver) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.PrixPersonalDriver, ' Prix Chauffeur Personnel', {'label_attr':{'class':'small mb-1' }}) }}                                                          
+                        {{ form_widget(form.PrixPersonalDriver, {'attr':{'class':'form-control' }}) }}                                                 
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.PrixPersonalDriver) }}
+                    </div>
+                </div>
                 <button class="fw-500 btn btn-primary">
                         {{ button_label|default('Sauvegarder') }}
                 </button>

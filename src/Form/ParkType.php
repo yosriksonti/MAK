@@ -26,6 +26,12 @@ class ParkType extends AbstractType
             ->add('FinBS',DateType::class, [ 
                 'widget' => 'single_text',
                 ])
+            ->add('PrixBabySeat')
+            ->add('PrixPersonalDriver')
+            ->add('PrixSecondDriver')
+            ->add('PrixSTW')
+
+
         ;
     }
 
