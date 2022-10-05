@@ -6,7 +6,7 @@
                <div class="col-12">
                   <h1 class="text-custom-white">Recherche</h1>
                   <ul class="custom-flex justify-content-center">
-                     <li class="fw-500"><a href="index.html" class="text-custom-white">Acceuil</a></li>
+                     <li class="fw-500"><a href="{{ path('home_index') }}" class="text-custom-white">Acceuil</a></li>
                      <li class="active fw-500">Recherche </li>
                   </ul>
                </div>
@@ -100,7 +100,7 @@
                                        {% endif %}
                                     </div>
                                  </div>
-                                 <div class="action"><a class="btn-second btn-small" href="/home/car/{{ vehicule.id }}">View</a><a class="btn-first btn-submit" href="#">Book</a></div>
+                                 <div class="action"><a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">View</a><a class="btn-first btn-submit" href="#">Book</a></div>
                               </div>
                            </div>
                         </div>
