@@ -68,7 +68,7 @@
                                        <h4 class="text-custom-black">Agréments</h4>
                                        <ul class="custom amenities row no-gutters mb-xl-20">
                                           <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbPlaces}} Passengers </div>
+                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbPlaces}} Places </div>
                                           </li>
                                           <li class="col-sm-6">
                                              <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbVal}} Valises </div>
@@ -122,8 +122,8 @@
                                              <h4 class="text-custom-black fw-600">Laissez un Feedback</h4>
                                              {{ form_start(form) }}
                                                 <div hidden="true">
-                                                   {{ form_widget(form.Vehicule, {'attr':{'class':'hidden-row' , 'value' : vehicule.id }}) }}                                                 
-                                                   {{ form_widget(form.Client, {'attr':{'class':'hidden-row'}}) }}  
+                                                   {{ form_row(form.Vehicule, {'attr':{'class':'hidden-row', 'value' : vehicule.id }, 'value' : vehicule.id}) }}                                                 
+                                                   {{ form_row(form.Client, {'attr':{'class':'hidden-row', 'value' : app.user.id}, 'value' : app.user.id}) }}  
                                                    {{ form_widget(form.Visible, {'attr':{'class':'hidden-row'}, "value" : "0"}) }}  
                                                    {{ form_widget(form.createdOn, {'attr':{'class':'hidden-row'}, "value" : today}) }}    
                                                                                           

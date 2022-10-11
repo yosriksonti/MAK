@@ -36,9 +36,42 @@ class FrontofficeController extends AbstractController
             'vehicules' => $vehicules,
         ]);
     }
+    /**
+     * @Route("/home/profile", name="front_office_profile")
+     */
+    public function profile(FeedbackRepository $feedbackRepository, Request $request): Response
+    {
+        $today = date('Y-m-d');
+
+        $feedback = new Feedback();
+        $form = $this->createForm(FeedbackType::class, $feedback);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $feedback->setClient($user);
+            $feedback->setVehicule(null);
+            $feedbackRepository->add($feedback, true);
+            return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('frontoffice/profile.html.twig', [
+            'form' => $form->createView(),
+            'today' => $today
+        ]);
+    }
 
     /**
-     * @Route("/home/search", name="front_office_search")
+     * @Route("/home/reservation/{Num}", name="front_office_reservation")
+     */
+    public function reservation(Location $location): Response
+    {
+        
+        return $this->render('frontoffice/reservation.html.twig', [
+            "reservation" => $location
+        ]);
+    }
+
+    /**
+     * @Route("/home/search", name="front_office_search", methods={"GET", "POST"})
      */
     public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
     {
@@ -94,6 +127,9 @@ class FrontofficeController extends AbstractController
         $form = $this->createForm(FeedbackType::class, $feedback);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $feedback->setClient($user);
+            $feedback->setVehicule($vehicule);
             $feedbackRepository->add($feedback, true);
             return $this->redirectToRoute('front_office_car', ['id' => $feedback->getVehicule()->getId()], Response::HTTP_SEE_OTHER);
         }
