@@ -29,7 +29,7 @@
                                     {{ form_start(form) }}
                                     <div hidden="true">
                                        {{ form_widget(form.Num, {'attr':{'class':'hidden-row' , 'value' : random() }}) }}
-                                       {{ form_widget(form.Client, {'attr':{'class':'hidden-row'}}) }}  
+                                       {{ form_widget(form.Client, {'attr':{'class':'hidden-row', "value" : app.user.Email}}) }}  
                                        {{ form_widget(form.Date_Res, {'attr':{'class':'hidden-row'}, "value" : today}) }}                                                                                        
                                        {{ form_widget(form.Montant, {'attr':{'class':'hidden-row'}, "value" : prix}) }}                                                                                            
                                        {{ form_widget(form.Avance, {'attr':{'class':'hidden-row'}, "value" : "0"}) }}                                                                                            

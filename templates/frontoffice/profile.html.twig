@@ -30,17 +30,24 @@
                                     
                                     <!-- tags & social --><!-- post author -->
                                     <div class="post-author bg-light-white padding-15 mb-xl-20">
-                                       <div class="author-caption">
+                                       <div class="author-caption col-6" >
                                           <h5 class="fw-600"><a href="#" class="text-custom-black">{{ app.user.Name }} {{ app.user.Lastname  }}</a></h5>
+                                          <hr>
                                           <p class="fw-600"><b href="#" class="text-custom-black">Date de Naissance : </b>{{ app.user.Date_Naissance }}</p>
                                           <p class="fw-600"><b href="#" class="text-custom-black">Pays : </b>{{ app.user.Pays }}</p>
                                           <p class="fw-600"><b href="#" class="text-custom-black">Telephone : </b>{{ app.user.Telephone }}</p>
+                                          <hr>
                                           <p class="fw-600"><b href="#" class="text-custom-black">Addresse 1 : </b>{{ app.user.Add1 }}</p>
                                           {% if app.user.Add2 %}
                                           <p class="fw-600"><b href="#" class="text-custom-black">Addresse 2 : </b>{{ app.user.Add2 }}</p>
+                                          <hr>
                                           {% endif %}
                                           <p class="fw-600"><b href="#" class="text-custom-black">Permis : </b>{{ app.user.Permis }} <small>livré le</small> {{ app.user.Date_Permis }}</p>
                                           <p class="fw-600"><b href="#" class="text-custom-black">CIN/Passeport : </b>{{ app.user.CIN }} <small>livré le</small> {{ app.user.Date_CIN }}</p>
+                                          <hr>
+                                          <div class="col-6" style="float:left;">
+                                             <a class="col-6" href="{{ path('front_office_profile_edit') }}"><button type="submit" class="btn-first btn-submit full-width btn-height">Modifier</button></a>
+                                          </div>
                                        </div>
                                     </div>
                                     <div class="comment-respond" id="respond">

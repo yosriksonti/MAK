@@ -3,16 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Vehicule;
+use App\Entity\Client;
 use App\Entity\Agence;
 use App\Entity\Feedback;
 use App\Entity\Location;
 use App\Form\FeedbackType;
 use App\Form\LocationType;
+use App\Form\UserType;
+use App\Form\ClientType;
 use App\Repository\AgenceRepository;
 use App\Repository\VehiculeRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\LocationRepository;
+use App\Repository\ClientRepository;
 use App\Repository\PromoRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +25,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontofficeController extends AbstractController
 {
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
     /**
      * @Route("/home", name="home_index")
      */
@@ -56,6 +67,33 @@ class FrontofficeController extends AbstractController
         return $this->render('frontoffice/profile.html.twig', [
             'form' => $form->createView(),
             'today' => $today
+        ]);
+    }
+
+    /**
+     * @Route("/home/profile/edit", name="front_office_profile_edit")
+     */
+    public function editProfile(Request $request, ClientRepository $clientRepository) : Response
+    {
+        $client = $this->get('security.token_storage')->getToken()->getUser();
+        $client = $clientRepository->find(['id' => $client->getId()]);
+        $form = $this->createForm(ClientType::class, $client);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() ) {
+            if($form->isValid())
+            $client->setPassword($this->passwordHasher->hashPassword(
+                $client,
+                $form->get('password')->getData()
+            ));
+
+            $clientRepository->add($client, true);
+
+            return $this->redirectToRoute('front_office_profile', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('frontoffice/edit.html.twig', [
+            'client' => $client,
+            'form' => $form,
         ]);
     }
 
@@ -206,6 +244,8 @@ class FrontofficeController extends AbstractController
 
         if ($form->isSubmitted() ) {
             if($form->isValid()) {
+                $user = $this->getUser();
+                $location->setClient($user);
                 $locationRepository->add($location, true);
                 return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
             }
