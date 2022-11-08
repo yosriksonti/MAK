@@ -8,6 +8,8 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
     
     - name: install composer
       run: composer install
