@@ -1,17 +1,19 @@
 name: CI
 
-on: [push]
+on: 
+  push:
+    branches:
+      - master
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/master'
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v1
       - name: Push to server
-        uses: appleboy/ssh-action@master
+        uses: SamKirkland/FTP-Deploy-Action@4.3.2
         with:
-          host: makrentcar.com
+          server: makrentcar.com
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           server-dir: /www/makrentcar.com/
