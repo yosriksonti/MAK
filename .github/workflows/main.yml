@@ -1,23 +1,26 @@
 name: CI
+on:
+  push:
+    branches: [ main ]
 
-on: push
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
     
-    - name: install composer
-      run: composer install
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.2
-      with:
-        server: makrentcar.com
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
+    env:
+      SSHPASS: ${{ secrets.APP_PASS }}
 
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: APT UPDATE and INSTALL SSHPASS
+        run: 
+          sudo apt update && sudo apt install sshpass
+          
+      - name: deploy
+        run: 
+          sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+          "cd public_html/ &&
+          git pull &&
+          composer install &&
+          php bin/console d:m:m -n"
