@@ -19,7 +19,7 @@ jobs:
           
       - name: deploy
         run: 
-          sshpass -e ssh -l ${{ secrets.APP_USER }} -p ${{ secrets.APP_PORT }} ${{ secrets.APP_HOST }}
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} -p ${{ secrets.APP_PORT }} 
           "cd www/ &&
           git pull &&
           composer install --optimize-autoloader --no-interaction --no-dev &&
