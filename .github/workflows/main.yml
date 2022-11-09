@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      SSHPASS: ${{ secrets.APP_PASS }}
+      SSHPASS: ${{ secrets.PASS }}
 
     steps:
       - uses: actions/checkout@v2
@@ -19,7 +19,7 @@ jobs:
           
       - name: deploy
         run: 
-          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} -p ${{ secrets.APP_PORT }} 
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }} 
           "cd www/ &&
           git pull &&
           composer install --optimize-autoloader --no-interaction --no-dev &&
