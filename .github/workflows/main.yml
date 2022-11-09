@@ -20,7 +20,3 @@ jobs:
       - name: deploy
         run: 
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }} 
-          "cd www/ &&
-          git pull &&
-          composer install --optimize-autoloader --no-interaction --no-dev &&
-          php bin/console d:m:m -n"
