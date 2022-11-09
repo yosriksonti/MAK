@@ -19,4 +19,4 @@ jobs:
           
       - name: deploy
         run: 
-          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }} 
+          sshpass -p ${{ secrets.PASS }} ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }} 
