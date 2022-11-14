@@ -118,6 +118,7 @@
                                              </li>
                                           {% endfor %}
                                           </ul>
+                                          {% if app.user %}
                                           <div class="comment-respond" id="respond">
                                              <h4 class="text-custom-black fw-600">Laissez un Feedback</h4>
                                              {{ form_start(form) }}
@@ -145,6 +146,7 @@
                                                 </div>
                                           {{ form_end(form) }}
                                           </div>
+                                          {% endif %}
                                        </div>
                                     </div>
                                     <!-- comments -->

@@ -187,10 +187,10 @@
                     <img class="dropdown-user-img" src="{{asset('back-office/assets/img/illustrations/profiles/profile-1.png') }}" />
                     <div class="dropdown-user-details">
                         <div class="dropdown-user-details-name">
-                            
+                            {{ app.user.name }} {{ app.user.lastname }}
                         </div>
                         <div class="dropdown-user-details-email">
-                            
+                            {{ app.user.email }}
                         </div>
                     </div>
                 </h6>
