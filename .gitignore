@@ -69,3 +69,4 @@
 
 /public/images/vehicules/*
 .env.local
+.env

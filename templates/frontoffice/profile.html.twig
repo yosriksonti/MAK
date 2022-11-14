@@ -88,7 +88,7 @@
                                     <h5 class="text-custom-black">Reservations</h5>
                                     {% for reservation in app.user.locations %}
                                           <hr>
-                                          <p class="fw-600"><a href="/home/reservation/{{ reservation.Num }}" class="text-custom-black"><b>{{ reservation.Vehicule.Marque }} : {{ reservation.Vehicule.Modele }}</b> du {{reservation.Date_Loc }} jusqu'à {{reservation.Date_Retour }}<a></p>
+                                          <p class="fw-600"><a href="/reservation/{{ reservation.Num }}" class="text-custom-black"><b>{{ reservation.Vehicule.Marque }} : {{ reservation.Vehicule.Modele }}</b> du {{reservation.Date_Loc }} jusqu'à {{reservation.Date_Retour }}<a></p>
                                     {% endfor %}
                                     
                                  </div>
@@ -96,7 +96,7 @@
                                     <h5 class="text-custom-black">Paiements</h5>
                                     {% for payment in app.user.payments %}
                                           <hr>
-                                          <p class="fw-600"><a href="/home/reservation/{{ payment.Location.Num }}" class="text-custom-black"><b>Num Reservation</b> : {{ payment.Location.Num }}</p>
+                                          <p class="fw-600"><a href="/reservation/{{ payment.Location.Num }}" class="text-custom-black"><b>Num Reservation</b> : {{ payment.Location.Num }}</p>
                                           <p class="fw-600"><a href="#" class="text-custom-black"><b>ID</b> : {{ payment.sessionId }}</a></p>
                                           <p class="fw-600"><a href="#" class="text-custom-black"><b>Montant</b> : {{ payment.total }} DT </a><small style="float : right">{{ payment.created_On }}</br>{{ payment.status }}</small></p>
                                     {% endfor %}

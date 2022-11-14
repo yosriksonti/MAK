@@ -32,7 +32,7 @@ class FrontofficeController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
     /**
-     * @Route("/home", name="home_index")
+     * @Route("/", name="home_index")
      */
     public function index(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
     {
@@ -48,7 +48,7 @@ class FrontofficeController extends AbstractController
         ]);
     }
     /**
-     * @Route("/home/profile", name="front_office_profile")
+     * @Route("/profile", name="front_office_profile")
      */
     public function profile(FeedbackRepository $feedbackRepository, Request $request): Response
     {
@@ -71,7 +71,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/profile/edit", name="front_office_profile_edit")
+     * @Route("/profile/edit", name="front_office_profile_edit")
      */
     public function editProfile(Request $request, ClientRepository $clientRepository) : Response
     {
@@ -98,7 +98,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/reservation/{Num}", name="front_office_reservation")
+     * @Route("/reservation/{Num}", name="front_office_reservation")
      */
     public function reservation(Location $location): Response
     {
@@ -109,7 +109,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/search", name="front_office_search", methods={"GET", "POST"})
+     * @Route("/search", name="front_office_search", methods={"GET", "POST"})
      */
     public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
     {
@@ -155,7 +155,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/car/{id}", name="front_office_car", methods={"GET", "POST"})
+     * @Route("/car/{id}", name="front_office_car", methods={"GET", "POST"})
      */
     public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, Request $request): Response
     {
@@ -184,7 +184,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/cars", name="front_office_cars")
+     * @Route("/cars", name="front_office_cars")
      */
     public function cars( VehiculeRepository $vehiculeRepository): Response
     {
@@ -193,7 +193,7 @@ class FrontofficeController extends AbstractController
         ]);
     }
     /**
-     * @Route("/home/booking/{id}", name="front_office_booking", methods={"GET", "POST"})
+     * @Route("/booking/{id}", name="front_office_booking", methods={"GET", "POST"})
      */
     public function booking( Vehicule $vehicule, LocationRepository $locationRepository, Request $request): Response
     {
@@ -234,7 +234,7 @@ class FrontofficeController extends AbstractController
     }
 
     /**
-     * @Route("/home/preview/{id}", name="front_office_preview", methods={"GET", "POST"})
+     * @Route("/preview/{id}", name="front_office_preview", methods={"GET", "POST"})
      */
     public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository, Request $request): Response
     {
