@@ -69,7 +69,36 @@ class FrontofficeController extends AbstractController
             'today' => $today
         ]);
     }
+    /**
+     * @Route("/signup", name="front_office_signup", methods={"GET", "POST"})
+     */
+    public function signup(Request $request, ClientRepository $clientRepository): Response
+    {
+        $user = $this->getUser();
+        if($user) {
+            return $this->redirectToRoute('home_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $client = new Client();
+        $form = $this->createForm(ClientType::class, $client);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $client->setPassword($this->passwordHasher->hashPassword(
+                $client,
+                $form->get('password')->getData()
+            ));
+
+            $clientRepository->add($client, true);
+
+            return $this->redirectToRoute('login', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('frontoffice/signup.html.twig', [
+            'client' => $client,
+            'form' => $form,
+        ]);
+    }
     /**
      * @Route("/profile/edit", name="front_office_profile_edit")
      */
