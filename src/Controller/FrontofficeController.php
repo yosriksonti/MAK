@@ -57,7 +57,9 @@ class FrontofficeController extends AbstractController
     public function profile(FeedbackRepository $feedbackRepository, Request $request): Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('login');
+            $GET = $_GET;
+            $GET["route"] = "front_office_profile";
+            return $this->redirectToRoute('login', $GET);
         }
         $today = date('Y-m-d');
         $feedback = new Feedback();
@@ -322,7 +324,10 @@ class FrontofficeController extends AbstractController
     public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request): Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('login');
+            $GET = $_GET;
+            $GET["route"] = "front_office_preview";
+            $GET["id"] = $vehicule->getId();
+            return $this->redirectToRoute('login', $GET);
         }
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);

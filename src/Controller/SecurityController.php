@@ -22,7 +22,7 @@ class SecurityController extends AbstractController
     {
 
         if ($this->getUser()) {
-             return $this->redirectToRoute('home_index');
+             return $this->redirectToRoute($_GET['route'],$_GET);
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();
