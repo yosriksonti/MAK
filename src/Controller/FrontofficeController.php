@@ -158,7 +158,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/search", name="front_office_search", methods={"GET", "POST"})
      */
-    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
+    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo): Response
     {
         $DP = strtotime($_GET['DP']);
         $DD = strtotime($_GET['DD']);
@@ -171,24 +171,28 @@ class FrontofficeController extends AbstractController
                 $Mq[$mq] = $mq;
             }
         }
-        $today = date("Y/m/d");
+        $today = date("m/d/Y");
         $start = $today;
         $dispoCarsArray = [];
         foreach($vehicules_raw as $vehicule_raw) {
             $dispoArray = [];
             $dispo = true;
             $start = $today;
-            foreach($vehicule_raw->getLocations() as $location) {
+            $locations = $locationRepo->findBy(array("Vehicule" => $vehicule_raw->getId()),array('Date_Loc' => "ASC"));
+            foreach($locations as $location) {
                 $disponibility = new Disponibility();
-                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
                 $location_DP = strtotime($location->getDate_Loc());
                 $location_DD = strtotime($location->getDate_Retour());
                 $disponibility->setStart($start);
                 $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
                 if(strtotime($start)<$location_DP) {
                     array_push($dispoArray,$disponibility);
+                    $start = $location->getDate_Retour();
+                    $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                } else if(strtotime($start)<$location_DD) {
+                    $start = $location->getDate_Retour();
+                    $start = date('m/d/Y', strtotime($start. ' + 1 days'));
                 }
-                $start = $location->getDate_Retour();
                 if($location_DP<=$DP && $location_DD>=$DP) {
                     $dispo = false;
                 }
@@ -205,7 +209,6 @@ class FrontofficeController extends AbstractController
             if($dispo) {
                 array_push($vehicules,$vehicule_raw);
                 $disponibility = new Disponibility();
-                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
                 $disponibility->setStart($start);
                 array_push($dispoArray,$disponibility);
                 $dispoCarsArray[$vehicule_raw->getId()] = $dispoArray;
@@ -223,26 +226,30 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/car/{id}", name="front_office_car")
      */
-    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, Request $request): Response
+    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, Request $request): Response
     {
-        $today = date('Y-m-d');
+        $today = date('m/d/Y');
         $dispoArray = [];
         $dispo = true;
         $start = $today;
-        foreach($vehicule->getLocations() as $location) {
+        $locations = $locationRepo->findBy(array("Vehicule" => $vehicule->getId()),array('Date_Loc' => "ASC"));
+
+        foreach( $locations as $location) {
             $disponibility = new Disponibility();
-            $start = date('m/d/Y', strtotime($start. ' + 1 days'));
             $location_DP = strtotime($location->getDate_Loc());
             $location_DD = strtotime($location->getDate_Retour());
             $disponibility->setStart($start);
             $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
             if(strtotime($start)<$location_DP) {
                 array_push($dispoArray,$disponibility);
+                $start = $location->getDate_Retour();
+                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+            } else if(strtotime($start)<$location_DD) {
+                $start = $location->getDate_Retour();
+                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
             }
-            $start = $location->getDate_Retour();
         }
         $disponibility = new Disponibility();
-        $start = date('m/d/Y', strtotime($start. ' + 1 days'));
         $disponibility->setStart($start);
         array_push($dispoArray,$disponibility);
         $feedback = new Feedback();
