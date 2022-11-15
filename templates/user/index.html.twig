@@ -82,9 +82,6 @@
                                     </td>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <td>
-                                        <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('admin_show', {'id': user.id}) }}">
-                                            <i data-feather="eye"></i>
-                                        </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('admin_edit', {'id': user.id}) }}">
                                             <i data-feather="edit"></i>
                                         </a>

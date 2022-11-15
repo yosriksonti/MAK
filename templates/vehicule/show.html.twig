@@ -173,13 +173,13 @@
                                         <thead>
                                             <tr>
                                                 <th width="40%">
-                                                    Designation
+                                                    Num
                                                 </th>
                                                 <th width="30%">
-                                                    Date Location
+                                                    Date Depart
                                                 </th>
                                                 <th width="30%">
-                                                    Date Reservation
+                                                    Date Retour
                                                 </th>
                                                 <th width="30%">
                                                     Montant
@@ -199,7 +199,7 @@
                                                         {{  location.Date_Retour }}
                                                     </td>
                                                     <td width="30%">
-                                                        {{  location.Montant }}
+                                                        {{  location.Montant }} DT
                                                     </td>
                                                 </tr>
                                             {% else %}
@@ -213,13 +213,13 @@
                                     </table>
                                 </div>
                             </div>
-
+                            <hr>
                             <div class="row gx-3 mb-3">
                                 <!-- Form Group (first name)-->
                                 <div class="col-md-12">
                                     <h2 class="small mb-1" for="inputFirstName">Historique Dépences</h2>
 
-                                    <table id="dataTable">
+                                    <table class="mb-0 table">
                                         <thead>
                                             <tr>
                                                 <th width="40%">
@@ -229,7 +229,7 @@
                                                     Date
                                                 </th>
                                                 <th width="30%">
-                                                    Prix
+                                                    Montant
                                                 </th>
                                             </tr>
                                         </thead>
@@ -243,7 +243,7 @@
                                                         {{  depence.Date_F }}
                                                     </td>
                                                     <td width="30%">
-                                                        {{  depence.Prix }}
+                                                        {{  depence.Prix }} DT
                                                     </td>
                                                 </tr>
                                             {% else %}

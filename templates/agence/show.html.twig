@@ -56,13 +56,13 @@
                                         <thead>
                                             <tr>
                                                 <th width="10%">
-                                                    Matricule
+                                                    Num
                                                 </th>
                                                 <th width="45%">
-                                                    Marque
+                                                    Vehicule
                                                 </th>
                                                 <th width="45%">
-                                                    Modele
+                                                    Date Depart
                                                 </th>
                                             </tr>
                                         </thead>
@@ -70,14 +70,13 @@
                                             {% for  location in  agence.locations %}
                                                 <tr>
                                                     <td width="45%">
-                                                        <a href="{{ url }}/location.Vehicule/{{ location.Vehicule.id }}">{{  location.Vehicule.Matricule }}</a>
+                                                        <a href="{{ url }}/location/{{ location.id }}">{{  location.Num }}</a>
                                                     </td>
                                                     <td width="45%">
-                                                        {{  location.Vehicule.Marque }}
+                                                        <a href="{{ url }}/vehicule/{{ location.Vehicule.id }}">{{ location.Vehicule.Modele }} : {{  location.Vehicule.Matricule }} </a>
                                                     </td>
-
                                                     <td width="45%">
-                                                        {{  location.Vehicule.Modele }}
+                                                        {{ location.Date_Loc }}
                                                     </td>
                                                 </tr>
                                             {% else %}

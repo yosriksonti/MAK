@@ -63,7 +63,7 @@
                                        <a class="text-muted me-3" href="{{ url }}/client/{{ feedback.Client.id }}">{{ feedback.Client.CIN }}</a>
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule ? feedback.Vehicule.id : '' }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a>
+                                       {% if feedback.Vehicule %} <a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule.id  }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a> {% endif %}
                                     </td>
                                     <td>
                                         {{  feedback.Visible ? 'Oui' : 'Non' }}

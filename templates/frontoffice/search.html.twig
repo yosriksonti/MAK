@@ -75,7 +75,7 @@
                   <div class="row">
                      <div class="col-12">
                         <div class="listing-top-heading mb-xl-20">
-                           <h6 class="no-margin text-custom-black">Afiichage {{ vehicules|length }} Resultats</h6>
+                           <h6 class="no-margin text-custom-black">Affichage {{ vehicules|length }} Resultats</h6>
                         </div>
                      </div>
                      {% for vehicule in vehicules %}
@@ -84,11 +84,11 @@
                            <div class="car-grid-wrapper car-grid bx-wrapper">
                               <div class="image-sec animate-img"><a href="#"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"></a></div>
                               <div class="car-grid-caption padding-20 bg-custom-white p-relative">
-                                 <h4 class="title fs-16"><a href="#" class="text-custom-black">{{ vehicule.Marque }} : {{ vehicule.Modele }}<small class="text-light-dark">Per Day</small></a></h4>
+                                 <h4 class="title fs-16"><a href="#" class="text-custom-black">{{ vehicule.Marque }} : {{ vehicule.Modele }}<small class="text-light-dark">Par Jour</small></a></h4>
                                  <span class="price" style="text-align : center"><p><sup style="font-size : 20px">{{ vehicule.Prix }} DT {{vehicule.isVAT ? "TTC" : "" }}</sup></br><sub style="font-size : 14px ; color : black;">+ {{ vehicule.Caut }} DT</br>Cautionnement</sub></p> </span>
                                  <p><i class='fa fa-gear'></i> {{ vehicule.Boite }} |<i class='fa fa-snowflake'></i> {{ vehicule.Clim ? 'Oui' : 'Non' }} | <i class='fa fa-user'></i> {{ vehicule.NbPlaces }} | <i class='fa fa-briefcase'></i> {{ vehicule.NbVal }}</p>
-                                 <div class="box">
-                                    <div class="column1">
+                                 <div class="row">
+                                    <div class="col-6">
                                        {% if vehicule.isCarInsurance %}
                                        <p><i class='fa fa-check-square'></i> Assurance Voiture</p>
                                        {% endif %}
@@ -99,6 +99,14 @@
                                        <p><i class='fa fa-check-square'></i> Kilométrage Illimité</p>
                                        {% endif %}
                                     </div>
+                                    <div class="col-6">
+                                       <label><b>Disponibilité</b></label>
+                                       <select class = "form-control form-control-custom">
+                                       {% for dsp in dispo[vehicule.id] %}
+                                          <option>{{ dsp.start }} {% if dsp.end %} -> {{ dsp.end }} {% endif %} </option>
+                                       {% endfor %}
+                                       </select> 
+                                    </div>   
                                  </div>
                                  <div class="action"><a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">View</a></div>
                               </div>

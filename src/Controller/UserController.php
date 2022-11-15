@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,17 +28,19 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="admin_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, NotificationRepository $notificationRepo): Response
     {
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAdmins('ROLE_MODERATOR'),
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/new", name="admin_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, UserRepository $userRepository): Response
+    public function new(Request $request, UserRepository $userRepository, NotificationRepository $notificationRepo): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -65,26 +68,30 @@ class UserController extends AbstractController
             return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->renderForm('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/{id}", name="admin_show", methods={"GET"})
      */
-    public function show(User $user): Response
+    public function show(User $user, NotificationRepository $notificationRepo): Response
     {
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="admin_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository, NotificationRepository $notificationRepo): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -111,9 +118,11 @@ class UserController extends AbstractController
             return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
+            'notifications' => $notifications
         ]);
     }
 
@@ -121,7 +130,7 @@ class UserController extends AbstractController
      * @Route("/{id}", name="admin_delete", methods={"POST"})
      */
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    public function delete(Request $request, User $user, UserRepository $userRepository, NotificationRepository $notificationRepo): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user, true);

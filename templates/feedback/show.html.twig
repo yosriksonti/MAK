@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Vehicule</label>
-                                    <p><a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule ? feedback.Vehicule.id : '' }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a></p>
+                                    {% if feedback.Vehicule %} <p><a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule.id  }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a></p> {% endif %}
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Date</label>

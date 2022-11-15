@@ -7,6 +7,8 @@ use App\Entity\Client;
 use App\Entity\Agence;
 use App\Entity\Feedback;
 use App\Entity\Location;
+use App\Entity\Notification;
+use App\Entity\Disponibility;
 use App\Form\FeedbackType;
 use App\Form\LocationType;
 use App\Form\UserType;
@@ -16,8 +18,10 @@ use App\Repository\VehiculeRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\LocationRepository;
 use App\Repository\ClientRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\PromoRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,8 +56,10 @@ class FrontofficeController extends AbstractController
      */
     public function profile(FeedbackRepository $feedbackRepository, Request $request): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
         $today = date('Y-m-d');
-
         $feedback = new Feedback();
         $form = $this->createForm(FeedbackType::class, $feedback);
         $form->handleRequest($request);
@@ -72,7 +78,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/signup", name="front_office_signup", methods={"GET", "POST"})
      */
-    public function signup(Request $request, ClientRepository $clientRepository): Response
+    public function signup(Request $request, ClientRepository $clientRepository, NotificationRepository $notificationRepo): Response
     {
         $user = $this->getUser();
         if($user) {
@@ -89,6 +95,13 @@ class FrontofficeController extends AbstractController
                 $form->get('password')->getData()
             ));
 
+            $date = date('Y-m-d H:i:s');
+            $notification = new Notification();
+            $notification->setTitle("Nouvelle Client.");
+            $notification->setBody($client->getEmail()." a créé un compte en tant que ".$client->getName()." ".$client->getLastName()." à ".$date);
+            $notification->setCreatedOn(new \DateTime($date));
+            $notification->setSeen(false);
+            $notificationRepo->add($notification,true);
             $clientRepository->add($client, true);
 
             return $this->redirectToRoute('login', [], Response::HTTP_SEE_OTHER);
@@ -104,6 +117,9 @@ class FrontofficeController extends AbstractController
      */
     public function editProfile(Request $request, ClientRepository $clientRepository) : Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
         $client = $this->get('security.token_storage')->getToken()->getUser();
         $client = $clientRepository->find(['id' => $client->getId()]);
         $form = $this->createForm(ClientType::class, $client);
@@ -153,12 +169,24 @@ class FrontofficeController extends AbstractController
                 $Mq[$mq] = $mq;
             }
         }
-
+        $today = date("Y/m/d");
+        $start = $today;
+        $dispoCarsArray = [];
         foreach($vehicules_raw as $vehicule_raw) {
+            $dispoArray = [];
             $dispo = true;
+            $start = $today;
             foreach($vehicule_raw->getLocations() as $location) {
+                $disponibility = new Disponibility();
+                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
                 $location_DP = strtotime($location->getDate_Loc());
                 $location_DD = strtotime($location->getDate_Retour());
+                $disponibility->setStart($start);
+                $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
+                if(strtotime($start)<$location_DP) {
+                    array_push($dispoArray,$disponibility);
+                }
+                $start = $location->getDate_Retour();
                 if($location_DP<=$DP && $location_DD>=$DP) {
                     $dispo = false;
                 }
@@ -174,22 +202,47 @@ class FrontofficeController extends AbstractController
             }
             if($dispo) {
                 array_push($vehicules,$vehicule_raw);
+                $disponibility = new Disponibility();
+                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                $disponibility->setStart($start);
+                array_push($dispoArray,$disponibility);
+                $dispoCarsArray[$vehicule_raw->getId()] = $dispoArray;
+
             }
         }
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
+            'dispo' => $dispoCarsArray,
             'GET' => $_GET
         ]);
     }
 
     /**
-     * @Route("/car/{id}", name="front_office_car", methods={"GET", "POST"})
+     * @Route("/car/{id}", name="front_office_car")
      */
     public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, Request $request): Response
     {
         $today = date('Y-m-d');
-
+        $dispoArray = [];
+        $dispo = true;
+        $start = $today;
+        foreach($vehicule->getLocations() as $location) {
+            $disponibility = new Disponibility();
+            $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+            $location_DP = strtotime($location->getDate_Loc());
+            $location_DD = strtotime($location->getDate_Retour());
+            $disponibility->setStart($start);
+            $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
+            if(strtotime($start)<$location_DP) {
+                array_push($dispoArray,$disponibility);
+            }
+            $start = $location->getDate_Retour();
+        }
+        $disponibility = new Disponibility();
+        $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+        $disponibility->setStart($start);
+        array_push($dispoArray,$disponibility);
         $feedback = new Feedback();
         $form = $this->createForm(FeedbackType::class, $feedback);
         $form->handleRequest($request);
@@ -208,7 +261,8 @@ class FrontofficeController extends AbstractController
             'feedbacks' => $feedbacks,
             'agences' => $agenceRepository->findAll(),
             'form' => $form->createView(),
-            'today' => $today
+            'today' => $today,
+            'dispo' => $dispoArray
         ]);
     }
 
@@ -265,8 +319,11 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/preview/{id}", name="front_office_preview", methods={"GET", "POST"})
      */
-    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository, Request $request): Response
+    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
@@ -275,8 +332,16 @@ class FrontofficeController extends AbstractController
             if($form->isValid()) {
                 $user = $this->getUser();
                 $location->setClient($user);
+                $location->setVehicule($vehicule);
                 $locationRepository->add($location, true);
-                return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+                $date = date('Y-m-d H:i:s');
+                $notification = new Notification();
+                $notification->setTitle("Nouvelle Reservation.");
+                $notification->setBody($user->getEmail()."|".$user->getName()." ".$user->getLastName()." a fait une nouvelle reservation à ".$date);
+                $notification->setCreatedOn(new \DateTime($date));
+                $notification->setSeen(false);
+                $notificationRepo->add($notification,true);
+                return $this->redirectToRoute('front_office_profile', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
             }
         } else {
             if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD']) || !isset($_GET['AP']) || empty($_GET['AP']) 

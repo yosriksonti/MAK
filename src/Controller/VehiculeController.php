@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Vehicule;
 use App\Form\VehiculeType;
 use App\Repository\VehiculeRepository;
+use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,18 +19,20 @@ class VehiculeController extends AbstractController
     /**
      * @Route("/", name="vehicule_index", methods={"GET"})
      */
-    public function index(VehiculeRepository $vehiculeRepository): Response
+    public function index(VehiculeRepository $vehiculeRepository, NotificationRepository $notificationRepo): Response
     {
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('vehicule/index.html.twig', [
             'vehicules' => $vehiculeRepository->findAll(),
-            'url' => $_ENV["APP_URL"]
+            'url' => $_ENV["APP_URL"],
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/new", name="vehicule_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, VehiculeRepository $vehiculeRepository): Response
+    public function new(Request $request, VehiculeRepository $vehiculeRepository, NotificationRepository $notificationRepo): Response
     {
         $vehicule = new Vehicule();
         $form = $this->createForm(VehiculeType::class, $vehicule);
@@ -41,27 +44,31 @@ class VehiculeController extends AbstractController
             return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->renderForm('vehicule/new.html.twig', [
             'vehicule' => $vehicule,
             'form' => $form,
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/{id}", name="vehicule_show", methods={"GET"})
      */
-    public function show(Vehicule $vehicule): Response
+    public function show(Vehicule $vehicule, NotificationRepository $notificationRepo): Response
     {
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('vehicule/show.html.twig', [
             'vehicule' => $vehicule,
-            'url' => $_ENV["APP_URL"]
+            'url' => $_ENV["APP_URL"],
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="vehicule_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Vehicule $vehicule, VehiculeRepository $vehiculeRepository): Response
+    public function edit(Request $request, Vehicule $vehicule, VehiculeRepository $vehiculeRepository, NotificationRepository $notificationRepo): Response
     {
         $form = $this->createForm(VehiculeType::class, $vehicule);
         $form->handleRequest($request);
@@ -72,16 +79,18 @@ class VehiculeController extends AbstractController
             return $this->redirectToRoute('vehicule_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->renderForm('vehicule/edit.html.twig', [
             'vehicule' => $vehicule,
             'form' => $form,
+            'notifications' => $notifications
         ]);
     }
 
     /**
      * @Route("/{id}", name="vehicule_delete", methods={"POST"})
      */
-    public function delete(Request $request, Vehicule $vehicule, VehiculeRepository $vehiculeRepository): Response
+    public function delete(Request $request, Vehicule $vehicule, VehiculeRepository $vehiculeRepository, NotificationRepository $notificationRepo): Response
     {
         if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->request->get('_token'))) {
             $vehiculeRepository->remove($vehicule, true);

@@ -96,16 +96,16 @@
                                                 <th width="10%">
                                                     Num
                                                 </th>
-                                                <th width="45%">
+                                                <th width="15%">
                                                     Date Reservation
                                                 </th>
-                                                <th width="10%">
+                                                <th width="15%">
                                                     Date Location
                                                 </th>
-                                                <th width="45%">
+                                                <th width="15%">
                                                     Date Retour
                                                 </th>
-                                                <th width="45%">
+                                                <th width="20%">
                                                     Vehicule
                                                 </th>
                                             </tr>
@@ -113,20 +113,69 @@
                                         <tbody>
                                             {% for  location in  client.Locations %}
                                                 <tr>
-                                                    <td width="45%">
+                                                    <td width="10%">
                                                         <a href="{{ url }}/location/{{ location.id }}">{{  location.Num }}</a>
                                                     </td>
-                                                    <td width="45%">
+                                                    <td width="15%">
                                                         {{  location.Date_Res }}
                                                     </td>
-                                                    <td width="45%">
+                                                    <td width="15%">
                                                         {{  location.Date_Loc }}
                                                     </td>
-                                                    <td width="45%">
+                                                    <td width="15%">
                                                         {{  location.Date_Retour }}
                                                     </td>
-                                                    <td width="45%">
-                                                        <a href="{{ url }}/vehicule/{{ location.Vehicule.id }}">{{  location.Vehicule.Matricule }}</a>
+                                                    <td width="20%">
+                                                        <a href="{{ url }}/vehicule/{{ location.Vehicule.id }}">{{ location.Vehicule.Modele }} : {{ location.Vehicule.Matricule }}</a>
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="17">
+                                                        no records found
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (first name)-->
+                                <div class="col-md-12">
+                                    <h2 class="small mb-1" for="inputFirstName">Historique Paiements</h2>
+
+                                    <table class="mb-0 table">
+                                        <thead>
+                                            <tr>
+                                                <th width="30%">
+                                                    Session
+                                                </th>
+                                                <th width="30%">
+                                                    Location
+                                                </th>
+                                                <th width="20%">
+                                                    Montant
+                                                </th>
+                                                <th width="20%">
+                                                    Status
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for  payment in  client.payments %}
+                                                <tr>
+                                                    <td width="30%">
+                                                        <a href="{{ url }}/payment/{{ payment.id }}">{{  payment.sessionId }}</a>
+                                                    </td>
+                                                    <td width="30%">
+                                                        <a href="{{ url }}/location/{{ payment.Location }}">{{  payment.Location.Num }}</a>
+                                                    </td>
+                                                    <td width="20%">
+                                                        {{  payment.Status }}
+                                                    </td>
+                                                    <td width="20%">
+                                                        {{  payment.Total }}
                                                     </td>
                                                 </tr>
                                             {% else %}
