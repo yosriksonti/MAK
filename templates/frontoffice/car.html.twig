@@ -123,7 +123,7 @@
                                              <h4 class="text-custom-black fw-600">Laissez un Feedback</h4>
                                              {{ form_start(form) }}
                                                 <div hidden="true">
-                                                   {{ form_row(form.Vehicule, {'attr':{'class':'hidden-row', 'value' : vehicule.id }, 'value' : vehicule.id}) }}                                                 
+                                                   {{ form_widget(form.Vehicule, {'attr':{'class':'hidden-row'}, "value" : null})  }}  
                                                    {{ form_row(form.Client, {'attr':{'class':'hidden', "value" : app.user.Email} }) }}  
                                                    {{ form_widget(form.Visible, {'attr':{'class':'hidden-row'}, "value" : "0"}) }}  
                                                    {{ form_widget(form.createdOn, {'attr':{'class':'hidden-row'}, "value" : today}) }}    

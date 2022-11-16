@@ -61,6 +61,7 @@ class FrontofficeController extends AbstractController
             $GET["route"] = "front_office_profile";
             return $this->redirectToRoute('login', $GET);
         }
+        $user = $this->getUser();
         $today = date('Y-m-d');
         $feedback = new Feedback();
         $form = $this->createForm(FeedbackType::class, $feedback);
@@ -70,8 +71,10 @@ class FrontofficeController extends AbstractController
             $feedback->setClient($user);
             $feedback->setVehicule(null);
             $feedbackRepository->add($feedback, true);
+            $this->user = $user;
             return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
         }
+        $this->user = $user;
         return $this->render('frontoffice/profile.html.twig', [
             'form' => $form->createView(),
             'today' => $today
@@ -160,8 +163,9 @@ class FrontofficeController extends AbstractController
      */
     public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo): Response
     {
-        $DP = strtotime($_GET['DP']);
-        $DD = strtotime($_GET['DD']);
+        $today = date("m/d/Y");
+        $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
+        $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
         $vehicules_raw = $vehiculeRepository->findAll();
         $vehicules = [];
         $Mq = [];
@@ -171,9 +175,9 @@ class FrontofficeController extends AbstractController
                 $Mq[$mq] = $mq;
             }
         }
-        $today = date("m/d/Y");
         $start = $today;
         $dispoCarsArray = [];
+        $user = $this->getUser();
         foreach($vehicules_raw as $vehicule_raw) {
             $dispoArray = [];
             $dispo = true;
@@ -215,6 +219,7 @@ class FrontofficeController extends AbstractController
 
             }
         }
+        $this->user=$user;
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
@@ -229,11 +234,23 @@ class FrontofficeController extends AbstractController
     public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, Request $request): Response
     {
         $today = date('m/d/Y');
+        $today_f2 = date("Y-m-d");
         $dispoArray = [];
         $dispo = true;
         $start = $today;
+        $user = $this->getUser();
+        $feedback = new Feedback();
+        $form = $this->createForm(FeedbackType::class, $feedback);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $feedback->setClient($user);
+            $feedback->setVehicule($vehicule);
+            $feedbackRepository->add($feedback, true);
+            $this->user = $user;
+            return $this->redirectToRoute('front_office_car', array('id' => $vehicule->getId()), Response::HTTP_SEE_OTHER);
+        }
         $locations = $locationRepo->findBy(array("Vehicule" => $vehicule->getId()),array('Date_Loc' => "ASC"));
-
         foreach( $locations as $location) {
             $disponibility = new Disponibility();
             $location_DP = strtotime($location->getDate_Loc());
@@ -252,25 +269,14 @@ class FrontofficeController extends AbstractController
         $disponibility = new Disponibility();
         $disponibility->setStart($start);
         array_push($dispoArray,$disponibility);
-        $feedback = new Feedback();
-        $form = $this->createForm(FeedbackType::class, $feedback);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            $feedback->setClient($user);
-            $feedback->setVehicule($vehicule);
-            $feedbackRepository->add($feedback, true);
-            return $this->redirectToRoute('front_office_car', ['id' => $feedback->getVehicule()->getId()], Response::HTTP_SEE_OTHER);
-        }
-
         $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
-        
+        $this->user = $user;
         return $this->render('frontoffice/car.html.twig', [
             'vehicule' => $vehicule,
             'feedbacks' => $feedbacks,
             'agences' => $agenceRepository->findAll(),
             'form' => $form->createView(),
-            'today' => $today,
+            'today' => $today_f2,
             'dispo' => $dispoArray
         ]);
     }
@@ -289,11 +295,13 @@ class FrontofficeController extends AbstractController
      */
     public function booking( Vehicule $vehicule, LocationRepository $locationRepository, Request $request): Response
     {
+            $user = $this->getUser();
             $today = date('Y-m-d');
             $location = new Location();
             $form = $this->createForm(LocationType::class, $location);
             $form->handleRequest($request);
             if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD'])) {
+                $this->user = $user;
                 return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
             }
             $DP = strtotime($_GET['DP']);
@@ -310,8 +318,10 @@ class FrontofficeController extends AbstractController
                 }
             }
             if(!$dispo) {
+                $this->user = $user;
                 return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
             } else {
+                $this->user = $user;
                 return $this->render('frontoffice/booking.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),
@@ -336,15 +346,15 @@ class FrontofficeController extends AbstractController
             $GET["id"] = $vehicule->getId();
             return $this->redirectToRoute('login', $GET);
         }
+        $user = $this->getUser();
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() ) {
+            $location->setVehicule($vehicule);
+            $location->setClient($this->getUser());
             if($form->isValid()) {
-                $user = $this->getUser();
-                $location->setClient($user);
-                $location->setVehicule($vehicule);
                 $locationRepository->add($location, true);
                 $date = date('Y-m-d H:i:s');
                 $notification = new Notification();
@@ -353,12 +363,14 @@ class FrontofficeController extends AbstractController
                 $notification->setCreatedOn(new \DateTime($date));
                 $notification->setSeen(false);
                 $notificationRepo->add($notification,true);
-                return $this->redirectToRoute('front_office_profile', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+                $this->user = $user;
+                return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
             }
         } else {
             if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD']) || !isset($_GET['AP']) || empty($_GET['AP']) 
             || !isset($_GET['AD']) || empty($_GET['AD']) || !isset($_GET['BS']) || !isset($_GET['STW']) 
             || !isset($_GET['SD']) || !isset($_GET['PD']) ){
+                $this->user = $user;
                 return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
             } else {
                 $agence_d = $agenceRepository->find($_GET['AP'])->getNom();
