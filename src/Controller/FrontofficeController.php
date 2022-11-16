@@ -30,16 +30,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontofficeController extends AbstractController
 {
     private $passwordHasher;
+    private $usr_back ;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
+    }
+    public function getBack()
+    {
+        return $this->usr_back;
     }
     /**
      * @Route("/", name="home_index")
      */
     public function index(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         $vehicules = $vehiculeRepository->findAll();
         
         usort($vehicules, function($a, $b){
@@ -56,6 +64,9 @@ class FrontofficeController extends AbstractController
      */
     public function profile(FeedbackRepository $feedbackRepository, Request $request): Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         if (!$this->getUser()) {
             $GET = $_GET;
             $GET["route"] = "front_office_profile";
@@ -122,6 +133,9 @@ class FrontofficeController extends AbstractController
      */
     public function editProfile(Request $request, ClientRepository $clientRepository) : Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         if (!$this->getUser()) {
             return $this->redirectToRoute('login');
         }
@@ -150,11 +164,16 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/reservation/{Num}", name="front_office_reservation")
      */
-    public function reservation(Location $location): Response
+    public function reservation($Num, LocationRepository $locationRepo): Response
     {
-        
+        $user = $this->getUser();
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
+        $location = $locationRepo->findBy(array("Num" => $Num));
+        $this->user = $user;
         return $this->render('frontoffice/reservation.html.twig', [
-            "reservation" => $location
+            "reservation" => $location[0]
         ]);
     }
 
@@ -163,6 +182,9 @@ class FrontofficeController extends AbstractController
      */
     public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo): Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         $today = date("m/d/Y");
         $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
         $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
@@ -233,6 +255,9 @@ class FrontofficeController extends AbstractController
      */
     public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, Request $request): Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         $today = date('m/d/Y');
         $today_f2 = date("Y-m-d");
         $dispoArray = [];
@@ -286,6 +311,9 @@ class FrontofficeController extends AbstractController
      */
     public function cars( VehiculeRepository $vehiculeRepository): Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         return $this->render('frontoffice/cars.html.twig', [
             'vehicules' => $vehiculeRepository->findAll(),
         ]);
@@ -295,42 +323,45 @@ class FrontofficeController extends AbstractController
      */
     public function booking( Vehicule $vehicule, LocationRepository $locationRepository, Request $request): Response
     {
-            $user = $this->getUser();
-            $today = date('Y-m-d');
-            $location = new Location();
-            $form = $this->createForm(LocationType::class, $location);
-            $form->handleRequest($request);
-            if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD'])) {
-                $this->user = $user;
-                return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
+        $user = $this->getUser();
+        $today = date('Y-m-d');
+        $location = new Location();
+        $form = $this->createForm(LocationType::class, $location);
+        $form->handleRequest($request);
+        if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD'])) {
+            $this->user = $user;
+            return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+        }
+        $DP = strtotime($_GET['DP']);
+        $DD = strtotime($_GET['DD']);
+        $dispo = true;
+        foreach($vehicule->getLocations() as $location) {
+            $location_DP = strtotime($location->getDate_Loc());
+            $location_DD = strtotime($location->getDate_Retour());
+            if($location_DP<=$DP && $location_DD>=$DP) {
+                $dispo = false;
             }
-            $DP = strtotime($_GET['DP']);
-            $DD = strtotime($_GET['DD']);
-            $dispo = true;
-            foreach($vehicule->getLocations() as $location) {
-                $location_DP = strtotime($location->getDate_Loc());
-                $location_DD = strtotime($location->getDate_Retour());
-                if($location_DP<=$DP && $location_DD>=$DP) {
-                    $dispo = false;
-                }
-                if($location_DP<=$DD && $location_DD>=$DD) {
-                    $dispo = false;
-                }
+            if($location_DP<=$DD && $location_DD>=$DD) {
+                $dispo = false;
             }
-            if(!$dispo) {
-                $this->user = $user;
-                return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
-            } else {
-                $this->user = $user;
-                return $this->render('frontoffice/booking.html.twig', [
-                    'vehicule' => $vehicule,
-                    'form' => $form->createView(),
-                    'GET' => $_GET,
-                    'today' => $today,
-                    'DP' => date("Y-m-d",$DP),
-                    'DD' => date("Y-m-d",$DD)
-                ]);                            
-            }
+        }
+        if(!$dispo) {
+            $this->user = $user;
+            return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+        } else {
+            $this->user = $user;
+            return $this->render('frontoffice/booking.html.twig', [
+                'vehicule' => $vehicule,
+                'form' => $form->createView(),
+                'GET' => $_GET,
+                'today' => $today,
+                'DP' => date("Y-m-d",$DP),
+                'DD' => date("Y-m-d",$DD)
+            ]);                            
+        }
            
         
     }
@@ -340,6 +371,9 @@ class FrontofficeController extends AbstractController
      */
     public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request): Response
     {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
         if (!$this->getUser()) {
             $GET = $_GET;
             $GET["route"] = "front_office_preview";

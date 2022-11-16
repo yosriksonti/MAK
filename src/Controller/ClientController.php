@@ -92,7 +92,7 @@ class ClientController extends AbstractController
     {
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
 
-        $form = $this->createForm(UserType::class, $client);
+        $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

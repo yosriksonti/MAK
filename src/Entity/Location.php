@@ -71,7 +71,7 @@ class Location
     private $Status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="Locations")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="Locations", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Client;

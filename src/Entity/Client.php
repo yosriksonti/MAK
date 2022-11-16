@@ -70,17 +70,17 @@ class Client extends User
     private $Date_Naissance;
 
     /**
-     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="Client", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="Client", fetch="LAZY")
      */
     private $Locations;
 
     /**
-     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Client", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Client", fetch="LAZY")
      */
     private $payments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Client", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Client", fetch="LAZY")
      */
     private $feedback;
 
