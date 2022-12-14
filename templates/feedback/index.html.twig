@@ -10,7 +10,7 @@
                                 <div class="page-header-icon">
                                     <i data-feather="eye"></i>
                                 </div>
-                                 Feedbacks list                                                                                                                 
+                                 Liste des Feedbacks                                                                                                                 
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
@@ -57,7 +57,7 @@
                                         {{  feedback.created_On }}
                                     </td>
                                     <td>
-                                        {{  feedback.Rating }}
+                                        {{  feedback.Rating }}/5
                                     </td>
                                     <td>
                                        <a class="text-muted me-3" href="{{ url }}/client/{{ feedback.Client.id }}">{{ feedback.Client.CIN }}</a>
@@ -83,7 +83,7 @@
                             {% else %}
                                 <tr>
                                     <td colspan="17">
-                                        no records found
+                                        aucune entrée
                                     </td>
                                 </tr>
                             {% endfor %}

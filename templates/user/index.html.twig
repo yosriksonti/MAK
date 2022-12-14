@@ -10,13 +10,13 @@
                                 <div class="page-header-icon">
                                     <i data-feather="user"></i>
                                 </div>
-                                Admins List                        
+                                Liste des Administrateurs                        
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
                             <a class="btn btn-sm btn-light text-primary" href="{{ path('admin_new') }}">
                                 <i class="me-1" data-feather="user-plus"></i>
-                                Ajouter Admin                                                                                    
+                                Ajouter Administrateur                                                                                    
                             </a>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                                         {% for role in user.roles %}
                                             {# if role mod style #}
                                             {% if role == "ROLE_ADMIN" %}
-                                                <span class="badge bg-red-soft text-red">Admin</span>
+                                                <span class="badge bg-red-soft text-red">Administrateur</span>
                                             {% elseif role == 'ROLE_MODERATOR' %}
                                                 <span class="badge bg-purple-soft text-purple">Moderator</span>
                                             {% elseif role == 'ROLE_DEVELOPER' %}

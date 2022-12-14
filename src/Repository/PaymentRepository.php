@@ -21,13 +21,14 @@ class PaymentRepository extends ServiceEntityRepository
         parent::__construct($registry, Payment::class);
     }
 
-    public function add(Payment $entity, bool $flush = false): void
+    public function add(Payment $entity, bool $flush = false): Payment
     {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+        return $entity;
     }
 
     public function remove(Payment $entity, bool $flush = false): void

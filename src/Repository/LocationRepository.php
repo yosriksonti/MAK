@@ -21,13 +21,14 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($managerRegistry, Location::class);
     }
 
-    public function add(Location $location, bool $flush = false): void
+    public function add(Location $location, bool $flush = false): Location
     {
         $this->getEntityManager()->persist($location);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+        return $location;
     }
 
     public function remove(Location $location, bool $flush = false): void

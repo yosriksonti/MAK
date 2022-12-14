@@ -9,6 +9,7 @@ use App\Entity\Feedback;
 use App\Entity\Location;
 use App\Entity\Notification;
 use App\Entity\Disponibility;
+use App\Entity\Payment;
 use App\Form\FeedbackType;
 use App\Form\LocationType;
 use App\Form\UserType;
@@ -19,6 +20,7 @@ use App\Repository\FeedbackRepository;
 use App\Repository\LocationRepository;
 use App\Repository\ClientRepository;
 use App\Repository\NotificationRepository;
+use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -26,16 +28,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 
 class FrontofficeController extends AbstractController
 {
     private $passwordHasher;
     private $usr_back ;
+    private $client;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher,HttpClientInterface $client)
     {
         $this->passwordHasher = $passwordHasher;
-    }
+        $this->client = $client;
+    }   
     public function getBack()
     {
         return $this->usr_back;
@@ -58,6 +65,76 @@ class FrontofficeController extends AbstractController
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
         ]);
+    }
+
+    /**
+     * @Route("/pay", name="pay_index")
+     */
+    public function payment(PaymentRepository $paymentRepo,LocationRepository $locationRepo): Response
+    {
+        $user = $this->getUser();
+        $payment = new Payment();
+        $location = $locationRepo->findBy(["Num" => $_GET['Num']]);
+        $payment->setSessionId("  ");
+        $payment->setClient($user);
+        $payment->setLocation($location[0]);
+        $payment->setTotal($_GET['amount']);
+        $date = date("m/d/Y");
+        $payment->setCreatedOn(new \DateTime($date));
+        $payment->setStatus("pending");
+        $payment = $paymentRepo->add($payment,true);
+        $response = $this->client->request('POST', 'https://api.preprod.konnect.network/api/v1/payments/init-payment', [
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+            'body' => [
+                    "receiverWallet" => "600216e6fd5f7e2d78da9bf4",
+                    "amount" => $_GET['amount'] * 1000,
+                    "selectedPaymentMethod" => "gateway",
+                    "firstName" => "Yosri",
+                    "lastName" => "Kossontini",
+                    "phoneNumber" => "+21658557726",
+                    "token" => "TND",
+                    "orderId" => $payment->getId(),
+                    "successUrl" => "http://127.0.0.1:8000/paymentsuccess/".$payment->getId(),
+                    "failUrl" => "http://127.0.0.1:8000/paymentfailure/".$payment->getId()
+            ]
+        ]);
+        $content = json_decode($response->getContent(),true);
+        print_r($content);
+        $payment->setSessionId($content['paymentRef']);
+        $payment = $paymentRepo->add($payment,true);
+        $this->user = $user;
+        return $this->redirect($content['payUrl']);
+
+    }
+    /**
+     * @Route("/paymentsuccess/{id}", name="pay_success")
+     */
+    public function paymentSuccess($id,PaymentRepository $paymentRepo,LocationRepository $locationRepo): Response
+    {
+        $user = $this->getUser();
+        $response = $this->client->request('GET', 'https://api.preprod.konnect.network/api/v1/payments/'.$id, [
+            'headers' => [
+                'Accept' => 'application/json',
+            ]
+        ]);
+        $content = json_decode($response->getContent(),true);
+        $payment = $paymentRepo->findBy(["id" => $content["orderId"]])[0];
+        print_r($content);
+        if($payment->getStatus() == "pending" && $content["status"] == "pending") {
+            $payment->setStatus("paid");
+            $paymentRepo->add($payment, true);
+            $location = $payment->getLocation();
+            $location->setStatus("Confirmée");
+            $locationRepo->add($location, true);
+            print_r("BARRA MRIGL");
+
+        }
+        return $this->render('frontoffice/pay.html.twig', [
+            'response' => $payment,
+        ]);
+
     }
     /**
      * @Route("/profile", name="front_office_profile")
@@ -389,7 +466,7 @@ class FrontofficeController extends AbstractController
             $location->setVehicule($vehicule);
             $location->setClient($this->getUser());
             if($form->isValid()) {
-                $locationRepository->add($location, true);
+                $loc = $locationRepository->add($location, true);
                 $date = date('Y-m-d H:i:s');
                 $notification = new Notification();
                 $notification->setTitle("Nouvelle Reservation.");
@@ -398,7 +475,7 @@ class FrontofficeController extends AbstractController
                 $notification->setSeen(false);
                 $notificationRepo->add($notification,true);
                 $this->user = $user;
-                return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('pay_index',["amount" => $location->getMontant(),"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
             }
         } else {
             if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD']) || !isset($_GET['AP']) || empty($_GET['AP']) 
