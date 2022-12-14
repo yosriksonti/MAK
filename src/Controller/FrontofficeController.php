@@ -97,7 +97,7 @@ class FrontofficeController extends AbstractController
                     "token" => "TND",
                     "orderId" => $payment->getId(),
                     "successUrl" => "http://127.0.0.1:8000/paymentsuccess/".$payment->getId(),
-                    "failUrl" => "http://127.0.0.1:8000/paymentfailure/".$payment->getId()
+                    "failUrl" => "http://127.0.0.1:8000/profile?paymentFail=true"
             ]
         ]);
         $content = json_decode($response->getContent(),true);
@@ -129,12 +129,9 @@ class FrontofficeController extends AbstractController
             $location->setStatus("Confirmée");
             $locationRepo->add($location, true);
             print_r("BARRA MRIGL");
-
+            return $this->redirectToRoute('front_office_profile',["paymentSuccess" => true], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('frontoffice/pay.html.twig', [
-            'response' => $payment,
-        ]);
-
+        return $this->redirectToRoute('front_office_profile',["paymentFail" => true], Response::HTTP_SEE_OTHER);
     }
     /**
      * @Route("/profile", name="front_office_profile")
@@ -149,6 +146,8 @@ class FrontofficeController extends AbstractController
             $GET["route"] = "front_office_profile";
             return $this->redirectToRoute('login', $GET);
         }
+        $paymentSuccess = isset($_GET['paymentSuccess']);
+        $paymentFail = isset($_GET['paymentFail']);
         $user = $this->getUser();
         $today = date('Y-m-d');
         $feedback = new Feedback();
@@ -165,7 +164,9 @@ class FrontofficeController extends AbstractController
         $this->user = $user;
         return $this->render('frontoffice/profile.html.twig', [
             'form' => $form->createView(),
-            'today' => $today
+            'today' => $today,
+            'paymentSuccess' => $paymentSuccess,
+            'paymentFail' => $paymentFail
         ]);
     }
     /**
