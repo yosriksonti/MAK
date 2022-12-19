@@ -347,7 +347,8 @@ class FrontofficeController extends AbstractController
                     usort($dispoArray, function($a, $b) {
                         return strtotime($a->getStart()) - strtotime($b->getStart());
                     });
-                    $dispoCarsArray[$vehicule_raw->getId()] = $dispoArray;
+                    $filtered =  Disponibility::getUnique($dispoArray);
+                    $dispoCarsArray[$vehicule_raw->getId()] = $filtered;
                 }
             }
             
@@ -411,6 +412,7 @@ class FrontofficeController extends AbstractController
         usort($dispoArray, function($a, $b) {
             return strtotime($a->getStart()) - strtotime($b->getStart());
         });
+        $filtered =  Disponibility::getUnique($dispoArray);
         $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
         $this->user = $user;
         return $this->render('frontoffice/car.html.twig', [
@@ -419,7 +421,7 @@ class FrontofficeController extends AbstractController
             'agences' => $agenceRepository->findAll(),
             'form' => $form->createView(),
             'today' => $today_f2,
-            'dispo' => $dispoArray
+            'dispo' => $filtered
         ]);
     }
 

@@ -35,4 +35,13 @@ class Disponibility {
 
         return $this;
     }
+    public static function getUnique($dispos) : array {
+        $models = array_map( function( $dispo ) {
+            return $dispo->getStart().$dispo->getEnd() ;
+        }, $dispos );
+    
+        $unique_models = array_unique( $models );
+    
+        return array_values( array_intersect_key( $dispos, $unique_models ) );
+    }
 }
