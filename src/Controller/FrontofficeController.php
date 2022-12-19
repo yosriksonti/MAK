@@ -22,11 +22,15 @@ use App\Repository\ClientRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -111,7 +115,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/paymentsuccess/{id}", name="pay_success")
      */
-    public function paymentSuccess($id,PaymentRepository $paymentRepo,LocationRepository $locationRepo): Response
+    public function paymentSuccess($id,PaymentRepository $paymentRepo,LocationRepository $locationRepo, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $response = $this->client->request('GET', 'https://api.preprod.konnect.network/api/v1/payments/'.$id, [
@@ -129,7 +133,26 @@ class FrontofficeController extends AbstractController
             $location->setStatus("Confirmée");
             $locationRepo->add($location, true);
             print_r("BARRA MRIGL");
-            return $this->redirectToRoute('front_office_profile',["paymentSuccess" => true], Response::HTTP_SEE_OTHER);
+            $email = (new TemplatedEmail())
+            ->from(new Address('w311940@gmail.com', 'Makrent car'))
+            ->to($user->getEmail())
+            ->subject('Confirmation')
+            // timezone of the emaail
+            ->context([
+                'user' => $user,
+                'location' => $location,
+                'payment' => $payment,
+            ])
+            ->htmlTemplate('email/successful-email.html.twig');
+
+        try {
+            $mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            
+        }
+
+        return $this->redirectToRoute('front_office_profile',["paymentSuccess" => true], Response::HTTP_SEE_OTHER);
+
         }
         return $this->redirectToRoute('front_office_profile',["paymentFail" => true], Response::HTTP_SEE_OTHER);
     }
@@ -466,6 +489,9 @@ class FrontofficeController extends AbstractController
         if ($form->isSubmitted() ) {
             $location->setVehicule($vehicule);
             $location->setClient($this->getUser());
+            $location->setDateRes(new \DateTime());
+            $location->setDateLoc(new \DateTime($location->getDate_Loc()));
+            $location->setDateRetour(new \DateTime($location->getDate_Retour()));
             if($form->isValid()) {
                 $loc = $locationRepository->add($location, true);
                 $date = date('Y-m-d H:i:s');
