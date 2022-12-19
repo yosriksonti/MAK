@@ -39,6 +39,16 @@ class VehiculeRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByModele() : array {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('v')
+        ->from(Vehicule::class,'v')
+        ->groupBy('v.Modele');
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Vehicule[] Returns an array of Vehicule objects
 //     */

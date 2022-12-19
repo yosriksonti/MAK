@@ -284,7 +284,7 @@ class FrontofficeController extends AbstractController
         $today = date("m/d/Y");
         $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
         $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
-        $vehicules_raw = $vehiculeRepository->findAll();
+        $vehicules_raw = $vehiculeRepository->findByModele();
         $vehicules = [];
         $Mq = [];
         $isset_mq = isset($_GET['Mq']);
@@ -297,45 +297,60 @@ class FrontofficeController extends AbstractController
         $dispoCarsArray = [];
         $user = $this->getUser();
         foreach($vehicules_raw as $vehicule_raw) {
+            $vehs = $vehiculeRepository->findBy(array("Modele" => $vehicule_raw->getModele()));
             $dispoArray = [];
             $dispo = true;
             $start = $today;
-            $locations = $locationRepo->findBy(array("Vehicule" => $vehicule_raw->getId()),array('Date_Loc' => "ASC"));
-            foreach($locations as $location) {
-                $disponibility = new Disponibility();
-                $location_DP = strtotime($location->getDate_Loc());
-                $location_DD = strtotime($location->getDate_Retour());
-                $disponibility->setStart($start);
-                $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
-                if(strtotime($start)<$location_DP) {
+            $push = false;
+            $oldId = 0;
+            foreach($vehs as $veh){
+                if($oldId != $veh->getId()){
+                    $oldId = $veh->getId();
+                    $start = $today;
+                }
+                $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId()),array('Date_Loc' => "ASC"));
+                foreach($locations as $location) {
+                    $disponibility = new Disponibility();
+                    $location_DP = strtotime($location->getDate_Loc());
+                    $location_DD = strtotime($location->getDate_Retour());
+                    $disponibility->setStart($start);
+                    $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
+                    if(strtotime($start)<$location_DP) {
+                        array_push($dispoArray,$disponibility);
+                        $start = $location->getDate_Retour();
+                        $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                    } else if(strtotime($start)<$location_DD) {
+                        $start = $location->getDate_Retour();
+                        $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                    }
+                    if($location_DP<=$DP && $location_DD>=$DP) {
+                        $dispo = false;
+                    }
+                    if($location_DP<=$DD && $location_DD>=$DD ) {
+                        $dispo = false;
+                    }
+                    if( $location_DD<=$DD && $location_DP>=$DP) {
+                        $dispo = false ;
+                    }
+                    if($isset_mq && !isset($Mq[$vehicule_raw->getMarque()])) {
+                        $dispo = false;
+                    }
+                }
+                if($dispo) {
+                    if(!$push) {
+                        array_push($vehicules,$vehicule_raw);
+                        $push = true;
+                    }
+                    $disponibility = new Disponibility();
+                    $disponibility->setStart($start);
                     array_push($dispoArray,$disponibility);
-                    $start = $location->getDate_Retour();
-                    $start = date('m/d/Y', strtotime($start. ' + 1 days'));
-                } else if(strtotime($start)<$location_DD) {
-                    $start = $location->getDate_Retour();
-                    $start = date('m/d/Y', strtotime($start. ' + 1 days'));
-                }
-                if($location_DP<=$DP && $location_DD>=$DP) {
-                    $dispo = false;
-                }
-                if($location_DP<=$DD && $location_DD>=$DD ) {
-                    $dispo = false;
-                }
-                if( $location_DD<=$DD && $location_DP>=$DP) {
-                    $dispo = false ;
-                }
-                if($isset_mq && !isset($Mq[$vehicule_raw->getMarque()])) {
-                    $dispo = false;
+                    usort($dispoArray, function($a, $b) {
+                        return strtotime($a->getStart()) - strtotime($b->getStart());
+                    });
+                    $dispoCarsArray[$vehicule_raw->getId()] = $dispoArray;
                 }
             }
-            if($dispo) {
-                array_push($vehicules,$vehicule_raw);
-                $disponibility = new Disponibility();
-                $disponibility->setStart($start);
-                array_push($dispoArray,$disponibility);
-                $dispoCarsArray[$vehicule_raw->getId()] = $dispoArray;
-
-            }
+            
         }
         $this->user=$user;
         return $this->render('frontoffice/search.html.twig', [
@@ -349,7 +364,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/car/{id}", name="front_office_car")
      */
-    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, Request $request): Response
+    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, VehiculeRepository $vehiculesRepo, Request $request): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -358,7 +373,6 @@ class FrontofficeController extends AbstractController
         $today_f2 = date("Y-m-d");
         $dispoArray = [];
         $dispo = true;
-        $start = $today;
         $user = $this->getUser();
         $feedback = new Feedback();
         $form = $this->createForm(FeedbackType::class, $feedback);
@@ -371,25 +385,32 @@ class FrontofficeController extends AbstractController
             $this->user = $user;
             return $this->redirectToRoute('front_office_car', array('id' => $vehicule->getId()), Response::HTTP_SEE_OTHER);
         }
-        $locations = $locationRepo->findBy(array("Vehicule" => $vehicule->getId()),array('Date_Loc' => "ASC"));
-        foreach( $locations as $location) {
-            $disponibility = new Disponibility();
-            $location_DP = strtotime($location->getDate_Loc());
-            $location_DD = strtotime($location->getDate_Retour());
-            $disponibility->setStart($start);
-            $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
-            if(strtotime($start)<$location_DP) {
-                array_push($dispoArray,$disponibility);
-                $start = $location->getDate_Retour();
-                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
-            } else if(strtotime($start)<$location_DD) {
-                $start = $location->getDate_Retour();
-                $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+        $locations = [];
+        $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
+        foreach($vehicules as $veh) {
+            $start = $today;
+            foreach( $veh->getLocations() as $location) {
+                $disponibility = new Disponibility();
+                $location_DP = strtotime($location->getDate_Loc());
+                $location_DD = strtotime($location->getDate_Retour());
+                $disponibility->setStart($start);
+                $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
+                if(strtotime($start)<$location_DP) {
+                    array_push($dispoArray,$disponibility);
+                    $start = $location->getDate_Retour();
+                    $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                } else if(strtotime($start)<$location_DD) {
+                    $start = $location->getDate_Retour();
+                    $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                }
             }
+            $disponibility = new Disponibility();
+            $disponibility->setStart($start);
+            array_push($dispoArray,$disponibility);
         }
-        $disponibility = new Disponibility();
-        $disponibility->setStart($start);
-        array_push($dispoArray,$disponibility);
+        usort($dispoArray, function($a, $b) {
+            return strtotime($a->getStart()) - strtotime($b->getStart());
+        });
         $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
         $this->user = $user;
         return $this->render('frontoffice/car.html.twig', [
@@ -417,7 +438,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/booking/{id}", name="front_office_booking", methods={"GET", "POST"})
      */
-    public function booking( Vehicule $vehicule, LocationRepository $locationRepository, Request $request): Response
+    public function booking( Vehicule $vehicule, LocationRepository $locationRepository,VehiculeRepository $vehiculesRepo, Request $request): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -433,30 +454,34 @@ class FrontofficeController extends AbstractController
         }
         $DP = strtotime($_GET['DP']);
         $DD = strtotime($_GET['DD']);
-        $dispo = true;
-        foreach($vehicule->getLocations() as $location) {
-            $location_DP = strtotime($location->getDate_Loc());
-            $location_DD = strtotime($location->getDate_Retour());
-            if($location_DP<=$DP && $location_DD>=$DP) {
-                $dispo = false;
+        $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
+        foreach($vehicules as $veh) {
+            $dispo = true;
+            foreach($veh->getLocations() as $location) {
+                $location_DP = strtotime($location->getDate_Loc());
+                $location_DD = strtotime($location->getDate_Retour());
+                if($location_DP<=$DP && $location_DD>=$DP) {
+                    $dispo = false;
+                }
+                if($location_DP<=$DD && $location_DD>=$DD) {
+                    $dispo = false;
+                }
             }
-            if($location_DP<=$DD && $location_DD>=$DD) {
-                $dispo = false;
+            if($dispo) {
+                $this->user = $user;
+                return $this->render('frontoffice/booking.html.twig', [
+                    'vehicule' => $veh,
+                    'form' => $form->createView(),
+                    'GET' => $_GET,
+                    'today' => $today,
+                    'DP' => date("Y-m-d",$DP),
+                    'DD' => date("Y-m-d",$DD)
+                ]); 
             }
         }
         if(!$dispo) {
             $this->user = $user;
             return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
-        } else {
-            $this->user = $user;
-            return $this->render('frontoffice/booking.html.twig', [
-                'vehicule' => $vehicule,
-                'form' => $form->createView(),
-                'GET' => $_GET,
-                'today' => $today,
-                'DP' => date("Y-m-d",$DP),
-                'DD' => date("Y-m-d",$DD)
-            ]);                            
         }
            
         

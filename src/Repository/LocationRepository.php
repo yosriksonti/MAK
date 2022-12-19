@@ -40,6 +40,19 @@ class LocationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByModele(String $modele) : array {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT l, v
+            FROM App\Entity\Location l
+            INNER JOIN l.Vehicule v
+            WHERE v.Modele = :modele'
+        )->setParameter('modele', $modele);
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Location[] Returns an array of Location objects
 //     */
