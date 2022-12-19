@@ -128,6 +128,7 @@ class FrontofficeController extends AbstractController
         print_r($content);
         if($payment->getStatus() == "pending" && $content["status"] == "pending") {
             $payment->setStatus("paid");
+            $payment->setCreatedOn(new \DateTime("now"));
             $paymentRepo->add($payment, true);
             $location = $payment->getLocation();
             $location->setStatus("Confirmée");
@@ -137,12 +138,6 @@ class FrontofficeController extends AbstractController
             ->from(new Address('w311940@gmail.com', 'Makrent car'))
             ->to($user->getEmail())
             ->subject('Confirmation')
-            // timezone of the emaail
-            ->context([
-                'user' => $user,
-                'location' => $location,
-                'payment' => $payment,
-            ])
             ->htmlTemplate('email/successful-email.html.twig');
 
         try {
