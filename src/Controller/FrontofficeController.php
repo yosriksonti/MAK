@@ -59,7 +59,7 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
-        $vehicules = $vehiculeRepository->findAll();
+        $vehicules = $vehiculeRepository->findByModele();
         
         usort($vehicules, function($a, $b){
             return count($a->getFeedback()) < count($b->getFeedback());
@@ -434,7 +434,7 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('dashboard_index');
         }
         return $this->render('frontoffice/cars.html.twig', [
-            'vehicules' => $vehiculeRepository->findAll(),
+            'vehicules' => $vehiculeRepository->findByModele(),
         ]);
     }
     /**

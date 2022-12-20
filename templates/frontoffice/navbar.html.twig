@@ -17,8 +17,8 @@
                   <div class="col-lg-6 col-md-7">
                      <div class="rightside full-height">
                         <ul class="custom-flex full-height">
-                         <li class="book-appointment" style = "margin-right: 4px;"><a href="/login">Login </a></li>
-                         <li class="book-appointment"><a href="/signup">Sign up </a></li>
+                         <li class="book-appointment" style = "margin-right: 4px;"><a href="/login">Se connecter </a></li>
+                         <li class="book-appointment"><a href="/signup">Créer un compte </a></li>
                         </ul>
                      </div>
                   </div>
@@ -39,7 +39,7 @@
                                  <li class="menu-item"><a href="{{ path('home_index') }}">Acceuil</a></li>
                                  <li class="menu-item "><a href="{{ path('front_office_cars') }}">Vehicules</a></li>
                                  {% if app.user %} <li class="menu-item "><a href="{{ path('front_office_profile') }}">Profile</a></li> {% endif %}
-                                 {% if app.user %} <li class="menu-item "><a href="{{ path('logout') }}">Logout</a></li> {% endif %}
+                                 {% if app.user %} <li class="menu-item "><a href="{{ path('logout') }}">Se déconnecter</a></li> {% endif %}
 
                               </ul>
                            </div>
