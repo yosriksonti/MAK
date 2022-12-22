@@ -35,7 +35,7 @@
                                        {{ form_widget(form.Avance, {'attr':{'class':'hidden-row'}, "value" : "0"}) }}                                                                                            
                                        {{ form_widget(form.Type, {'attr':{'class':'hidden-row'}, "value" : "Location"}) }}                                                                                            
                                        {{ form_widget(form.Etat, {'attr':{'class':'hidden-row'}, "value" : "Pending"}) }}                                                                                            
-                                       {{ form_widget(form.Status, {'attr':{'class':'hidden-row'}, "value" : "En Cours"}) }}
+                                       {{ form_widget(form.Status, {'attr':{'class':'hidden-row'}, "value" : "Non Confirmée"}) }}
                                        {{ form_widget(form.Vehicule, {'attr':{'class':'hidden-row'}, "value" : vehicule.id}) }}
                                        {{ form_widget(form.Agence_Depart, {'attr':{'class':'hidden-row'}, "value" : GET['AP']}) }}
                                        {{ form_widget(form.Agence_Arrive, {'attr':{'class':'hidden-row'}, "value" : GET['AD']}) }}
@@ -75,7 +75,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Baby Seat</label>
+                                             <label class="fs-14 text-custom-black fw-500">Siège Bébé</label>
                                              <div class="group-form">
                                              <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['BS'] ? "Oui" : "Non" }}">
                                              </div>
@@ -83,7 +83,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Super Theift Weaver</label>
+                                             <label class="fs-14 text-custom-black fw-500">Super Tisserand Voleur</label>
                                              <div class="group-form">
                                              <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['STW'] ? "Oui" : "Non" }}">
                                              </div>                                          
@@ -134,11 +134,11 @@
                                        <div class="col-12">
                                           <div class="car-grid mb-xl-30">
                                              <div class="car-grid-wrapper bx-wrapper">
-                                                <div class="image-sec animate-img"> <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"> </div>
+                                                <div class="image-sec animate-img"><a href ="{{ path('front_office_car', {'id': vehicule.id}) }}"> <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"> </a></div>
                                                 <div class="car-grid-caption padding-20 bg-custom-white p-relative">
-                                                   <h4 class="title fs-16"><a href="#" class="text-custom-black">{{ vehicule.Marque}} : {{ vehicule.Modele }}<small class="text-light-dark">Total</small></a></h4>
+                                                   <h4 class="title fs-16"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}" class="text-custom-black">{{ vehicule.Marque}} : {{ vehicule.Modele }}<small class="text-light-dark">Total</small></a></h4>
                                                    <span class="price"><small></small>{{prix}} DT {{vehicule.isVAT ? "TTC" : "" }} <small><b>( {{vehicule.Caut}} DT Cautionnement )</b></small> </span></br>
-                                                   <div class="action"> <a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">View</a></div>
+                                                   <div class="action"> <a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">Voir</a></div>
                                                 </div>
                                              </div>
                                           </div>

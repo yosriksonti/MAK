@@ -30,9 +30,12 @@ class FeedbackType extends AbstractType
             ])
             ->add('Vehicule',EntityType::class, [
                 'class' => Vehicule::class,
+                'placeholder' => '',
+                'required' => false,
+                'empty_data' => '',
                 'choice_label' => function($cin){
                     return $cin->getMatricule();
-                },
+                }
             ])
             ->add('Visible',ChoiceType::class,[
                 'choices' => [

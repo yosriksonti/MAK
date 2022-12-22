@@ -126,28 +126,28 @@ class Park
     }
     public function getDebut_HS(): ?string
     {
-        $newDate = $this->DebutHS->format('d/m/Y');
+        $newDate = $this->DebutHS->format('Y-m-d');
 
         return $newDate;
     }
 
     public function getFin_HS(): ?string
     {
-        $newDate = $this->FinHS->format('d/m/Y');
+        $newDate = $this->FinHS->format('Y-m-d');
 
         return $newDate;    
     }
 
     public function getDebut_BS(): ?string
     {
-        $newDate = $this->DebutBS->format('d/m/Y');
+        $newDate = $this->DebutBS->format('Y-m-d');
 
         return $newDate;
     }
 
     public function getFin_BS(): ?string
     {
-        $newDate = $this->FinBS->format('d/m/Y');
+        $newDate = $this->FinBS->format('Y-m-d');
 
         return $newDate;
     }

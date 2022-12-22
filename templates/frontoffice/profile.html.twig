@@ -93,17 +93,22 @@
                                     <h5 class="text-custom-black">Reservations</h5>
                                     {% for reservation in app.user.locations %}
                                           <hr>
-                                          <p class="fw-600"><a href="/reservation/{{ reservation.Num }}" class="text-custom-black"><b>{{ reservation.Vehicule.Marque }} : {{ reservation.Vehicule.Modele }}</b> du {{reservation.Date_Loc }} jusqu'à {{reservation.Date_Retour }}<a></p>
+                                          <small style="float : right">{{reservation.Status}}</small>
+                                          <p class="fw-600"><a href="/reservation/{{ reservation.Num }}" class="text-custom-black"><b>{{ reservation.Vehicule.Marque }} : {{ reservation.Vehicule.Modele }}</b><a></p>
+                                          <span>Du <b>{{reservation.Date_Loc }}</b> jusqu'à <b>{{reservation.Date_Retour }}</b></span>
                                     {% endfor %}
                                     
                                  </div>
                                  <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
                                     <h5 class="text-custom-black">Paiements</h5>
                                     {% for payment in app.user.payments %}
+                                          {% if payment.status != "pending"%}
                                           <hr>
-                                          <p class="fw-600"><a href="/reservation/{{ payment.Location.Num }}" class="text-custom-black"><b>Num Reservation</b> : {{ payment.Location.Num }}</p>
-                                          <p class="fw-600"><a href="#" class="text-custom-black"><b>ID</b> : {{ payment.sessionId }}</a></p>
-                                          <p class="fw-600"><a href="#" class="text-custom-black"><b>Montant</b> : {{ payment.total }} DT </a><small style="float : right">{{ payment.created_On }}</br>{{ payment.status }}</small></p>
+                                          <p class="fw-600"><a href="/reservation/{{ payment.Location.Num }}" class="text-custom-black"><b>Num Reservation</b> : {{ payment.Location.Num }}</a></p>
+                                          <p class="fw-600"><a href="/car/{{ payment.Location.Vehicule.id }}" class="text-custom-black"><b>Vehicule</b> : {{ payment.Location.Vehicule.Marque }} {{ payment.Location.Vehicule.Modele }}</a></p>
+                                          <p class="fw-600"><b>ID</b> : {{ payment.sessionId }}</p>
+                                          <p class="fw-600"><b>Montant</b> : {{ payment.total }} DT <small style="float : right">{{ payment.created_On }}</br>{{ payment.status }}</small></p>
+                                          {% endif %}
                                     {% endfor %}
                                     
                                  </div>

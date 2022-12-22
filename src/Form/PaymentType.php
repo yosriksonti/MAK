@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Payment;
-use App\Entity\User;
+use App\Entity\Client;
 use App\Entity\Location;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -22,8 +22,8 @@ class PaymentType extends AbstractType
             ->add('createdOn',DateType::class, [ 
                 'widget' => 'single_text',
                 ])
-            ->add('User', EntityType::class, [
-                'class' => User::class,
+            ->add('Client', EntityType::class, [
+                'class' => Client::class,
                 'choice_label' => function($cin){
                     return $cin->getCIN();
                 },

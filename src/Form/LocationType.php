@@ -280,7 +280,15 @@ class LocationType extends AbstractType
             ->add('Avance')
             ->add('Type')
             ->add('Etat')
-            ->add('Status')
+            ->add('Status',ChoiceType::class, [
+                'choices'  => [
+                    "Non Confirmée" => "Non Confirmée",
+                    "Confirmée" => "Confirmée",
+                    "En Cours" => "En Cours",
+                    "Validée" => "Validée",
+                    "Annulée" => "Annulée"
+                ]
+            ])
             ->add('Client', EntityType::class, [
                 'class' => Client::class,
                 'choice_label' => function($nom){
