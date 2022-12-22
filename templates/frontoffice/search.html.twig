@@ -56,14 +56,9 @@
                               </div>
                               <hr>
                               <div class="checkbox-group">
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Volkswagen"><span class="checkmark"></span>Volkswagen </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Mercedes"><span class="checkmark"></span>Mercedes </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Kia"><span class="checkmark"></span>Kia </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Hyndai"><span class="checkmark"></span>Hyndai </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Opel"><span class="checkmark"></span>Opel </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Renault"><span class="checkmark"></span>Renault </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Seat"><span class="checkmark"></span>Seat </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Suzuki"><span class="checkmark"></span>Suzuki </label></div>
+                              {% for marque in marques %}
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="{{marque.Marque}}" {% if Mq[marque.Marque] is defined %}checked{% endif %}><span class="checkmark"></span>{{marque.Marque}}</label></div>
+                              {% endfor %}
                               </div>
                               <button type="submit" class="btn-first btn-submit full-width btn-height">Rechercher</button>
                            </form>

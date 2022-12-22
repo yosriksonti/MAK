@@ -286,6 +286,7 @@ class FrontofficeController extends AbstractController
         $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
         $vehicules_raw = $vehiculeRepository->findByModele();
         $vehicules = [];
+        $marques = $vehiculeRepository->findByMarque();
         $Mq = [];
         $isset_mq = isset($_GET['Mq']);
         if($isset_mq) {
@@ -332,9 +333,9 @@ class FrontofficeController extends AbstractController
                     if( $location_DD<=$DD && $location_DP>=$DP) {
                         $dispo = false ;
                     }
-                    if($isset_mq && !isset($Mq[$vehicule_raw->getMarque()])) {
-                        $dispo = false;
-                    }
+                }
+                if($isset_mq && !isset($Mq[$veh->getMarque()])) {
+                    $dispo = false;
                 }
                 if($dispo) {
                     if(!$push) {
@@ -357,6 +358,8 @@ class FrontofficeController extends AbstractController
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
+            'marques' => $marques,
+            'Mq' => $Mq,
             'dispo' => $dispoCarsArray,
             'GET' => $_GET
         ]);
