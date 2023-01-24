@@ -43,28 +43,16 @@
                                     Modele
                                 </th>
                                 <th>
-                                    Categorie
-                                </th>
-                                <th>
                                     Boite
                                 </th>
                                 <th>
                                     Carburant
                                 </th>
                                 <th>
-                                    Nb Places
-                                </th>
-                                <th>
-                                    Nb Portes
-                                </th>
-                                <th>
-                                    Nb Valises
+                                    Places
                                 </th>
                                 <th>
                                     Cautionnement
-                                </th>
-                                <th>
-                                    Photo Default
                                 </th>
                                 <th>
                                     actions
@@ -87,9 +75,6 @@
                                         {{ vehicule.Modele }}
                                     </td>
                                     <td>
-                                        {{ vehicule.Categorie }}
-                                    </td>
-                                    <td>
                                         {{ vehicule.Boite }}
                                     </td>
                                     <td>
@@ -99,16 +84,7 @@
                                         {{ vehicule.NbPlaces }}
                                     </td>
                                     <td>
-                                        {{ vehicule.NbPortes }}
-                                    </td>
-                                    <td>
-                                        {{ vehicule.NbVal }}
-                                    </td>
-                                    <td>
                                         {{ vehicule.Caut }}
-                                    </td>
-                                    <td>
-                                        <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" width="50px" height="25px" />
                                     </td>
                                     <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('vehicule_show', {'id': vehicule.id}) }}">

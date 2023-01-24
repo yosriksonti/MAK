@@ -154,13 +154,13 @@ class FrontofficeController extends AbstractController
             ->subject('Confirmation')
             ->htmlTemplate('email/successful-email.html.twig');
 
-        try {
-            $mailer->send($email);
-        } catch (TransportExceptionInterface $e) {
-            
-        }
+            try {
+                $mailer->send($email);
+            } catch (TransportExceptionInterface $e) {
+                
+            }
 
-        return $this->redirectToRoute('front_office_profile',["paymentSuccess" => true], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_profile',["paymentSuccess" => true], Response::HTTP_SEE_OTHER);
 
         } else {
             $payment->setStatus($content["status"]);

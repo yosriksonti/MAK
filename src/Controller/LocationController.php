@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 /**
  * @Route("/location")
@@ -68,7 +72,7 @@ class LocationController extends AbstractController
     /**
      * @Route("/{id}/edit", name="location_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Location $location, LocationRepository $locationRepository, NotificationRepository $notificationRepo): Response
+    public function edit(Request $request, Location $location, LocationRepository $locationRepository, NotificationRepository $notificationRepo, MailerInterface $mailer): Response
     {
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         $form = $this->createForm(LocationType::class, $location);
@@ -76,7 +80,33 @@ class LocationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $locationRepository->add($location, true);
+            if($location->getStatus() === "Validée") {
+                $user = $location->getClient();
+                $email = (new TemplatedEmail())
+                ->from(new Address('w311940@gmail.com', 'Makrent car'))
+                ->to($user->getEmail())
+                ->subject('Location validée! Comment était votre expérience?')
+                ->htmlTemplate('email/successful-email.html.twig');
 
+                try {
+                    $mailer->send($email);
+                } catch (TransportExceptionInterface $e) {
+                    
+                }
+            } else if($location->getStatus() === "Annulée") {
+                $user = $location->getClient();
+                $email = (new TemplatedEmail())
+                ->from(new Address('w311940@gmail.com', 'Makrent car'))
+                ->to($user->getEmail())
+                ->subject('Location anulée!')
+                ->htmlTemplate('email/successful-email.html.twig');
+
+                try {
+                    $mailer->send($email);
+                } catch (TransportExceptionInterface $e) {
+                    
+                }
+            }
             return $this->redirectToRoute('location_index', [], Response::HTTP_SEE_OTHER);
         }
 
