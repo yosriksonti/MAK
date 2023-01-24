@@ -6,6 +6,9 @@
 parameters:
     locale: en
     upload_directory: '%kernel.project_dir%/public/uploads'
+    sms_gateway.baseurl: '%env(resolve:SMSGATEWAY_BASEURL)%'
+    sms_gateway.apikey: '%env(resolve:SMSGATEWAY_APIKEY)%'
+    sms_gateway.apikeyprefix: '%env(resolve:SMSGATEWAY_APIKEYPREFIX)%'
 
 services:
     # default configuration for services in *this* file
