@@ -15,17 +15,13 @@
                                     <!-- tags & social -->
                                     
                                     <!-- tags & social --><!-- post author -->
-                                    <div class="post-author bg-light-white padding-15 mb-xl-20">
+                                    <div class="bg-light-white padding-15 mb-xl-20">
                                        <div class="author-caption">
                                        {{ form_start(form) }}
-                                          <div class="row">
-                                             <div class="col-12">
                                                 <div class="form-group">
                                                    <label class="text-custom-black fw-500 fs-14">E-mail</label>
                                                    {{ form_widget(form.email, {'attr':{'class':'form-control form-control-custom'}}) }}                                                 
                                                 </div>
-                                             </div>
-                                          </div>
                                           <div class="row">
                                              <div class="col-6">
                                                 <div class="form-group">
@@ -41,19 +37,21 @@
                                              </div>
                                           </div>
                                           <div class="row">
-                                             <div class="col-4">
+                                          <div hidden>
+                                             <div class="col-0">
                                                 <div class="form-group">
                                                    <label class="text-custom-black fw-500 fs-14">Pays</label>
                                                    {{ form_widget(form.Pays, {'attr':{'class':'form-control form-control-custom'}}) }}                                                 
                                                 </div>
                                              </div>
-                                             <div class="col-4">
+                                          </div>
+                                             <div class="col-6">
                                                 <div class="form-group">
-                                                   <label class="text-custom-black fw-500 fs-14">Date de Naissance</label>
+                                                   <label class="text-custom-black fw-500 fs-14">Naissance</label>
                                                    {{ form_widget(form.Date_Naissance, {'attr':{'class':'form-control form-control-custom'}}) }} 
                                                 </div>
                                              </div>
-                                             <div class="col-4">
+                                             <div class="col-6">
                                                 <div class="form-group">
                                                    <label class="text-custom-black fw-500 fs-14">Télephone</label>
                                                    {{ form_widget(form.Telephone, {'attr':{'class':'form-control form-control-custom'}}) }} 
@@ -74,6 +72,7 @@
                                                 </div>
                                              </div>
                                           </div>
+                                          <div hidden>
                                           <div class="row">
                                              <div class="col-8">
                                                 <div class="form-group">
@@ -84,10 +83,12 @@
                                              <div class="col-4">
                                                 <div class="form-group">
                                                    <label class="text-custom-black fw-500 fs-14">Date Livraison</label>
-                                                   {{ form_widget(form.Date_Permis, {'attr':{'class':'form-control form-control-custom',"required" : "false"}}) }}                                                 
+                                                   {{ form_widget(form.Date_Permis, {'attr':{'class':'form-control form-control-custom'}}) }}                                                 
                                                 </div>
                                              </div>
                                           </div>
+                                          </div>
+                                          <div hidden>
                                           <div class="row">
                                              <div class="col-8">
                                                 <div class="form-group">
@@ -101,6 +102,7 @@
                                                    {{ form_widget(form.Date_CIN, {'attr':{'class':'form-control form-control-custom'}}) }}                                                 
                                                 </div>
                                              </div>
+                                          </div>
                                           </div>
                                           {{ form_rest(form) }}
                                           </br>

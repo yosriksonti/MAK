@@ -51,7 +51,8 @@ class VehiculeType extends AbstractType
             ])
             ->add('Description')
             ->add('Description_Det')
-            ->add('Grise', VichImageType::class, [
+            ->add('Grise', 
+                VichImageType::class, [
                 'required' => false,
                 'image_uri' => false,
                 'delete_label' => false,

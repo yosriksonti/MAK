@@ -25,7 +25,7 @@ class Client extends User
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $Pays;
 
@@ -60,7 +60,7 @@ class Client extends User
     private $CIN;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $Date_CIN;
 
@@ -102,7 +102,7 @@ class Client extends User
         return $this->Pays;
     }
 
-    public function setPays(string $Pays): self
+    public function setPays(?string $Pays): self
     {
         $this->Pays = $Pays;
 
@@ -198,7 +198,7 @@ class Client extends User
         return $this->Date_CIN;
     }
 
-    public function setDateCIN(DateTimeInterface $dateTime): self
+    public function setDateCIN(?DateTimeInterface $dateTime): self
     {
         $this->Date_CIN = $dateTime;
 

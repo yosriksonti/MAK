@@ -381,7 +381,7 @@ class Vehicule
         return $this->Reel;
     }
 
-    public function setReel(?File $reel = null): void
+    public function setReel(?File $reel): void
     {
         $this->Reel = $reel;
 
@@ -395,7 +395,7 @@ class Vehicule
         return $this->Grise;
     }
 
-    public function setGrise(?File $grise = null): void
+    public function setGrise(?File $grise): void
     {
         $this->Grise = $grise;
 
@@ -409,7 +409,7 @@ class Vehicule
         return $this->Def;
     }
 
-    public function setDef(?File $def = null): void
+    public function setDef(?File $def): void
     {
         $this->Def = $def;
 
@@ -423,7 +423,7 @@ class Vehicule
         return $this->Saison;
     }
 
-    public function setSaison(?File $saison = null): void
+    public function setSaison(?File $saison): void
     {
         $this->Saison = $saison;
 
