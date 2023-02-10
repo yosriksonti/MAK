@@ -56,14 +56,9 @@
                               </div>
                               <hr>
                               <div class="checkbox-group">
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Volkswagen"><span class="checkmark"></span>Volkswagen </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Mercedes"><span class="checkmark"></span>Mercedes </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Kia"><span class="checkmark"></span>Kia </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Hyndai"><span class="checkmark"></span>Hyndai </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Opel"><span class="checkmark"></span>Opel </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Renault"><span class="checkmark"></span>Renault </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Seat"><span class="checkmark"></span>Seat </label></div>
-                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="Suzuki"><span class="checkmark"></span>Suzuki </label></div>
+                              {% for marque in marques %}
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="{{marque.Marque}}" {% if Mq[marque.Marque] is defined %}checked{% endif %}><span class="checkmark"></span>{{marque.Marque}}</label></div>
+                              {% endfor %}
                               </div>
                               <button type="submit" class="btn-first btn-submit full-width btn-height">Rechercher</button>
                            </form>
@@ -82,9 +77,9 @@
                      <div class="col-md-12">
                         <div class="car-grid mb-xl-30">
                            <div class="car-grid-wrapper car-grid bx-wrapper">
-                              <div class="image-sec animate-img"><a href="#"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"></a></div>
+                              <div class="image-sec animate-img"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"></a></div>
                               <div class="car-grid-caption padding-20 bg-custom-white p-relative">
-                                 <h4 class="title fs-16"><a href="#" class="text-custom-black">{{ vehicule.Marque }} : {{ vehicule.Modele }}<small class="text-light-dark">Par Jour</small></a></h4>
+                                 <h4 class="title fs-16"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}" class="text-custom-black">{{ vehicule.Marque }} : {{ vehicule.Modele }}<small class="text-light-dark">Par Jour</small></a></h4>
                                  <span class="price" style="text-align : center"><p><sup style="font-size : 20px">{{ vehicule.Prix }} DT {{vehicule.isVAT ? "TTC" : "" }}</sup></br><sub style="font-size : 14px ; color : black;">+ {{ vehicule.Caut }} DT</br>Cautionnement</sub></p> </span>
                                  <p><i class='fa fa-gear'></i> {{ vehicule.Boite }} |<i class='fa fa-snowflake'></i> {{ vehicule.Clim ? 'Oui' : 'Non' }} | <i class='fa fa-user'></i> {{ vehicule.NbPlaces }} | <i class='fa fa-briefcase'></i> {{ vehicule.NbVal }}</p>
                                  <div class="row">

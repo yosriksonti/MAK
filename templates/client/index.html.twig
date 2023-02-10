@@ -35,13 +35,7 @@
                                         Email                                   
                                     </th>
                                     <th>
-                                        Prenom                                   
-                                    </th>
-                                    <th>
                                         Nom                                   
-                                    </th>
-                                    <th>
-                                        Pays                                   
                                     </th>
                                     <th>
                                         Telephone                                   
@@ -53,10 +47,7 @@
                                         CIN                                   
                                     </th>
                                     <th>
-                                        Date_Naissance                                   
-                                    </th>
-                                    <th>
-                                        actions                                   
+                                        Actions                                   
                                     </th>
                                 </tr>
                             </tr>
@@ -73,12 +64,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {{ client.Name }}
-                                    </td>
-                                    <td>
-                                        {{ client.Lastname }}
-                                    <td>
-                                        {{ client.Pays }}
+                                        {{ client.Name }} {{ client.Lastname }}
                                     </td>
                                     <td>
                                         {{ client.Telephone }}
@@ -90,14 +76,11 @@
                                         {{ client.CIN }}
                                     </td>
                                     <td>
-                                        {{ client.DateNaissance ? client.DateNaissance|date('Y-m-d') : '' }}
-                                    </td>
-                                    <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('client_show', {'id': client.id}) }}">
-                                            <i data-feather="eye"></i>
+                                            <i class="fa-solid fa-eye"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('client_edit', {'id': client.id}) }}">
-                                            <i data-feather="edit"></i>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2">
                                             {{ include('client/_delete_form.html.twig') }}

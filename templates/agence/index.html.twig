@@ -8,7 +8,7 @@
                         <div class="col-auto mb-3">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon">
-                                    <i data-feather="eye"></i>
+                                    <i class="fa-solid fa-eye"></i>
                                 </div>
                                  Liste des Agences                                                                                                                 
                             </h1>
@@ -58,10 +58,10 @@
                                     </td>
                                     <td width="10%">
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('agence_show', {'id':  agence.id}) }}">
-                                            <i data-feather="eye"></i>
+                                            <i class="fa-solid fa-eye"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('agence_edit', {'id':  agence.id}) }}">
-                                            <i data-feather="edit"></i>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2">
                                             {{ include('agence/_delete_form.html.twig') }}

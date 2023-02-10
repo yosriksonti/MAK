@@ -8,7 +8,7 @@
                         <div class="col-auto mb-3">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon">
-                                    <i data-feather="eye"></i>
+                                    <i class="fa-solid fa-eye"></i>
                                 </div>
                                 Liste des Véhicules                                                                                                                 
                             </h1>
@@ -59,9 +59,6 @@
                                     Caut
                                 </th>
                                 <th>
-                                    Photo Default
-                                </th>
-                                <th>
                                     actions
                                 </th>
                             </tr>
@@ -97,14 +94,11 @@
                                         {{ vehicule.Caut }}
                                     </td>
                                     <td>
-                                        <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" width="50px" height="25px" />
-                                    </td>
-                                    <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('vehicule_show', {'id': vehicule.id}) }}">
-                                            <i data-feather="eye"></i>
+                                            <i class="fa-solid fa-eye"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('vehicule_edit', {'id': vehicule.id}) }}">
-                                            <i data-feather="edit"></i>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2">
                                             {{ include('vehicule/_delete_form.html.twig') }}
