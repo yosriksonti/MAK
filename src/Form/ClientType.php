@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ClientType extends AbstractType
 {
@@ -27,22 +29,32 @@ class ClientType extends AbstractType
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
             ])
-            ->add('Pays')
+            ->add('Pays', TextType::class, [
+                'required' => false,
+                'empty_data' => ''
+            ]) 
             ->add('Telephone')
             ->add('Add1')
             ->add('Add2')
-            ->add('Permis')
+            ->add('Permis', TextType::class, [
+                'required' => false,
+                'empty_data' => null
+            ])
             ->add('Date_Permis',DateType::class, [ 
                 'widget' => 'single_text',
+                'required' => false,
+                'mapped' => false,
                 ])
-            ->add('CIN')
+            ->add('CIN', TextType::class, [
+                'required' => false,
+            ])
             ->add('Date_CIN',DateType::class, [ 
                 'widget' => 'single_text',
+                'required' => false,
                 ])
             ->add('Date_Naissance',DateType::class, [ 
                 'widget' => 'single_text',
                 ])
-            //->add('User')
         ;
     }
 
