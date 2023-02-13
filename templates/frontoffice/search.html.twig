@@ -103,7 +103,20 @@
                                        </select> 
                                     </div>   
                                  </div>
-                                 <div class="action"><a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">Voir</a></div>
+                                 <div class="row">
+                                    <div class="col-md-6">
+                                       <div class="action"><a class="full-width" href="{{ path('front_office_car', {'id': vehicule.id}) }}"><button class="btn-first btn-submit full-width btn-height">Voir</button></a></div>
+                                    </div>
+                                     <div class="col-md-6">
+                                       <form action="/booking/{{ vehicule.id }}" method="GET">
+                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="AP" value="{{ GET['AP'] }}">                                              
+                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="DP" value="{{ GET['DP'] }}">
+                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="AD" value="{{ GET['AD'] }}">                                           
+                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="DD" value="{{ GET['DD'] }}">
+                                          <div class="action"><button class="btn-first btn-submit full-width btn-height" type = "submit">Reserver</a></div>
+                                       </form>
+                                    </div>
+                                 </div>
                               </div>
                            </div>
                         </div>

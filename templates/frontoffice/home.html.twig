@@ -15,90 +15,92 @@
                                  <li class="text-custom-white"><i class="fas fa-laptop"></i>Reservation facile </li>
                                  <li class="text-custom-white"><i class="fas fa-headphones-alt"></i>24/7 Service client </li>
                               </ul>
-                              <a href="{{ path('front_office_cars') }}" class="btn-first btn-small">Notre Gallerie</a>
                            </div>
                         </div>
                      </div>
+
+                     <!-- Start Banner tabs -->
+                        <div class="container">
+                           <div class="row">
+                              <div class="col-12">
+                                 <div class="tabs">
+                                    <div class="tab-content">
+                                       <div class="tab-pane active" id="cars">
+                                          <div class="tab-inner">
+                                             <form action="/search">
+                                                <div class="row">
+                                                   <div class="col-lg-4 col-md-6">
+                                                      <div class="form-group">
+                                                         <label class="fs-14 text-custom-white fw-600">Depart</label>
+                                                         <select class="custom-select form-control form-control-custom" name="AP">
+                                                         {% for  agence in  agences %}
+                                                            <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                                            {% endfor %}
+                                                         </select>                                       
+                                                      </div>
+                                                      <div class="row">
+                                                         <div class="col-12">
+                                                            <div class="form-group">
+                                                               <label class="fs-14 text-custom-white fw-600">Date Depart</label>
+                                                               <div class="input-group group-form">
+                                                                  <input type="text" name="DP" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly>
+                                                                  <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                               </div>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6">
+                                                      <div class="form-group">
+                                                         <label class="fs-14 text-custom-white fw-600">Retour</label>
+                                                         <select class="custom-select form-control form-control-custom" name="AD">
+                                                            {% for  agence in  agences %}
+                                                            <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                                            {% endfor %}
+                                                         </select>                                     
+                                                      </div>
+                                                      <div class="row">
+                                                         <div class="col-12">
+                                                            <div class="form-group">
+                                                               <label class="fs-14 text-custom-white fw-600">Date Retour</label>
+                                                               <div class="input-group group-form">
+                                                                  <input type="text" name="DD" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly>
+                                                                  <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                               </div>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-12">
+                                                      <div class="row">
+                                                         <div class="col-12">
+                                                            <div class="form-group">
+                                                               <label class="submit"></label>
+                                                               <button class="btn-first btn-submit full-width btn-height">Rechercher</button>
+                                                            </div>
+                                                            <div class="form-group">
+                                                               <label class="submit"></label>
+                                                               <a href="{{ path('front_office_cars') }}" class="btn-first btn-small full-width btn-height">Notre Gallerie</a>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     <!-- End Banner tabs -->
                   </div>
                </div>
             </div>
          </div>
       </div>
       <!-- End Slider -->
-      <!-- Start Banner tabs -->
-      <div class="banner-tabs">
-         <div class="container">
-            <div class="row">
-               <div class="col-12">
-                  <div class="tabs">
-                     <div class="tab-content">
-                        <div class="tab-pane active" id="cars">
-                           <div class="tab-inner">
-                              <form action="/search">
-                                 <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                       <div class="form-group">
-                                          <label class="fs-14 text-custom-white fw-600">Depart</label>
-                                          <select class="custom-select form-control form-control-custom" name="AP">
-                                            {% for  agence in  agences %}
-                                             <option value="{{  agence.id }}">{{  agence.Nom }}</option>
-                                             {% endfor %}
-                                          </select>                                       
-                                       </div>
-                                       <div class="row">
-                                          <div class="col-12">
-                                             <div class="form-group">
-                                                <label class="fs-14 text-custom-white fw-600">Date Depart</label>
-                                                <div class="input-group group-form">
-                                                   <input type="text" name="DP" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly>
-                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                       <div class="form-group">
-                                          <label class="fs-14 text-custom-white fw-600">Retour</label>
-                                          <select class="custom-select form-control form-control-custom" name="AD">
-                                             {% for  agence in  agences %}
-                                             <option value="{{  agence.id }}">{{  agence.Nom }}</option>
-                                             {% endfor %}
-                                          </select>                                     
-                                       </div>
-                                       <div class="row">
-                                          <div class="col-12">
-                                             <div class="form-group">
-                                                <label class="fs-14 text-custom-white fw-600">Date Retour</label>
-                                                <div class="input-group group-form">
-                                                   <input type="text" name="DD" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly>
-                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-12">
-                                       <div class="row">
-                                          <div class="col-12">
-                                             <div class="form-group">
-                                                <label class="submit"></label>
-                                                <button class="btn-first btn-submit full-width btn-height">Rechercher</button>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </form>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <!-- End Banner tabs -->
       <!-- Recommended Cars -->
       <section class="section-padding car-booking">
          <div class="container">

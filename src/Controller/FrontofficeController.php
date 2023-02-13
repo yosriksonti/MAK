@@ -217,9 +217,11 @@ class FrontofficeController extends AbstractController
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
+        $today = date('Y-m-d');
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $client->setDatePermis(new \DateTime());
+            $client->setDateCIN(new \DateTime());
             $client->setPassword($this->passwordHasher->hashPassword(
                 $client,
                 $form->get('password')->getData()
@@ -240,6 +242,7 @@ class FrontofficeController extends AbstractController
         return $this->renderForm('frontoffice/signup.html.twig', [
             'client' => $client,
             'form' => $form,
+            'today' => $today
         ]);
     }
     /**
@@ -550,21 +553,21 @@ class FrontofficeController extends AbstractController
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
         $today = date('Y-m-d');
+        $caut = $vehicule->getCaut();
+        $park = $vehicule->getPark();
+        $isBS = strtotime($park->getDebut_HS())>strtotime($today) || strtotime($park->getFin_HS())<strtotime($today);
         if ($form->isSubmitted() ) {
             $location->setVehicule($vehicule);
             $location->setClient($this->getUser());
             $location->setDateRes(new \DateTime());
             $location->setDateLoc(new \DateTime($location->getDate_Loc()));
             $location->setDateRetour(new \DateTime($location->getDate_Retour()));
-            $caut = $vehicule->getCaut();
-            $park = $vehicule->getPark();
             $amount = 0;
-            if(strtotime($park->getDebut_HS())>strtotime($today) || strtotime($park->getFin_HS())<strtotime($today)) {
-                $amount = $caut;
-            } else {
-                $montant = $location->getMontant()-$caut;
+            $montant = $location->getMontant();
+            if($isBS) {
                 $amount = ($montant*50)/100;
-                $amount += $caut;
+            } else {
+                $amount += $montant;
             }
             $location->setAvance($amount);
             if($form->isValid()) {
@@ -577,8 +580,12 @@ class FrontofficeController extends AbstractController
                 $notification->setSeen(false);
                 $notificationRepo->add($notification,true);
                 $this->user = $user;
-                
-                return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
+                if($_POST['METHD'] == "EL") {
+                    return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
+                } else {
+                    return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
+
+                }
             }
         } else {
             if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD']) || !isset($_GET['AP']) || empty($_GET['AP']) 
@@ -613,7 +620,7 @@ class FrontofficeController extends AbstractController
                         $prix = $prix - ($prix * $promo->getPourcentage())/100;
                     }
                 }
-                $prix = $prix * ($interval->days + 1) + $vehicule->getCaut();
+                $prix = $prix * ($interval->days + 1);
                 return $this->render('frontoffice/preview.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),
@@ -624,6 +631,7 @@ class FrontofficeController extends AbstractController
                     'DP' => $DP,
                     'DD' => $DD,
                     'prix' => $prix,
+                    'isBS' => $isBS
                     
                 ]);  
             }

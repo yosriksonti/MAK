@@ -83,7 +83,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Super Tisserand Voleur</label>
+                                             <label class="fs-14 text-custom-black fw-500">Assurance Passager</label>
                                              <div class="group-form">
                                              <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['STW'] ? "Oui" : "Non" }}">
                                              </div>                                          
@@ -99,7 +99,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Deuxiéme Chauffeur</label>
+                                             <label class="fs-14 text-custom-black fw-500">Deuxiéme Conducteur</label>
                                              <div class="group-form">
                                              <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['SD'] ? "Oui" : "Non" }}">
                                              </div>
@@ -120,9 +120,19 @@
                                              <input type="checkbox" name="#">
                                              <span class="checkmark"></span> By continuing, you agree to the <a href="#" class="text-custom-blue">Terms and Conditions.</a> </label>
                                           </div>
-                                          <button class="btn-first btn-submit">
-                                             {{ button_label|default('Reservez') }}
-                                          </button>
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Méthode de paiement</label>
+                                             <div class="group-form">
+                                                <select name="METHD" class="form-control form-control-custom">
+                                                   <option value="EL">En Ligne</option>
+                                                   {% if isBS %}
+                                                   <option vlaue="AG">À l'agence</option>
+                                                   {% endif %}
+
+                                                </select>
+                                             </div>
+                                          </div>
+                                          <div class="action"><button class="btn-first btn-submit full-width btn-height" type = "submit">Reserver</a></div>
                                        </div>
                                     </div>
                                                                                                                                 
