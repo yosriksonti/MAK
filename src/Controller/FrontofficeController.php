@@ -382,7 +382,7 @@ class FrontofficeController extends AbstractController
                         array_push($vehicules,$vehicule_raw);
                         $push = true;
                     }
-                } else if (isset($Mq[$veh->getMarque()])){
+                } else if (isset($Mq[$veh->getMarque()]) || !$isset_mq){
                     if(!$push) {
                         array_push($otherCarsArray,$vehicule_raw);
                         $push = true;
