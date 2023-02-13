@@ -236,7 +236,7 @@ class FrontofficeController extends AbstractController
             $notificationRepo->add($notification,true);
             $clientRepository->add($client, true);
 
-            return $this->redirectToRoute('login', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('login', $_GET['GET'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('frontoffice/signup.html.twig', [
@@ -331,6 +331,7 @@ class FrontofficeController extends AbstractController
         }
         $start = $today;
         $dispoCarsArray = [];
+        $otherCarsArray = [];
         $user = $this->getUser();
         foreach($vehicules_raw as $vehicule_raw) {
             $vehs = $vehiculeRepository->findBy(array("Modele" => $vehicule_raw->getModele()));
@@ -339,6 +340,7 @@ class FrontofficeController extends AbstractController
             $start = $today;
             $push = false;
             $oldId = 0;
+            $isMQ = false;
             foreach($vehs as $veh){
                 if($oldId != $veh->getId()){
                     $oldId = $veh->getId();
@@ -373,21 +375,27 @@ class FrontofficeController extends AbstractController
                 }
                 if($isset_mq && !isset($Mq[$veh->getMarque()])) {
                     $dispo = false;
+                    $isMQ = false;
                 }
                 if($dispo) {
                     if(!$push) {
                         array_push($vehicules,$vehicule_raw);
                         $push = true;
                     }
-                    $disponibility = new Disponibility();
-                    $disponibility->setStart($start);
-                    array_push($dispoArray,$disponibility);
-                    usort($dispoArray, function($a, $b) {
-                        return strtotime($a->getStart()) - strtotime($b->getStart());
-                    });
-                    $filtered =  Disponibility::getUnique($dispoArray);
-                    $dispoCarsArray[$vehicule_raw->getId()] = $filtered;
+                } else if (isset($Mq[$veh->getMarque()])){
+                    if(!$push) {
+                        array_push($otherCarsArray,$vehicule_raw);
+                        $push = true;
+                    }
                 }
+                $disponibility = new Disponibility();
+                $disponibility->setStart($start);
+                array_push($dispoArray,$disponibility);
+                usort($dispoArray, function($a, $b) {
+                    return strtotime($a->getStart()) - strtotime($b->getStart());
+                });
+                $filtered =  Disponibility::getUnique($dispoArray);
+                $dispoCarsArray[$vehicule_raw->getId()] = $filtered;
             }
             
         }
@@ -395,6 +403,7 @@ class FrontofficeController extends AbstractController
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
+            'otherVehicules' => $otherCarsArray,
             'marques' => $marques,
             'Mq' => $Mq,
             'dispo' => $dispoCarsArray,
