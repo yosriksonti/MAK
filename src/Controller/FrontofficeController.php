@@ -296,11 +296,10 @@ class FrontofficeController extends AbstractController
         $park = $vehicule->getPark();
         $amount = 0;
         if(strtotime($park->getDebut_HS())>strtotime($today) || strtotime($park->getFin_HS())<strtotime($today)) {
-            $amount = $caut;
-        } else {
-            $montant = $location->getMontant()-$caut;
+            $montant = $location->getMontant();
             $amount = ($montant*50)/100;
-            $amount += $caut;
+        } else {
+            $amount = $location->getMontant();
         }
         $this->user = $user;
         return $this->render('frontoffice/reservation.html.twig', [
