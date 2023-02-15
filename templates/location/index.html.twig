@@ -34,16 +34,13 @@
                                     Numéro
                                 </th>
                                 <th>
-                                    Date Reservation
+                                    Date Location
                                 </th>
                                 <th>
                                     Date Retour
                                 </th>
                                 <th>
                                     Montant
-                                </th>
-                                <th>
-                                    Avance
                                 </th>
                                 <th>
                                     Status
@@ -66,16 +63,13 @@
                                         {{  location.Num }}
                                     </td>
                                     <td>
-                                        {{  location.DateLoc ? location.DateLoc|date('Y-m-d') : '' }}
+                                        {{  location.DateLoc ? location.DateLoc|date('d-m-Y') : '' }}
                                     </td>
                                     <td>
-                                        {{  location.DateRetour ? location.DateRetour|date('Y-m-d') : '' }}
+                                        {{  location.DateRetour ? location.DateRetour|date('d-m-Y') : '' }}
                                     </td>
                                     <td>
                                         {{  location.Montant }} DT
-                                    </td>
-                                    <td>
-                                        {{  location.Avance }} DT
                                     </td>
                                     <td>
                                         {{  location.Status }}

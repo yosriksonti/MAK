@@ -24,7 +24,6 @@ use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +32,8 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use \DateTime;
+
 
 
 class FrontofficeController extends AbstractController
@@ -316,7 +317,8 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
-        $today = date("m/d/Y");
+        $today = date("d/m/Y");
+        $formattedToday = date("m/d/Y");
         $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
         $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
         $vehicules_raw = $vehiculeRepository->findByModele();
@@ -330,72 +332,77 @@ class FrontofficeController extends AbstractController
             }
         }
         $start = $today;
+        $formattedStart = $formattedToday;
         $dispoCarsArray = [];
         $otherCarsArray = [];
         $user = $this->getUser();
         foreach($vehicules_raw as $vehicule_raw) {
             $vehs = $vehiculeRepository->findBy(array("Modele" => $vehicule_raw->getModele()));
             $dispoArray = [];
-            $dispo = true;
-            $start = $today;
+            $vehDispo = false;
             $push = false;
             $oldId = 0;
             $isMQ = false;
+            $countTotal = 0;
             foreach($vehs as $veh){
                 if($oldId != $veh->getId()){
                     $oldId = $veh->getId();
                     $start = $today;
                 }
+                $start = $today;
+                $formattedStart = $formattedToday;
                 $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId()),array('Date_Loc' => "ASC"));
+                $countTotal += count($locations);
                 foreach($locations as $location) {
                     if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée") {
-                        $disponibility = new Disponibility();
                         $location_DP = strtotime($location->getDate_Loc());
                         $location_DD = strtotime($location->getDate_Retour());
+                        $startTime = strtotime($start);
+
+                        $disponibility = new Disponibility();
                         $disponibility->setStart($start);
-                        $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
-                        if(strtotime($start)<$location_DP) {
-                            array_push($dispoArray,$disponibility);
-                            $start = $location->getDate_Retour();
-                            $start = date('m/d/Y', strtotime($start. ' + 1 days'));
-                        } else if(strtotime($start)<$location_DD) {
-                            $start = $location->getDate_Retour();
-                            $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                        $disponibility->setEnd(date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days")));
+                        $formattedDP = $formattedStart;
+                        $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
+                        if($DP >= strtotime($formattedDP) && $DP < strtotime($formattedDD) && $DD >= strtotime($formattedDP) && $DD <= strtotime($formattedDD)) {
+                            $vehDispo = true;
                         }
-                        if($location_DP<=$DP && $location_DD>=$DP) {
-                            $dispo = false;
-                        }
-                        if($location_DP<=$DD && $location_DD>=$DD ) {
-                            $dispo = false;
-                        }
-                        if( $location_DD<=$DD && $location_DP>=$DP) {
-                            $dispo = false ;
-                        }
-                    }
-                }
-                if($isset_mq && !isset($Mq[$veh->getMarque()])) {
-                    $dispo = false;
-                    $isMQ = false;
-                }
-                if($dispo) {
-                    if(!$push) {
-                        array_push($vehicules,$vehicule_raw);
-                        $push = true;
-                    }
-                } else if (isset($Mq[$veh->getMarque()]) || !$isset_mq){
-                    if(!$push) {
-                        array_push($otherCarsArray,$vehicule_raw);
-                        $push = true;
+                        array_push($dispoArray,$disponibility);
+                        $start = date('d/m/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
+                        $formattedStart = date('m/d/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                     }
                 }
                 $disponibility = new Disponibility();
                 $disponibility->setStart($start);
                 array_push($dispoArray,$disponibility);
-                usort($dispoArray, function($a, $b) {
-                    return strtotime($a->getStart()) - strtotime($b->getStart());
-                });
-                $filtered =  Disponibility::getUnique($dispoArray);
-                $dispoCarsArray[$vehicule_raw->getId()] = $filtered;
+                if($DP >= strtotime($formattedStart)) {
+                    $vehDispo = true;
+                }
+            }
+            usort($dispoArray, function($a, $b) {
+                $tmpA = DateTime::createFromFormat("d/m/Y", $a->getStart());
+                $tmpB = DateTime::createFromFormat("d/m/Y", $b->getStart());
+                return $tmpA > $tmpB;
+            });
+            $filtered =  Disponibility::getUnique($dispoArray);
+            $dispoCarsArray[$vehicule_raw->getId()] = $filtered;
+            if($countTotal == 0) {
+                $vehDispo = true;
+            }
+            if($isset_mq && !isset($Mq[$veh->getMarque()])) {
+                $vehDispo = false;
+                $isMQ = false;
+            }
+            if($vehDispo) {
+                if(!$push) {
+                    array_push($vehicules,$vehicule_raw);
+                    $push = true;
+                }
+            } else if (isset($Mq[$veh->getMarque()]) || !$isset_mq){
+                if(!$push) {
+                    array_push($otherCarsArray,$vehicule_raw);
+                    $push = true;
+                }
             }
             
         }
