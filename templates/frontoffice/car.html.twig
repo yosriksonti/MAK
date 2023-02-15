@@ -29,13 +29,30 @@
                            <hr>
                            <div class="listing-meta-sec mb-md-80">
                               <div class="tabs">
-                                 <ul class="custom-flex nav nav-tabs mb-xl-20">
-                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">Aperçu</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#amenities">Agréments</a></li>
-                                 </ul>
                                  <div class="tab-content">
                                     <div class="tab-pane fade active show" id="overview">
-                                       <div class="tab-inner">
+                                          <h4 class="text-custom-black">Agréments</h4>
+                                          <ul class="custom amenities row no-gutters mb-xl-20">
+                                             <li class="col-sm-6">
+                                                <div class="icon-box text-light-dark"><i class="fa fa-user"></i>{{vehicule.NbPlaces}} Places </div>
+                                             </li>
+                                             <li class="col-sm-6">
+                                                <div class="icon-box text-light-dark"><i class="fa fa-briefcase"></i>{{vehicule.NbVal}} Valises </div>
+                                             </li>
+                                             <li class="col-sm-6">
+                                                <div class="icon-box text-light-dark"><i class='fa fa-snowflake'></i>Climatisation : {{vehicule.isClim ? "Oui" : "Non" }} </div>
+                                             </li>
+                                             <li class="col-sm-6">
+                                                <div class="icon-box text-light-dark"><i class="fas fa-tachometer-alt"></i>Kilométrage Illimité : {{vehicule.isUnlimitedMileage ? "Oui" : "Non" }} </div>
+                                             </li>
+                                             <li class="col-sm-6">
+                                                <div class="icon-box text-light-dark"><i class="fa fa-car"></i>Assurance Vehicule : {{vehicule.isCarInsurance ? "Oui" : "Non" }}</div>
+                                             </li>
+                                             <li class="col-sm-6">
+                                                <div class="icon-box text-light-dark"><i class="fa fa-umbrella"></i>Assurance Passager : {{vehicule.isPassengerInsurance ? "Oui" : "Non" }}</div>
+                                             </li>
+                                          </ul>
+                                          <h4 class="text-custom-black">Aperçu</h4>
                                           <div class="row">
                                              <div class="col-md-6">
                                                 <div class="hotel-type mb-xl-20 bg-light-white padding-10">
@@ -62,30 +79,6 @@
                                                 </div>
                                              </div>
                                           </div>
-                                       </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="amenities">
-                                       <h4 class="text-custom-black">Agréments</h4>
-                                       <ul class="custom amenities row no-gutters mb-xl-20">
-                                          <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbPlaces}} Places </div>
-                                          </li>
-                                          <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>{{vehicule.NbVal}} Valises </div>
-                                          </li>
-                                          <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Climatisation : {{vehicule.isClim ? "Oui" : "Non" }} </div>
-                                          </li>
-                                          <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Kilométrage Illimité : {{vehicule.isUnlimitedMileage ? "Oui" : "Non" }} </div>
-                                          </li>
-                                          <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Assurance Vehicule : {{vehicule.isCarInsurance ? "Oui" : "Non" }}</div>
-                                          </li>
-                                          <li class="col-sm-6">
-                                             <div class="icon-box text-light-dark"><i class="fab fa-youtube"></i>Assurance Passager : {{vehicule.isPassengerInsurance ? "Oui" : "Non" }}</div>
-                                          </li>
-                                       </ul>
                                     </div>
                                  </div>
                               </div>
@@ -157,55 +150,6 @@
                         <div class="col-lg-4">
                            <div class="row">
                               <div class="col-12">
-                                 <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
-                                    <div>
-                                    <h5 class="text-custom-black">Disponibilité</h5>
-                                       <select class = "form-control form-control-custom">
-                                       {% for dsp in dispo %}
-                                          <option>{{ dsp.start }} {% if dsp.end %} -> {{ dsp.end }} {% endif %} </option>
-                                       {% endfor %}
-                                       </select> 
-                                    </div>
-                                    <hr>
-                                    <h5 class="text-custom-black">Reservez Maintenant</h5>
-                                    <form action="/booking/{{ vehicule.id }}" method="GET">
-                                       <div class="row">
-                                          <div class="col-12">
-                                             <div class="form-group">
-                                                <label class="fs-14 text-custom-black fw-500">Départ</label>
-                                                <select class="custom-select form-control form-control-custom" name="AP">
-                                                   {% for  agence in  agences %}
-                                                <option value="{{  agence.id }}">{{  agence.Nom }}</option>
-                                                {% endfor %}
-                                                </select>                                              
-                                             </div>
-                                             <div class="form-group">
-                                                <label class="fs-14 text-custom-black fw-500">Date Départ</label>
-                                                <div class="input-group group-form">
-                                                   <input type="text" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="DP">
-                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
-                                                </div>
-                                             </div>
-                                             <div class="form-group">
-                                                <label class="fs-14 text-custom-black fw-500">Retour</label>
-                                                <select class="custom-select form-control form-control-custom" name="AD">
-                                                   {% for  agence in  agences %}
-                                                <option value="{{  agence.id }}">{{  agence.Nom }}</option>
-                                                {% endfor %}
-                                                </select>                                             
-                                             </div>
-                                             <div class="form-group">
-                                                <label class="fs-14 text-custom-black fw-500">Date Retour</label>
-                                                <div class="input-group group-form">
-                                                   <input type="text" class="form-control form-control-custom datepickr" placeholder="mm/dd/yy" readonly="" name="DD">
-                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
-                                                </div>
-                                             </div>
-                                             <button type="submit" class="btn-first btn-submit full-width btn-height">Reserver</button>
-                                          </div>
-                                       </div>
-                                    </form>
-                                 </div>
                                  <div class="need-help bx-wrapper padding-20">
                                     <h5 class="text-custom-black">Besoin d'aide ?</h5>
                                     <p class="text-light-dark">Nous serions plus qu'heureux de vous aider. Notre équipe de conseillers est à votre service 24h/24 et 7j/7 pour vous aider.</p>

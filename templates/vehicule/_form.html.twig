@@ -120,19 +120,27 @@
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         {{ form_label(form.Caut, 'Cautionnement', {'label_attr':{'class':'small mb-1' }}) }}                                  
                         {{ form_widget(form.Caut, {'attr':{'class':'form-control'}}) }}                              
                     </div>
                     <div class="invalid-feedback">
                         {{ form_errors(form.Caut) }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         {{ form_label(form.Prix, 'Prix', {'label_attr':{'class':'small mb-1' }}) }}                                 
                         {{ form_widget(form.Prix, {'attr':{'class':'form-control' }}) }}                               
                     </div>
                     <div class="invalid-feedback">
                         {{ form_errors(form.Prix) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        {{ form_label(form.Reservoire, 'Reservoire', {'label_attr':{'class':'small mb-1' }}) }}                                 
+                        {{ form_widget(form.Reservoire, {'attr':{'class':'form-control' }}) }}                               
+                    </div>
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.Reservoire) }}
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">

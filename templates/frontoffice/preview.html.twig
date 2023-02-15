@@ -45,6 +45,7 @@
                                        {{ form_widget(form.isSTW, {'attr':{'class':'hidden-row'}, "value" : GET['STW']}) }}                                                                        
                                        {{ form_widget(form.isPersonalDriver, {'attr':{'class':'hidden-row'}, "value" : GET['PD']}) }}                                                                        
                                        {{ form_widget(form.isSecondDriver, {'attr':{'class':'hidden-row'}, "value" : GET['SD']}) }}                                                                        
+                                       {{ form_widget(form.isReservoire, {'attr':{'class':'hidden-row'}, "value" : GET['RS']}) }}                                                                        
                                     </div>
                                     <div class="row mb-md-80">
                                        <div class="col-md-6">
@@ -71,13 +72,13 @@
                                           <hr>
                                        </div>
                                        <div class="col-12">
-                                          <h5 class="text-custom-black">Additional Options</h5>
+                                          <h5 class="text-custom-black">Options Supplémentaires</h5>
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
                                              <label class="fs-14 text-custom-black fw-500">Siège Bébé</label>
                                              <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['BS'] ? "Oui" : "Non" }}">
+                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['BS'] ? BS * Days : "Non" }} {{ GET['BS'] ? "DT" : "" }}">
                                              </div>
                                           </div>
                                        </div>
@@ -85,7 +86,7 @@
                                           <div class="form-group">
                                              <label class="fs-14 text-custom-black fw-500">Assurance Passager</label>
                                              <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['STW'] ? "Oui" : "Non" }}">
+                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['STW'] ? STW : "Non" }} {{ GET['STW'] ? "DT" : "" }}">
                                              </div>                                          
                                           </div>
                                        </div>
@@ -93,7 +94,7 @@
                                           <div class="form-group">
                                              <label class="fs-14 text-custom-black fw-500">Chauffeur Personel</label>
                                              <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['PD'] ? "Oui" : "Non" }}">
+                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['PD'] ? PD * Days : "Non" }} {{ GET['PD'] ? "DT" : "" }}">
                                              </div>
                                           </div>
                                        </div>
@@ -101,7 +102,24 @@
                                           <div class="form-group">
                                              <label class="fs-14 text-custom-black fw-500">Deuxiéme Conducteur</label>
                                              <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['SD'] ? "Oui" : "Non" }}">
+                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['SD'] ? SD : "Non" }} {{ GET['SD'] ? "DT" : "" }}">
+                                             </div>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Réservoire Plein</label>
+                                             <div class="group-form">
+                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['RS'] ? RS : "Non" }} {{ GET['RS'] ? "DT" : "" }}">
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Frais de Livraison</label>
+                                             <div class="group-form">
+                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ frais }} DT">
                                              </div>
                                           </div>
                                        </div>

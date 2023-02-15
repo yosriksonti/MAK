@@ -185,6 +185,11 @@ class Vehicule
     private $Prix;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $Reservoire;
+
+    /**
      * @ORM\OneToMany(targetEntity=Depence::class, mappedBy="Vehicule")
      */
     private $depences;
@@ -581,6 +586,18 @@ class Vehicule
     public function setPrix(float $Prix): self
     {
         $this->Prix = $Prix;
+
+        return $this;
+    }
+    
+    public function getReservoire(): ?float
+    {
+        return $this->Reservoire;
+    }
+
+    public function setReservoire(float $Reservoire): self
+    {
+        $this->Reservoire = $Reservoire;
 
         return $this;
     }

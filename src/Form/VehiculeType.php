@@ -37,6 +37,7 @@ class VehiculeType extends AbstractType
             ->add('Nb_Val')
             ->add('Caut', NumberType::class)
             ->add('Prix', NumberType::class)
+            ->add('Reservoire', NumberType::class)
             ->add('Clim')
             ->add('isUnlimitedMileage')
             ->add('isCarInsurance')

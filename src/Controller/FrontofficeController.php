@@ -538,7 +538,12 @@ class FrontofficeController extends AbstractController
                     'GET' => $_GET,
                     'today' => $today,
                     'DP' => date("Y-m-d",$DP),
-                    'DD' => date("Y-m-d",$DD)
+                    'DD' => date("Y-m-d",$DD),
+                    'BS' => $veh->getPark()->getPrixBabySeat(),
+                    'STW' => $veh->getPark()->getPrixSTW(),
+                    'PD' => $veh->getPark()->getPrixPersonalDriver(),
+                    'SD' => $veh->getPark()->getPrixSecondDriver(),
+                    'RS' => $veh->getReservoire(),
                 ]); 
             }
         }
@@ -610,8 +615,8 @@ class FrontofficeController extends AbstractController
                 $this->user = $user;
                 return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
             } else {
-                $agence_d = $agenceRepository->find($_GET['AP'])->getNom();
-                $agence_r = $agenceRepository->find($_GET['AD'])->getNom();
+                $agence_d = $agenceRepository->find($_GET['AP']);
+                $agence_r = $agenceRepository->find($_GET['AD']);
                 $DP = strtotime($_GET['DP']);
                 $DD = strtotime($_GET['DD']);
 
@@ -627,8 +632,6 @@ class FrontofficeController extends AbstractController
                     
                 $prix = $vehicule->getPrix();
                 $prix = $_GET['BS'] ? $prix+$vehicule->getPark()->getPrixBabySeat() : $prix ;
-                $prix = $_GET['STW'] ? $prix+$vehicule->getPark()->getPrixSTW() : $prix ;
-                $prix = $_GET['PD'] ? $prix+$vehicule->getPark()->getPrixPersonalDriver() : $prix ;
                 $prix = $_GET['SD'] ? $prix+$vehicule->getPark()->getPrixSecondDriver() : $prix ;
                 if(isset($_GET['Promo'])) {
                     $promo = $promoRepository->findOneBy(['Code' => $_GET['Promo'] ]);
@@ -637,18 +640,29 @@ class FrontofficeController extends AbstractController
                     }
                 }
                 $prix = $prix * ($interval->days + 1);
+                $prix = $_GET['RS'] ? $prix+$vehicule->getReservoire() : $prix;
+                $prix = $_GET['STW'] ? $prix+$vehicule->getPark()->getPrixSTW() : $prix ;
+                $prix = $_GET['PD'] ? $prix+$vehicule->getPark()->getPrixPersonalDriver() : $prix ;
+                $prix += $agence_d->getFrais();
+                $prix += $agence_r->getFrais();
                 return $this->render('frontoffice/preview.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),
                     'GET' => $_GET,
-                    'agence_d' => $agence_d,
-                    'agence_r' => $agence_r,
+                    'agence_d' => $agence_d->getNom(),
+                    'agence_r' => $agence_r->getNom(),
                     'today' => $today,
                     'DP' => $DP,
                     'DD' => $DD,
                     'prix' => $prix,
-                    'isBS' => $isBS
-                    
+                    'isBS' => $isBS,
+                    'frais' => $agence_d->getFrais()+$agence_r->getFrais(),
+                    'BS' => $vehicule->getPark()->getPrixBabySeat(),
+                    'STW' => $vehicule->getPark()->getPrixSTW(),
+                    'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
+                    'SD' => $vehicule->getPark()->getPrixSecondDriver(),
+                    'RS' => $vehicule->getReservoire(),
+                    'Days' => $interval->days + 1,
                 ]);  
             }
         }

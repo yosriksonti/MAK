@@ -14,6 +14,7 @@ class AgenceType extends AbstractType
         $builder
             ->add('Nom')
             ->add('Addresse')
+            ->add('Frais', NumberType::class)
             ->add('Maps')
             ->add('Maps_Frame')
         ;

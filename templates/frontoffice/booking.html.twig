@@ -32,7 +32,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Siège Bébé</label>
+                                             <label class="fs-14 text-custom-black fw-500">Siège Bébé : <b>{{ BS }} DT/Jour</b></label>
                                              <div class="group-form">
                                                 <select name="BS" class="custom-select form-control form-control-custom">
                                                    <option value="0">Non</option>
@@ -43,7 +43,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Assurance Passager</label>
+                                             <label class="fs-14 text-custom-black fw-500">Assurance Passager :<b> {{ STW }} DT</b></label>
                                              <div class="group-form">
                                                 <select name="STW" class="custom-select form-control form-control-custom">
                                                    <option value="0">Non</option>
@@ -54,7 +54,7 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Chauffeur Personel</label>
+                                             <label class="fs-14 text-custom-black fw-500">Chauffeur Personel : <b>{{ PD }} DT/Jour</b></label>
                                              <div class="group-form">
                                                 <select name="PD" class="custom-select form-control form-control-custom">
                                                    <option value="0">Non</option>
@@ -65,9 +65,20 @@
                                        </div>
                                        <div class="col-md-6">
                                           <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Deuxiéme Conducteur</label>
+                                             <label class="fs-14 text-custom-black fw-500">Deuxiéme Conducteur : <b>{{ SD }} DT</b></label>
                                              <div class="group-form">
                                                 <select name="SD" class="custom-select form-control form-control-custom">
+                                                   <option value="0">Non</option>
+                                                   <option value="1">Oui</option>
+                                                </select>                                                 
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Réservoire Plein : <b>{{ RS }} DT</b></label>
+                                             <div class="group-form">
+                                                <select name="RS" class="custom-select form-control form-control-custom">
                                                    <option value="0">Non</option>
                                                    <option value="1">Oui</option>
                                                 </select>                                                 

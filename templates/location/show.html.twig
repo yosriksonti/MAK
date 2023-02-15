@@ -61,6 +61,22 @@
                             </div>
                             <hr>
                             <div class="row gx-3 mb-3">
+                                <div class="col-md-4">
+                                    <h2 class="small mb-1" for="inputFirstName">Montant</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.Montant }} DT</p>                               
+                                </div>
+                                <div class="col-md-4">
+                                    <h2 class="small mb-1" for="inputFirstName">Avance</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.Avance }} DT</p>                               
+                                </div>
+
+                                <div class="col-md-4">
+                                    <h2 class="small mb-1" for="inputFirstName">Reservoire Plein</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.isReservoire ? 'oui' : 'non' }}</p>                               
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row gx-3 mb-3">
                                 <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Date de location</h2>
                                     <p class=" mb-1" for="inputFirstName">{{ location.Date_Loc }}</p>                               
@@ -79,17 +95,6 @@
                                 <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Agence de retour</h2>
                                     <p class=" mb-1" for="inputFirstName">{{ location.AgenceArrive.Nom }}</p>                               
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-6">
-                                    <h2 class="small mb-1" for="inputFirstName">Montant</h2>
-                                    <p class=" mb-1" for="inputFirstName">{{ location.Montant }} DT</p>                               
-                                </div>
-                                <div class="col-md-6">
-                                    <h2 class="small mb-1" for="inputFirstName">Avance</h2>
-                                    <p class=" mb-1" for="inputFirstName">{{ location.Avance }} DT</p>                               
                                 </div>
                             </div>
                             <hr>

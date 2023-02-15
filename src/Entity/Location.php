@@ -95,6 +95,11 @@ class Location
     /**
      * @ORM\Column(type="boolean")
      */
+    private $isReservoire;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
     private $isPersonalDriver;
 
     /**
@@ -372,6 +377,18 @@ class Location
     public function setIsSTW(bool $isSTW): self
     {
         $this->isSTW = $isSTW;
+
+        return $this;
+    }
+
+    public function getIsReservoire(): ?bool
+    {
+        return $this->isReservoire;
+    }
+
+    public function setIsReservoire(bool $isReservoire): self
+    {
+        $this->isReservoire = $isReservoire;
 
         return $this;
     }

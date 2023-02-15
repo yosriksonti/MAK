@@ -30,6 +30,11 @@ class Agence
     private $Addresse;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $Frais;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $Maps;
@@ -80,6 +85,18 @@ class Agence
     public function setAddresse(string $Addresse): self
     {
         $this->Addresse = $Addresse;
+
+        return $this;
+    }
+
+    public function getFrais() : ?float
+    {
+        return $this->Frais;
+    }
+
+    public function setFrais(float $Frais): self
+    {
+        $this->Frais = $Frais;
 
         return $this;
     }

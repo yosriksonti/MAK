@@ -336,6 +336,13 @@ class LocationType extends AbstractType
                     'Non' => '0'
                 ]
             ])
+
+            ->add('isReservoire', ChoiceType::class, [
+                'choices' => [
+                    'Oui' => '1',
+                    'Non' => '0'
+                ]
+            ])
         ;
     }
 
