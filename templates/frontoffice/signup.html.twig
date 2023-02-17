@@ -59,21 +59,6 @@
                                              </div>
                                           </div>
                                           <div class="row">
-                                             <div class="col-6">
-                                                <div class="form-group">
-                                                   <label class="text-custom-black fw-500 fs-14">Addresse 1</label>
-                                                   {{ form_widget(form.Add1, {'attr':{'class':'form-control form-control-custom'}}) }}                                                 
-                                                </div>
-                                             </div>
-                                             <div class="col-6">
-                                                <div class="form-group">
-                                                   <label class="text-custom-black fw-500 fs-14">Addresse 2</label>
-                                                   {{ form_widget(form.Add2, {'attr':{'class':'form-control form-control-custom'}}) }} 
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div hidden>
-                                          <div class="row">
                                              <div class="col-8">
                                                 <div class="form-group">
                                                    <label class="text-custom-black fw-500 fs-14">Permis</label>
@@ -87,8 +72,23 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          </div>
                                           <div hidden>
+                                          <div class="row">
+                                             <div class="col-6">
+                                                <div class="form-group">
+                                                   <label class="text-custom-black fw-500 fs-14">Addresse 1</label>
+                                                   {{ form_widget(form.Add1, {'attr':{'class':'form-control form-control-custom'}}) }}                                                 
+                                                </div>
+                                             </div>
+                                             <div class="col-6">
+                                                <div class="form-group">
+                                                   <label class="text-custom-black fw-500 fs-14">Addresse 2</label>
+                                                   {{ form_widget(form.Add2, {'attr':{'class':'form-control form-control-custom'}}) }} 
+                                                </div>
+                                             </div>
+                                          </div>
+                                          </div>
+                                          
                                           <div class="row">
                                              <div class="col-8">
                                                 <div class="form-group">
@@ -103,7 +103,7 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          </div>
+                                          
                                           {{ form_rest(form) }}
                                           </br>
                                           <div class="row">
