@@ -61,7 +61,6 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('dashboard_index');
         }
         $vehicules = $vehiculeRepository->findByModele();
-        
         usort($vehicules, function($a, $b){
             return count($a->getFeedback()) < count($b->getFeedback());
         });
@@ -220,8 +219,8 @@ class FrontofficeController extends AbstractController
         $today = date('Y-m-d');
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $client->setDatePermis(new \DateTime());
-            $client->setDateCIN(new \DateTime());
+            $client->setAdd1(" ");
+            $client->setAdd2(" ");
             $client->setPassword($this->passwordHasher->hashPassword(
                 $client,
                 $form->get('password')->getData()
@@ -235,8 +234,12 @@ class FrontofficeController extends AbstractController
             $notification->setSeen(false);
             $notificationRepo->add($notification,true);
             $clientRepository->add($client, true);
+            if(isset($_GET['GET']) ){
+                return $this->redirectToRoute('login', $_GET['GET'], Response::HTTP_SEE_OTHER);
 
-            return $this->redirectToRoute('login', $_GET['GET'], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('login', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('frontoffice/signup.html.twig', [
