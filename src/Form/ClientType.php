@@ -31,26 +31,24 @@ class ClientType extends AbstractType
             ])
             ->add('Pays', TextType::class, [
                 'required' => false,
-                'empty_data' => ''
+                'empty_data' => ' '
             ]) 
             ->add('Telephone')
             ->add('Add1')
-            ->add('Add2')
+            ->add('Add2', TextType::class, [
+                'required' => false,
+                'empty_data' => " "
+            ])
             ->add('Permis', TextType::class, [
                 'required' => false,
-                'empty_data' => null
             ])
             ->add('Date_Permis',DateType::class, [ 
                 'widget' => 'single_text',
-                'required' => false,
-                'mapped' => false,
                 ])
             ->add('CIN', TextType::class, [
-                'required' => false,
             ])
             ->add('Date_CIN',DateType::class, [ 
                 'widget' => 'single_text',
-                'required' => false,
                 ])
             ->add('Date_Naissance',DateType::class, [ 
                 'widget' => 'single_text',
