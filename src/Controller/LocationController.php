@@ -36,7 +36,7 @@ class LocationController extends AbstractController
     /**
      * @Route("/new", name="location_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, LocationRepository $locationRepository, NotificationRepository $notificationRepo): Response
+    public function new(Request $request, LocationRepository $locationRepository, NotificationRepository $notificationRepo, MailerInterface $mailer): Response
     {
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         $location = new Location();
@@ -45,7 +45,19 @@ class LocationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $locationRepository->add($location, true);
-
+            if($location->getStatus() == "Confirmée") {
+                $email = (new TemplatedEmail())
+                ->from(new Address('w311940@gmail.com', 'Makrent car'))
+                ->to($location->getClient()->getEmail())
+                ->subject('Confirmation')
+                ->htmlTemplate('email/successful-email.html.twig');
+    
+                try {
+                    $mailer->send($email);
+                } catch (TransportExceptionInterface $e) {
+                    
+                }
+            }  
             return $this->redirectToRoute('location_index', [], Response::HTTP_SEE_OTHER);
         }
 
