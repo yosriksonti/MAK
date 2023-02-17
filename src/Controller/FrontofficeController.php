@@ -148,7 +148,6 @@ class FrontofficeController extends AbstractController
                     $locationRepo->add($loc, true);
                 }
             }
-            print_r("BARRA MRIGL");
             $email = (new TemplatedEmail())
             ->from(new Address('w311940@gmail.com', 'Makrent car'))
             ->to($user->getEmail())
