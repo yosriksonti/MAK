@@ -60,6 +60,7 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
+        $today = date("Y-m-d");
         $vehicules = $vehiculeRepository->findByModele();
         usort($vehicules, function($a, $b){
             return count($a->getFeedback()) < count($b->getFeedback());
@@ -68,6 +69,7 @@ class FrontofficeController extends AbstractController
         return $this->render('frontoffice/home.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
+            'today' => $today,
         ]);
     }
 
@@ -320,6 +322,7 @@ class FrontofficeController extends AbstractController
         }
         $today = date("d/m/Y");
         $formattedToday = date("m/d/Y");
+        $formattedTodayYMD = date("Y-m-d");
         $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
         $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
         $vehicules_raw = $vehiculeRepository->findByModele();
@@ -368,14 +371,18 @@ class FrontofficeController extends AbstractController
                         if($DP >= strtotime($formattedDP) && $DP < strtotime($formattedDD) && $DD >= strtotime($formattedDP) && $DD <= strtotime($formattedDD)) {
                             $vehDispo = true;
                         }
-                        array_push($dispoArray,$disponibility);
+                        if(strtotime($formattedStart) >= strtotime($formattedToday)) {
+                            array_push($dispoArray,$disponibility);
+                        }
                         $start = date('d/m/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                         $formattedStart = date('m/d/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                     }
                 }
                 $disponibility = new Disponibility();
                 $disponibility->setStart($start);
-                array_push($dispoArray,$disponibility);
+                if(strtotime($formattedStart) >= strtotime($formattedToday)) {
+                    array_push($dispoArray,$disponibility);
+                }
                 if($DP >= strtotime($formattedStart)) {
                     $vehDispo = true;
                 }
@@ -415,7 +422,8 @@ class FrontofficeController extends AbstractController
             'marques' => $marques,
             'Mq' => $Mq,
             'dispo' => $dispoCarsArray,
-            'GET' => $_GET
+            'GET' => $_GET,
+            'today' => $formattedTodayYMD,
         ]);
     }
 
@@ -511,10 +519,16 @@ class FrontofficeController extends AbstractController
         $form->handleRequest($request);
         if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD'])) {
             $this->user = $user;
-            return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_search', ['AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
         $DP = strtotime($_GET['DP']);
         $DD = strtotime($_GET['DD']);
+
+        if(strtotime($today) > $DP) {
+            $this->user = $user;
+            return $this->redirectToRoute('front_office_search', ['AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
+        }
+
         $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
         foreach($vehicules as $veh) {
             $dispo = true;
@@ -550,7 +564,7 @@ class FrontofficeController extends AbstractController
         }
         if(!$dispo) {
             $this->user = $user;
-            return $this->redirectToRoute('front_office_car', ['id' => $vehicule->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_search', ['AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
            
         
