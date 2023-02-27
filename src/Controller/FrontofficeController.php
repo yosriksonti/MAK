@@ -607,21 +607,28 @@ class FrontofficeController extends AbstractController
             }
             $location->setAvance($amount);
             if($form->isValid()) {
-                $loc = $locationRepository->add($location, true);
-                $date = date('Y-m-d H:i:s');
-                $notification = new Notification();
-                $notification->setTitle("Nouvelle Reservation.");
-                $notification->setBody($user->getEmail()."|".$user->getName()." ".$user->getLastName()." a fait une nouvelle reservation à ".$date);
-                $notification->setCreatedOn(new \DateTime($date));
-                $notification->setSeen(false);
-                $notificationRepo->add($notification,true);
-                $this->user = $user;
-                if($_POST['METHD'] == "EL") {
-                    return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
-                } else {
+                $client = $location->getClient();
+                if( strtotime($today." - 2 years") < strtotime($client->getDate_Permis()) ) {
+                    $this->user = $user;
                     return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
+                } else {
+                    $loc = $locationRepository->add($location, true);
+                    $date = date('Y-m-d H:i:s');
+                    $notification = new Notification();
+                    $notification->setTitle("Nouvelle Reservation.");
+                    $notification->setBody($user->getEmail()."|".$user->getName()." ".$user->getLastName()." a fait une nouvelle reservation à ".$date);
+                    $notification->setCreatedOn(new \DateTime($date));
+                    $notification->setSeen(false);
+                    $notificationRepo->add($notification,true);
+                    $this->user = $user;
+                    if($_POST['METHD'] == "EL") {
+                        return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
+                    } else {
+                        return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
 
+                    }
                 }
+                
             }
         } else {
             if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD']) || !isset($_GET['AP']) || empty($_GET['AP']) 
