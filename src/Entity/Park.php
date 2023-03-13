@@ -20,7 +20,7 @@ class Park
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Vehicule::class, mappedBy="Park")
+     * @ORM\OneToMany(targetEntity=Vehicule::class, mappedBy="Park", orphanRemoval=true)
      */
     private $Vehicules;
 

@@ -77,13 +77,13 @@ class Location
     private $Client;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Vehicule::class, inversedBy="Locations")
+     * @ORM\ManyToOne(targetEntity=Vehicule::class, inversedBy="Locations" )
      * @ORM\JoinColumn(nullable=false)
      */
     private $Vehicule;
 
     /**
-     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Location")
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Location", orphanRemoval=true)
      */
     private $payments;
 

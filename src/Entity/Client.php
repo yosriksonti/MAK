@@ -75,7 +75,7 @@ class Client extends User
     private $Locations;
 
     /**
-     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Client", fetch="LAZY")
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="Client", fetch="LAZY", orphanRemoval=true)
      */
     private $payments;
 

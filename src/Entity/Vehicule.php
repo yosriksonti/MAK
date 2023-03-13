@@ -132,7 +132,7 @@ class Vehicule
     private $Photo_Saison;
 
     /**
-     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="Vehicule")
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="Vehicule", orphanRemoval=true)
      */
     private $Locations;
 
@@ -190,12 +190,12 @@ class Vehicule
     private $Reservoire;
 
     /**
-     * @ORM\OneToMany(targetEntity=Depence::class, mappedBy="Vehicule")
+     * @ORM\OneToMany(targetEntity=Depence::class, mappedBy="Vehicule", orphanRemoval=true)
      */
     private $depences;
 
     /**
-     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Vehicule")
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="Vehicule", orphanRemoval=true)
      */
     private $feedback;
 
