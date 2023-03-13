@@ -150,6 +150,55 @@
                         <div class="col-lg-4">
                            <div class="row">
                               <div class="col-12">
+                                 <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
+                                    <div>
+                                    <h5 class="text-custom-black">Disponibilité</h5>
+                                       <select class = "form-control form-control-custom">
+                                       {% for dsp in dispo %}
+                                          <option>{{ dsp.start }} {% if dsp.end %} -> {{ dsp.end }} {% endif %} </option>
+                                       {% endfor %}
+                                       </select> 
+                                    </div>
+                                    <hr>
+                                    <h5 class="text-custom-black">Reservez Maintenant</h5>
+                                    <form action="/booking/{{ vehicule.id }}" method="GET">
+                                       <div class="row">
+                                          <div class="col-12">
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Départ</label>
+                                                <select class="custom-select form-control form-control-custom" name="AP">
+                                                   {% for  agence in  agences %}
+                                                <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                                {% endfor %}
+                                                </select>                                              
+                                             </div>
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Date Départ</label>
+                                                <div class="input-group group-form">
+                                                   <input type="date" name="DP" class="form-control form-control-custom"  value = "{{ GET['DP'] }}" min="{{today}}">
+                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                </div>
+                                             </div>
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Retour</label>
+                                                <select class="custom-select form-control form-control-custom" name="AD">
+                                                   {% for  agence in  agences %}
+                                                <option value="{{  agence.id }}">{{  agence.Nom }}</option>
+                                                {% endfor %}
+                                                </select>                                             
+                                             </div>
+                                             <div class="form-group">
+                                                <label class="fs-14 text-custom-black fw-500">Date Retour</label>
+                                                <div class="input-group group-form">
+                                                   <input type="date" name="DD" class="form-control form-control-custom"  value = "{{ GET['DD'] }}" min="{{today}}">
+                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                </div>
+                                             </div>
+                                             <button type="submit" class="btn-first btn-submit full-width btn-height">Reserver</button>
+                                          </div>
+                                       </div>
+                                    </form>
+                                 </div>
                                  <div class="need-help bx-wrapper padding-20">
                                     <h5 class="text-custom-black">Besoin d'aide ?</h5>
                                     <p class="text-light-dark">Nous serions plus qu'heureux de vous aider. Notre équipe de conseillers est à votre service 24h/24 et 7j/7 pour vous aider.</p>

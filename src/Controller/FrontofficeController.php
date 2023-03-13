@@ -298,17 +298,33 @@ class FrontofficeController extends AbstractController
         $vehicule = $location->getVehicule();
         $caut = $vehicule->getCaut();
         $park = $vehicule->getPark();
+        $agence_d = $location->getAgenceDepart();
+        $agence_r = $location->getAgenceArrive();
+        $isBS = strtotime($park->getDebut_HS())>strtotime($today) || strtotime($park->getFin_HS())<strtotime($today);
         $amount = 0;
-        if(strtotime($park->getDebut_HS())>strtotime($today) || strtotime($park->getFin_HS())<strtotime($today)) {
-            $montant = $location->getMontant();
+        $montant = $location->getMontant();
+        if($isBS) {
             $amount = ($montant*50)/100;
         } else {
-            $amount = $location->getMontant();
+            $amount += $montant;
         }
+        $DP = $location->getDate_Loc();
+        $DD = $location->getDate_Retour();
+        $date1 = new \DateTime($DP);
+        $date2 = new \DateTime($DD);
+        $interval = $date1->diff($date2);
+        $days = $interval->days; 
         $this->user = $user;
         return $this->render('frontoffice/reservation.html.twig', [
             "reservation" => $location,
-            "amount" => $amount
+            "amount" => $amount,
+            "Days" => $days,
+            'frais' => $agence_d->getFrais()+$agence_r->getFrais(),
+            'BS' => $vehicule->getPark()->getPrixBabySeat(),
+            'STW' => $vehicule->getPark()->getPrixSTW(),
+            'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
+            'SD' => $vehicule->getPark()->getPrixSecondDriver(),
+            'RS' => $vehicule->getReservoire(),
         ]);
     }
 
@@ -325,6 +341,8 @@ class FrontofficeController extends AbstractController
         $formattedTodayYMD = date("Y-m-d");
         $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
         $DD = isset($_GET['DD']) ? strtotime($_GET['DD']) : $today;
+        $DP2 = date("Y-m-d",$DP);
+        $DD2 = date("Y-m-d",$DD);
         $vehicules_raw = $vehiculeRepository->findByModele();
         $vehicules = [];
         $marques = $vehiculeRepository->findByMarque();
@@ -414,6 +432,10 @@ class FrontofficeController extends AbstractController
             }
             
         }
+        $date1 = new \DateTime($DP2);
+        $date2 = new \DateTime($DD2);
+        $interval = $date1->diff($date2);
+        $days = $interval->days > 0 ? $interval->days : 1;
         $this->user=$user;
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
@@ -424,6 +446,7 @@ class FrontofficeController extends AbstractController
             'dispo' => $dispoCarsArray,
             'GET' => $_GET,
             'today' => $formattedTodayYMD,
+            'days' => $days
         ]);
     }
 
@@ -436,7 +459,7 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('dashboard_index');
         }
         $today = date('m/d/Y');
-        $today_f2 = date("Y-m-d");
+        $today_f2 = date("d/m/Y");
         $dispoArray = [];
         $dispo = true;
         $user = $this->getUser();
@@ -488,7 +511,8 @@ class FrontofficeController extends AbstractController
             'agences' => $agenceRepository->findAll(),
             'form' => $form->createView(),
             'today' => $today_f2,
-            'dispo' => $filtered
+            'dispo' => $filtered,
+            'GET' => $_GET
         ]);
     }
 
@@ -653,20 +677,31 @@ class FrontofficeController extends AbstractController
 
                     
                 $prix = $vehicule->getPrix();
+                $optionsPrice = 0;
                 $prix = $_GET['BS'] ? $prix+$vehicule->getPark()->getPrixBabySeat() : $prix ;
-                $prix = $_GET['SD'] ? $prix+$vehicule->getPark()->getPrixSecondDriver() : $prix ;
+                $optionsPrice += $_GET['BS'] ? $vehicule->getPark()->getPrixBabySeat() : 0 ;
+                $prix = $_GET['PD'] ? $prix+$vehicule->getPark()->getPrixPersonalDriver() : $prix ;
+                $optionsPrice += $_GET['PD'] ? $vehicule->getPark()->getPrixPersonalDriver() : 0 ;
                 if(isset($_GET['Promo'])) {
                     $promo = $promoRepository->findOneBy(['Code' => $_GET['Promo'] ]);
                     if(!empty($promo)) {
                         $prix = $prix - ($prix * $promo->getPourcentage())/100;
                     }
                 }
-                $prix = $prix * ($interval->days + 1);
+
+                $days = $interval->days > 0 ? $interval->days : 1;
+                $prix = $prix * ($days);
+                $optionsPrice = $optionsPrice * ($days);
                 $prix = $_GET['RS'] ? $prix+$vehicule->getReservoire() : $prix;
                 $prix = $_GET['STW'] ? $prix+$vehicule->getPark()->getPrixSTW() : $prix ;
-                $prix = $_GET['PD'] ? $prix+$vehicule->getPark()->getPrixPersonalDriver() : $prix ;
+                $prix = $_GET['SD'] ? $prix+$vehicule->getPark()->getPrixSecondDriver() : $prix ;
+                $optionsPrice += $_GET['STW'] ? $vehicule->getPark()->getPrixSTW() : 0 ;
+                $optionsPrice += $_GET['SD'] ? $vehicule->getPark()->getPrixSecondDriver() : 0 ;
+                $optionsPrice += $_GET['RS'] ? $vehicule->getReservoire() : 0 ;
                 $prix += $agence_d->getFrais();
                 $prix += $agence_r->getFrais();
+                $optionsPrice += $agence_d->getFrais();
+                $optionsPrice += $agence_r->getFrais();
                 return $this->render('frontoffice/preview.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),
@@ -677,6 +712,7 @@ class FrontofficeController extends AbstractController
                     'DP' => $DP,
                     'DD' => $DD,
                     'prix' => $prix,
+                    'optionsPrice' => $optionsPrice,
                     'isBS' => $isBS,
                     'frais' => $agence_d->getFrais()+$agence_r->getFrais(),
                     'BS' => $vehicule->getPark()->getPrixBabySeat(),
@@ -684,7 +720,7 @@ class FrontofficeController extends AbstractController
                     'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
                     'SD' => $vehicule->getPark()->getPrixSecondDriver(),
                     'RS' => $vehicule->getReservoire(),
-                    'Days' => $interval->days + 1,
+                    'Days' => $days,
                 ]);  
             }
         }

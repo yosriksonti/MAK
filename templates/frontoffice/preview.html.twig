@@ -68,60 +68,9 @@
                                              <input type="date" class="form-control form-control-custom"  disabled value="{{ DD }}">
                                           </div>
                                        </div>
+                                       
                                        <div class="col-12">
                                           <hr>
-                                       </div>
-                                       <div class="col-12">
-                                          <h5 class="text-custom-black">Options Supplémentaires</h5>
-                                       </div>
-                                       <div class="col-md-6">
-                                          <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Siège Bébé</label>
-                                             <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['BS'] ? BS * Days : "Non" }} {{ GET['BS'] ? "DT" : "" }}">
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6">
-                                          <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Assurance Passager</label>
-                                             <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['STW'] ? STW : "Non" }} {{ GET['STW'] ? "DT" : "" }}">
-                                             </div>                                          
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6">
-                                          <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Chauffeur Personel</label>
-                                             <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['PD'] ? PD * Days : "Non" }} {{ GET['PD'] ? "DT" : "" }}">
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6">
-                                          <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Deuxiéme Conducteur</label>
-                                             <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['SD'] ? SD : "Non" }} {{ GET['SD'] ? "DT" : "" }}">
-                                             </div>
-                                          </div>
-                                       </div>
-
-                                       <div class="col-md-6">
-                                          <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Réservoire Plein</label>
-                                             <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ GET['RS'] ? RS : "Non" }} {{ GET['RS'] ? "DT" : "" }}">
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="col-md-6">
-                                          <div class="form-group">
-                                             <label class="fs-14 text-custom-black fw-500">Frais de Livraison</label>
-                                             <div class="group-form">
-                                             <input type="text" class="form-control form-control-custom" placeholder="XXXX-XXXX-XXXX" disabled value="{{ frais }} DT">
-                                             </div>
-                                          </div>
                                        </div>
                                        <div class="col-md-12">
                                           <div class="form-group">
@@ -133,11 +82,6 @@
                                        </div>
                                        <div class="col-12">
                                           <hr class="mt-0">
-                                          <div class="form-group">
-                                             <label class="custom-checkbox">
-                                             <input type="checkbox" name="#">
-                                             <span class="checkmark"></span> By continuing, you agree to the <a href="#" class="text-custom-blue">Terms and Conditions.</a> </label>
-                                          </div>
                                           <div class="form-group">
                                              <label class="fs-14 text-custom-black fw-500">Méthode de paiement</label>
                                              <div class="group-form">
@@ -164,9 +108,76 @@
                                              <div class="car-grid-wrapper bx-wrapper">
                                                 <div class="image-sec animate-img"><a href ="{{ path('front_office_car', {'id': vehicule.id}) }}"> <img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"> </a></div>
                                                 <div class="car-grid-caption padding-20 bg-custom-white p-relative">
-                                                   <h4 class="title fs-16"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}" class="text-custom-black">{{ vehicule.Marque}} : {{ vehicule.Modele }}<small class="text-light-dark">Total</small></a></h4>
-                                                   <span class="price"><small></small>{{prix}} DT {{vehicule.isVAT ? "TTC" : "" }} <small><b>( {{vehicule.Caut}} DT Cautionnement )</b></small> </span></br>
-                                                   <div class="action"> <a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">Voir</a></div>
+                                                   <h4 class="title fs-16"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}" class="text-custom-black">{{ vehicule.Marque}} : {{ vehicule.Modele }}<small class="text-light-dark">{{ Days }} jour(s)</small></a></h4>
+                                                   <span class="price"><small></small>{{ vehicule.Prix * Days }} DT {{vehicule.isVAT ? "TTC" : "" }} <small><b>( +{{vehicule.Caut}} DT Cautionnement )</b></small> </span></br>
+                                                   <div class="need-help bx-wrapper padding-20">
+                                                      <div class="col-12">
+                                                         <h6 class="text-custom-black">Options Supplémentaires</h6>
+                                                      </div>
+                                                      <hr>
+                                                      {% if GET['BS'] %}
+                                                      <div class="col-md-12">
+                                                         <div class="form-group">
+                                                            <label class="fs-14 text-custom-black fw-500">Siège Bébé : {{ GET['BS'] ? BS * Days : "Non" }} {{ GET['BS'] ? "DT" : "" }}</label>
+                                                            <div class="group-form">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      {% endif %}
+                                                      {% if GET['STW'] %}
+                                                      <div class="col-md-12">
+                                                         <hr>
+                                                         <div class="form-group">
+                                                            <label class="fs-14 text-custom-black fw-500">Assurance Passager : {{ GET['STW'] ? STW : "Non" }} {{ GET['STW'] ? "DT" : "" }}</label>
+                                                            <div class="group-form">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      {% endif %}
+                                                      {% if GET['PD'] %}
+                                                      <div class="col-md-12">
+                                                         <hr>
+                                                         <div class="form-group">
+                                                            <label class="fs-14 text-custom-black fw-500">Chauffeur Personel : {{ GET['PD'] ? PD * Days : "Non" }} {{ GET['PD'] ? "DT" : "" }}</label>
+                                                            <div class="group-form">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      {% endif %}
+                                                      {% if GET['SD'] %}
+                                                      <div class="col-md-12">
+                                                         <hr>
+                                                         <div class="form-group">
+                                                            <label class="fs-14 text-custom-black fw-500">Deuxiéme Conducteur : {{ GET['SD'] ? SD  : "Non" }} {{ GET['SD'] ? "DT" : "" }}</label>
+                                                            <div class="group-form">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      {% endif %}
+                                                      {% if GET['RS'] %}
+                                                      <div class="col-md-12">
+                                                         <hr>
+                                                         <div class="form-group">
+                                                            <label class="fs-14 text-custom-black fw-500">Réservoire Plein : {{ GET['RS'] ? RS : "Non" }} {{ GET['RS'] ? "DT" : "" }}</label>
+                                                            <div class="group-form">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      {% endif %}
+                                                      <div class="col-md-12">
+                                                         <hr>
+                                                         <div class="form-group">
+                                                            <label class="fs-14 text-custom-black fw-500">Frais de Livraison : {{ frais }} DT</label>
+                                                            <div class="group-form">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      <hr>
+                                                      <div class="col-12">
+                                                         <h5 class="text-custom-black">Total : <small><b>{{ prix  }} DT {{vehicule.isVAT ? "TTC" : "" }}</b></small></h5>
+                                                      </div>
+                                                      <hr>
+                                                   </div>
                                                 </div>
                                              </div>
                                           </div>
