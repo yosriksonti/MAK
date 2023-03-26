@@ -524,8 +524,45 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
+        $Mq = [];
+        $isset_mq = isset($_GET['Mq']);
+        if($isset_mq) {
+            foreach($_GET['Mq'] as $mq) {
+                $Mq[$mq] = $mq;
+            }
+        }
+
+        $Bt = [];
+        $isset_bt = isset($_GET['Bt']);
+        if($isset_bt) {
+            foreach($_GET['Bt'] as $bt) {
+                $Bt[$bt] = $bt;
+            }
+        }
+        $marques = $vehiculeRepository->findByMarque();
+        $vehicules = $vehiculeRepository->findByModele();
+        $vehsDispo = [];
+        foreach($vehicules as $vehicule) {
+            if($isset_mq && isset($Mq[$vehicule->getMarque()])) {
+                if($isset_bt && isset($Bt[$vehicule->getBoite()])) {
+                    array_push($vehsDispo, $vehicule);
+                } else if(!$isset_bt) {
+                    array_push($vehsDispo, $vehicule);
+                }
+            } else if(!$isset_mq) {
+                if($isset_bt && isset($Bt[$vehicule->getBoite()])) {
+                    array_push($vehsDispo, $vehicule);
+                } else if(!$isset_bt) {
+                    array_push($vehsDispo, $vehicule);
+                }
+            }
+
+        }
         return $this->render('frontoffice/cars.html.twig', [
-            'vehicules' => $vehiculeRepository->findByModele(),
+            'vehicules' => $vehsDispo,
+            'marques' => $marques,
+            'Mq' => $Mq,
+            'Bt' => $Bt,
         ]);
     }
     /**

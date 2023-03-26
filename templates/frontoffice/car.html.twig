@@ -175,8 +175,7 @@
                                              <div class="form-group">
                                                 <label class="fs-14 text-custom-black fw-500">Date Départ</label>
                                                 <div class="input-group group-form">
-                                                   <input type="date" name="DP" class="form-control form-control-custom"  value = "{{ GET['DP'] }}" min="{{today}}">
-                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                   <input type="date" name="DP" class="form-control form-control-custom"  value = "{{ GET['DP'] is defined ? GET['DP'] : ""  }}" min="{{today}}">
                                                 </div>
                                              </div>
                                              <div class="form-group">
@@ -190,8 +189,7 @@
                                              <div class="form-group">
                                                 <label class="fs-14 text-custom-black fw-500">Date Retour</label>
                                                 <div class="input-group group-form">
-                                                   <input type="date" name="DD" class="form-control form-control-custom"  value = "{{ GET['DD'] }}" min="{{today}}">
-                                                   <span class="input-group-append"> <i class="far fa-calendar"></i> </span> 
+                                                   <input type="date" name="DD" class="form-control form-control-custom"  value = "{{ GET['DD'] is defined ? GET['DD'] : ""}}" min="{{today}}">
                                                 </div>
                                              </div>
                                              <button type="submit" class="btn-first btn-submit full-width btn-height">Reserver</button>
