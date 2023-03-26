@@ -38,6 +38,14 @@ class ClientRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findEmails(): array {
+        $clients = $this->findAll();
+        $emails = [];
+        foreach($clients as $client) {
+            array_push($emails,$client->getEmail());
+        }
+        return $emails;
+    }
 
 //    /**
 //     * @return Client[] Returns an array of Client objects
