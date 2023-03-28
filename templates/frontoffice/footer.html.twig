@@ -5,17 +5,16 @@
                <div class="col-lg-6 col-md-6">
                   <div class="footer-box mb-md-40">
                      <h4 class="text-custom-white fw-600">À propos</h4>
-                     <p class="text-custom-white">on mets à votre disposition une une large gamme de voitures neuves à des prix imbattables
-                     </p>
+                     <p class="text-custom-white">{{ setting.Propos|raw }}</p>
                   </div>
                </div>
                <div class="col-lg-6 col-md-12">
                   <div class="footer-box mb-md-40">
                      <h4 class="text-custom-white fw-600">Contact</h4>
                      <ul class="m-0 p-0 main">
-                        <li>(+216) 96 900 905</li>
-                        <li>Centre Intissar, Rue Mustapha Abdessalem, Ariana</li>
-                        <li>k.mohamed@makrentcar.tn</li>
+                        <li>(+216) {{ setting.Tel }}</li>
+                        <li>{{ setting.Address }}</li>
+                        <li>{{ setting.Email }}</li>
                      </ul>
                      <ul class="custom-flex socials">
                         <li><a href="https://www.facebook.com/makrentcar" class="text-custom-white fs-14"><i class="fab fa-facebook-f"></i></a></li>

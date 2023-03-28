@@ -10,6 +10,7 @@ use App\Entity\Location;
 use App\Entity\Notification;
 use App\Entity\Disponibility;
 use App\Entity\Payment;
+use App\Entity\Settings;
 use App\Form\FeedbackType;
 use App\Form\LocationType;
 use App\Form\UserType;
@@ -20,6 +21,7 @@ use App\Repository\FeedbackRepository;
 use App\Repository\LocationRepository;
 use App\Repository\ClientRepository;
 use App\Repository\NotificationRepository;
+use App\Repository\SettingsRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -55,13 +57,14 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/", name="home_index")
      */
-    public function index(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository): Response
+    public function index(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
         $today = date("Y-m-d");
         $vehicules = $vehiculeRepository->findByModele();
+        $setting = $settingsRepo->findFirst();
         usort($vehicules, function($a, $b){
             return count($a->getFeedback()) < count($b->getFeedback());
         });
@@ -70,6 +73,7 @@ class FrontofficeController extends AbstractController
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
             'today' => $today,
+            'setting' => $setting
         ]);
     }
 
@@ -173,7 +177,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/profile", name="front_office_profile")
      */
-    public function profile(FeedbackRepository $feedbackRepository, Request $request): Response
+    public function profile(FeedbackRepository $feedbackRepository, Request $request, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -199,17 +203,19 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
         }
         $this->user = $user;
+        $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/profile.html.twig', [
             'form' => $form->createView(),
             'today' => $today,
             'paymentSuccess' => $paymentSuccess,
-            'paymentFail' => $paymentFail
+            'paymentFail' => $paymentFail,
+            'setting' => $setting
         ]);
     }
     /**
      * @Route("/signup", name="front_office_signup", methods={"GET", "POST"})
      */
-    public function signup(Request $request, ClientRepository $clientRepository, NotificationRepository $notificationRepo): Response
+    public function signup(Request $request, ClientRepository $clientRepository, NotificationRepository $notificationRepo, SettingsRepository $settingsRepo): Response
     {
         $user = $this->getUser();
         if($user) {
@@ -243,17 +249,18 @@ class FrontofficeController extends AbstractController
                 return $this->redirectToRoute('login', [], Response::HTTP_SEE_OTHER);
             }
         }
-
+        $setting = $settingsRepo->findFirst();
         return $this->renderForm('frontoffice/signup.html.twig', [
             'client' => $client,
             'form' => $form,
-            'today' => $today
+            'today' => $today,
+            'setting' => $setting
         ]);
     }
     /**
      * @Route("/profile/edit", name="front_office_profile_edit")
      */
-    public function editProfile(Request $request, ClientRepository $clientRepository) : Response
+    public function editProfile(Request $request, ClientRepository $clientRepository , SettingsRepository $settingsRepo) : Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -276,17 +283,18 @@ class FrontofficeController extends AbstractController
 
             return $this->redirectToRoute('front_office_profile', [], Response::HTTP_SEE_OTHER);
         }
-
+        $setting = $settingsRepo->findFirst();
         return $this->renderForm('frontoffice/edit.html.twig', [
             'client' => $client,
             'form' => $form,
+            'setting' => $setting
         ]);
     }
 
     /**
      * @Route("/reservation/{Num}", name="front_office_reservation")
      */
-    public function reservation($Num, LocationRepository $locationRepo): Response
+    public function reservation($Num, LocationRepository $locationRepo, SettingsRepository $settingsRepo): Response
     {
         $user = $this->getUser();
         if ($this->isGranted('ROLE_MODERATOR')) {
@@ -315,6 +323,7 @@ class FrontofficeController extends AbstractController
         $interval = $date1->diff($date2);
         $days = $interval->days; 
         $this->user = $user;
+        $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/reservation.html.twig', [
             "reservation" => $location,
             "amount" => $amount,
@@ -325,13 +334,14 @@ class FrontofficeController extends AbstractController
             'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
             'SD' => $vehicule->getPark()->getPrixSecondDriver(),
             'RS' => $vehicule->getReservoire(),
+            'setting' => $setting
         ]);
     }
 
     /**
      * @Route("/search", name="front_office_search", methods={"GET", "POST"})
      */
-    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo): Response
+    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -437,6 +447,7 @@ class FrontofficeController extends AbstractController
         $interval = $date1->diff($date2);
         $days = $interval->days > 0 ? $interval->days : 1;
         $this->user=$user;
+        $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
@@ -446,14 +457,15 @@ class FrontofficeController extends AbstractController
             'dispo' => $dispoCarsArray,
             'GET' => $_GET,
             'today' => $formattedTodayYMD,
-            'days' => $days
+            'days' => $days,
+            'setting' => $setting,
         ]);
     }
 
     /**
      * @Route("/car/{id}", name="front_office_car")
      */
-    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, VehiculeRepository $vehiculesRepo, Request $request): Response
+    public function car(Vehicule $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, VehiculeRepository $vehiculesRepo, Request $request, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -505,6 +517,7 @@ class FrontofficeController extends AbstractController
         $filtered =  Disponibility::getUnique($dispoArray);
         $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
         $this->user = $user;
+        $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/car.html.twig', [
             'vehicule' => $vehicule,
             'feedbacks' => $feedbacks,
@@ -512,14 +525,15 @@ class FrontofficeController extends AbstractController
             'form' => $form->createView(),
             'today' => $today_f2,
             'dispo' => $filtered,
-            'GET' => $_GET
+            'GET' => $_GET,
+            'setting' => $setting,
         ]);
     }
 
     /**
      * @Route("/cars", name="front_office_cars")
      */
-    public function cars( VehiculeRepository $vehiculeRepository): Response
+    public function cars( VehiculeRepository $vehiculeRepository, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -558,17 +572,19 @@ class FrontofficeController extends AbstractController
             }
 
         }
+        $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/cars.html.twig', [
             'vehicules' => $vehsDispo,
             'marques' => $marques,
             'Mq' => $Mq,
             'Bt' => $Bt,
+            'setting' => $setting,
         ]);
     }
     /**
      * @Route("/booking/{id}", name="front_office_booking", methods={"GET", "POST"})
      */
-    public function booking( Vehicule $vehicule, LocationRepository $locationRepository,VehiculeRepository $vehiculesRepo, Request $request): Response
+    public function booking( Vehicule $vehicule, LocationRepository $locationRepository,VehiculeRepository $vehiculesRepo, Request $request, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -608,6 +624,7 @@ class FrontofficeController extends AbstractController
             }
             if($dispo) {
                 $this->user = $user;
+                $setting = $settingsRepo->findFirst();
                 return $this->render('frontoffice/booking.html.twig', [
                     'vehicule' => $veh,
                     'form' => $form->createView(),
@@ -620,6 +637,7 @@ class FrontofficeController extends AbstractController
                     'PD' => $veh->getPark()->getPrixPersonalDriver(),
                     'SD' => $veh->getPark()->getPrixSecondDriver(),
                     'RS' => $veh->getReservoire(),
+                    'setting' => $setting,
                 ]); 
             }
         }
@@ -634,7 +652,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/preview/{id}", name="front_office_preview", methods={"GET", "POST"})
      */
-    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request): Response
+    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request, SettingsRepository $settingsRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -739,6 +757,7 @@ class FrontofficeController extends AbstractController
                 $prix += $agence_r->getFrais();
                 $optionsPrice += $agence_d->getFrais();
                 $optionsPrice += $agence_r->getFrais();
+                $setting = $settingRepository->findFirst();
                 return $this->render('frontoffice/preview.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),
@@ -758,6 +777,7 @@ class FrontofficeController extends AbstractController
                     'SD' => $vehicule->getPark()->getPrixSecondDriver(),
                     'RS' => $vehicule->getReservoire(),
                     'Days' => $days,
+                    'setting' => $setting,
                 ]);  
             }
         }
