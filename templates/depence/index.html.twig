@@ -60,7 +60,7 @@
                                         {{  depence.Date ? depence.Date|date('Y-m-d') : '' }}
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/vehicule/{{ depence.Vehicule }}">{{ depence.Vehicule.Modele }} : {{ depence.Vehicule.Matricule }}</a>
+                                       <a class="text-muted me-3" href="{{ path('vehicule_show',{'id' : depence.Vehicule }) }}">{{ depence.Vehicule.Modele }} : {{ depence.Vehicule.Matricule }}</a>
                                     </td>
                                     <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('depence_show', {'id':  depence.id}) }}">

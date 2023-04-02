@@ -49,12 +49,12 @@
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Client</label>
-                                    <p><a class="text-muted me-3" href="{{ url }}/client/{{ payment.Client.id }}">{{ payment.Client.CIN }}</a></p>
+                                    <p><a class="text-muted me-3" href="{{ path('client_show',{'id' : payment.Client.id}) }}">{{ payment.Client.CIN }}</a></p>
 
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Location</label>
-                                    <p><a class="text-muted me-3" href="{{ url }}/location/{{ payment.Location.id }}">{{ payment.Location.Num }}</a></p>
+                                    <p><a class="text-muted me-3" href="{{ path('location_show',{'id' : payment.Location.id}) }}">{{ payment.Location.Num }}</a></p>
                                 </div>
 
                                 <div class="col-md-4">

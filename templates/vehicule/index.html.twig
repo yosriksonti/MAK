@@ -70,7 +70,7 @@
                                         {{ vehicule.Matricule }}
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/park/{{ vehicule.Park }}">{{ vehicule.Park.Nom }}</a>
+                                       <a class="text-muted me-3" href="{{ path('park_show',{'id' : vehicule.Park.id}) }}">{{ vehicule.Park.Nom }}</a>
                                     </td>
                                     <td>
                                         {{ vehicule.Marque }}

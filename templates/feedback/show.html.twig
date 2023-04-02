@@ -33,11 +33,11 @@
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Client</label>
-                                    <p><a class="text-muted me-3" href="{{ url }}/client/{{ feedback.Client.id }}">{{ feedback.Client.Name }} {{ feedback.Client.Lastname }}</a></p>
+                                    <p><a class="text-muted me-3" href="{{ path('client_show',{'id' : feedback.Client.id }) }}">{{ feedback.Client.Name }} {{ feedback.Client.Lastname }}</a></p>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Vehicule</label>
-                                    {% if feedback.Vehicule %} <p><a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule.id  }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a></p> {% endif %}
+                                    {% if feedback.Vehicule %} <p><a class="text-muted me-3" href="{{ path('vehicule_show',{'id' : feedback.Vehicule.id }) }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a></p> {% endif %}
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Date</label>

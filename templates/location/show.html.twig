@@ -102,11 +102,11 @@
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Client</h2>
-                                    <a href="{{ url }}/client/{{ location.Client }}">{{ location.Client.Name }}</a>
+                                    <a href="{{ path('client_show',{'id' : location.Client.id, }) }}">{{ location.Client.Name }}</a>
                                 </div>
                                 <div class="col-md-6">
                                     <h2 class="small mb-1" for="inputFirstName">Vehicule</h2>
-                                    <a href="{{ url }}/vehicule/{{ location.Vehicule }}">{{ location.Vehicule.Modele }} : {{ location.Vehicule.Matricule }}</a>
+                                    <a href="{{ path('vehicule_show',{'id' : location.Vehicule.id, }) }}">{{ location.Vehicule.Modele }} : {{ location.Vehicule.Matricule }}</a>
                                 </div>
                             </div>
                             <hr>
@@ -155,7 +155,7 @@
                                             {% for  payment in  location.payments %}
                                                 <tr>
                                                     <td width="45%">
-                                                        <a href="{{ url }}/payment/{{ payment.id }}">{{  payment.sessionId }}</a>
+                                                        <a href="{{ path('payment_show',{'id' : payment.id, }) }}">{{  payment.sessionId }}</a>
                                                     </td>
                                                     <td width="45%">
                                                         {{  payment.Status }}
@@ -164,7 +164,7 @@
                                                         {{  payment.Total }}
                                                     </td>
                                                     <td width="45%">
-                                                        <a href="{{ url }}/client/{{ payment.Client }}">{{  payment.Client.Name }}</a>
+                                                        <a href="{{ path('client_show',{'id' : payment.Client.id, }) }}">{{  payment.Client.Name }}</a>
                                                     </td>
                                                 </tr>
                                             {% else %}

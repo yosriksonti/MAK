@@ -165,7 +165,7 @@
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-12">
                                     <h2 class="small mb-1" for="inputFirstName">Park</h2>
-                                    <p class=" mb-1" for="inputFirstName"><a href ="{{ url }}/park/{{ vehicule.Park }}" >{{ vehicule.Park.Nom }}</a></p>                               
+                                    <p class=" mb-1" for="inputFirstName"><a href ="{{ path('park_show',{'id' : vehicule.Park.id}) }}" >{{ vehicule.Park.Nom }}</a></p>                               
                                 </div>
                             </div>
                             <hr>
@@ -195,7 +195,7 @@
                                             {% for  location in  vehicule.locations %}
                                                 <tr>
                                                     <td width="40%">
-                                                        <a href="{{ url }}/location/{{ location.id }}">{{  location.Num }}</a>
+                                                        <a href="{{ path('location_show',{'id' : location.id}) }}">{{  location.Num }}</a>
                                                     </td>
                                                     <td width="30%">
                                                         {{  location.Date_Loc }}
@@ -242,7 +242,7 @@
                                             {% for  depence in  vehicule.depences %}
                                                 <tr>
                                                     <td width="40%">
-                                                        <a href="{{ url }}/depence/{{ depence.id }}">{{  depence.Designation }}</a>
+                                                        <a href="{{ path('depence_show',{'id' : depence.id}) }}">{{  depence.Designation }}</a>
                                                     </td>
                                                     <td width="30%">
                                                         {{  depence.Date_F }}

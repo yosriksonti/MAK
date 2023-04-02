@@ -60,10 +60,10 @@
                                         {{  feedback.Rating }}/5
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/client/{{ feedback.Client.id }}">{{ feedback.Client.CIN }}</a>
+                                       <a class="text-muted me-3" href="{{ path('client_show',{'id' : feedback.Client.id }) }}">{{ feedback.Client.CIN }}</a>
                                     </td>
                                     <td>
-                                       {% if feedback.Vehicule %} <a class="text-muted me-3" href="{{ url }}/vehicule/{{ feedback.Vehicule.id  }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a> {% endif %}
+                                       {% if feedback.Vehicule %} <a class="text-muted me-3" href="{{ path('vehicule_show',{'id' : feedback.Vehicule.id }) }}">{{ feedback.Vehicule.Modele }} : {{ feedback.Vehicule.Matricule }}</a> {% endif %}
                                     </td>
                                     <td>
                                         {{  feedback.Visible ? 'Oui' : 'Non' }}

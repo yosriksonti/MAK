@@ -380,37 +380,35 @@ class FrontofficeController extends AbstractController
                 if($oldId != $veh->getId()){
                     $oldId = $veh->getId();
                     $start = $today;
+                    $formattedStart = $formattedToday;
                 }
-                $start = $today;
-                $formattedStart = $formattedToday;
                 $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId()),array('Date_Loc' => "ASC"));
                 $countTotal += count($locations);
                 foreach($locations as $location) {
-                    if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée") {
-                        $location_DP = strtotime($location->getDate_Loc());
-                        $location_DD = strtotime($location->getDate_Retour());
-                        $startTime = strtotime($start);
-
-                        $disponibility = new Disponibility();
-                        $disponibility->setStart($start);
-                        $disponibility->setEnd(date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days")));
+                    if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée" && strtotime($location->getDate_Retour()) > strtotime($formattedTodayYMD) ) {
                         $formattedDP = $formattedStart;
+                        $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
                         $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
                         if($DP >= strtotime($formattedDP) && $DP < strtotime($formattedDD) && $DD >= strtotime($formattedDP) && $DD <= strtotime($formattedDD)) {
                             $vehDispo = true;
                         }
-                        if(strtotime($formattedStart) >= strtotime($formattedToday)) {
-                            array_push($dispoArray,$disponibility);
+                        if(strtotime($formattedStart) >= strtotime($formattedToday) && strtotime($formattedStart) < strtotime($formattedDD)) {
+                                $disponibility = new Disponibility();
+                                $disponibility->setStart($start);
+                                $disponibility->setEnd($end);
+                                array_push($dispoArray,$disponibility);
                         }
                         $start = date('d/m/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                         $formattedStart = date('m/d/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                     }
                 }
                 $disponibility = new Disponibility();
-                $disponibility->setStart($start);
                 if(strtotime($formattedStart) >= strtotime($formattedToday)) {
-                    array_push($dispoArray,$disponibility);
+                    $disponibility->setStart($start);
+                } else {
+                    $disponibility->setStart($today);
                 }
+                array_push($dispoArray,$disponibility);
                 if($DP >= strtotime($formattedStart)) {
                     $vehDispo = true;
                 }
@@ -470,8 +468,10 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
-        $today = date('m/d/Y');
-        $today_f2 = date("d/m/Y");
+        $today = date("d/m/Y");
+        $formattedToday = date("m/d/Y");
+        $formattedTodayYMD = date("Y-m-d");
+        $formattedStart = $formattedToday;
         $dispoArray = [];
         $dispo = true;
         $user = $this->getUser();
@@ -492,24 +492,27 @@ class FrontofficeController extends AbstractController
             $start = $today;
             foreach( $veh->getLocations() as $location) {
                 if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée") {
-                    $disponibility = new Disponibility();
-                    $location_DP = strtotime($location->getDate_Loc());
-                    $location_DD = strtotime($location->getDate_Retour());
-                    $disponibility->setStart($start);
-                    $disponibility->setEnd(date('m/d/Y', strtotime($location->getDate_Loc(). ' - 1 days')));
-                    if(strtotime($start)<$location_DP) {
-                        array_push($dispoArray,$disponibility);
-                        $start = $location->getDate_Retour();
-                        $start = date('m/d/Y', strtotime($start. ' + 1 days'));
-                    } else if(strtotime($start)<$location_DD) {
-                        $start = $location->getDate_Retour();
-                        $start = date('m/d/Y', strtotime($start. ' + 1 days'));
+                    $formattedDP = $formattedStart;
+                    $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
+                    $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
+                    if(strtotime($formattedStart) >= strtotime($formattedToday) && strtotime($formattedStart) < strtotime($formattedDD)) {
+                            $disponibility = new Disponibility();
+                            $disponibility->setStart($start);
+                            $disponibility->setEnd($end);
+                            array_push($dispoArray,$disponibility);
                     }
+                    $start = date('d/m/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
+                    $formattedStart = date('m/d/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                 }
             }
             $disponibility = new Disponibility();
-            $disponibility->setStart($start);
+            if(strtotime($formattedStart) >= strtotime($formattedToday)) {
+                $disponibility->setStart($start);
+            } else {
+                $disponibility->setStart($today);
+            }
             array_push($dispoArray,$disponibility);
+
         }
         usort($dispoArray, function($a, $b) {
             return strtotime($a->getStart()) - strtotime($b->getStart());
@@ -523,7 +526,7 @@ class FrontofficeController extends AbstractController
             'feedbacks' => $feedbacks,
             'agences' => $agenceRepository->findAll(),
             'form' => $form->createView(),
-            'today' => $today_f2,
+            'today' => $formattedTodayYMD,
             'dispo' => $filtered,
             'GET' => $_GET,
             'setting' => $setting,
@@ -596,14 +599,14 @@ class FrontofficeController extends AbstractController
         $form->handleRequest($request);
         if(!isset($_GET['DP']) || empty($_GET['DP']) || !isset($_GET['DD']) || empty($_GET['DD'])) {
             $this->user = $user;
-            return $this->redirectToRoute('front_office_search', ['AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
         $DP = strtotime($_GET['DP']);
         $DD = strtotime($_GET['DD']);
 
         if(strtotime($today) > $DP) {
             $this->user = $user;
-            return $this->redirectToRoute('front_office_search', ['AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
 
         $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
@@ -643,7 +646,7 @@ class FrontofficeController extends AbstractController
         }
         if(!$dispo) {
             $this->user = $user;
-            return $this->redirectToRoute('front_office_search', ['AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
            
         
@@ -757,7 +760,7 @@ class FrontofficeController extends AbstractController
                 $prix += $agence_r->getFrais();
                 $optionsPrice += $agence_d->getFrais();
                 $optionsPrice += $agence_r->getFrais();
-                $setting = $settingRepository->findFirst();
+                $setting = $settingsRepo->findFirst();
                 return $this->render('frontoffice/preview.html.twig', [
                     'vehicule' => $vehicule,
                     'form' => $form->createView(),

@@ -155,7 +155,7 @@
                                     <h5 class="text-custom-black">Disponibilité</h5>
                                        <select class = "form-control form-control-custom">
                                        {% for dsp in dispo %}
-                                          <option>{{ dsp.start }} {% if dsp.end %} -> {{ dsp.end }} {% endif %} </option>
+                                          <option>à partir du {{ dsp.start }} {% if dsp.end %} jusqu'à {{ dsp.end }} {% endif %}</option>
                                        {% endfor %}
                                        </select> 
                                     </div>

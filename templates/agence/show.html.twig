@@ -75,10 +75,10 @@
                                             {% for  location in  agence.locations %}
                                                 <tr>
                                                     <td width="45%">
-                                                        <a href="{{ url }}/location/{{ location.id }}">{{  location.Num }}</a>
+                                                        <a href="{{ path('location_show',{'id' : location.id}) }}">{{  location.Num }}</a>
                                                     </td>
                                                     <td width="45%">
-                                                        <a href="{{ url }}/vehicule/{{ location.Vehicule.id }}">{{ location.Vehicule.Modele }} : {{  location.Vehicule.Matricule }} </a>
+                                                        <a href="{{ path('vehicule_show',{'id' : location.Vehicule.id}) }}">{{ location.Vehicule.Modele }} : {{  location.Vehicule.Matricule }} </a>
                                                     </td>
                                                     <td width="45%">
                                                         {{ location.Date_Loc }}

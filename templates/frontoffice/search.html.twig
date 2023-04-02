@@ -150,7 +150,7 @@
                                  </div>
                                  <div class="row">
                                     <div class="col-md-6">
-                                       <div class="action"><a class="full-width" href="{{ path('front_office_car', {'id': vehicule.id}) }}"><button class="btn-first btn-submit full-width btn-height">Voir</button></a></div>
+                                       <div class="action"><a class="full-width" href="{{ path('front_office_car', {'id': vehicule.id, 'AD' : GET['AD'], 'AP' : GET['AP'], 'DD' : GET['DD'], 'DP' : GET['DP'] }) }}"><button class="btn-first btn-submit full-width btn-height" style="margin: 2px">Voir</button></a></div>
                                     </div>
                                      <div class="col-md-6">
                                        <form action="/booking/{{ vehicule.id }}" method="GET">

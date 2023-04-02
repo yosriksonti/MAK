@@ -63,10 +63,10 @@
                                         {{  payment.Status }}
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/client/{{ payment.Client.id }}">{{ payment.Client.CIN }}</a>
+                                       <a class="text-muted me-3" href="{{ path('client_show',{'id' : payment.Client.id}) }}">{{ payment.Client.CIN }}</a>
                                     </td>
                                     <td>
-                                       <a class="text-muted me-3" href="{{ url }}/location/{{ payment.Location.id }}">{{ payment.Location.Num }}</a>
+                                       <a class="text-muted me-3" href="{{ path('location_show',{'id' : payment.Location.id}) }}">{{ payment.Location.Num }}</a>
                                     </td>
                                     <td>
                                         <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ path('payment_show', {'id':  payment.id}) }}">

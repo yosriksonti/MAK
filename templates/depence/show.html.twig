@@ -33,7 +33,7 @@
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Vehicule</label>
-                                    <p><a class="text-muted me-3" href="{{ url }}/vehicule/{{ depence.Vehicule ? depence.Vehicule.id : '' }}">{{ depence.Vehicule.Modele }} : {{ depence.Vehicule.Matricule }}</a></p>
+                                    <p><a class="text-muted me-3" href="{{ path('vehicule_show',{'id' : depence.Vehicule }) }}">{{ depence.Vehicule.Modele }} : {{ depence.Vehicule.Matricule }}</a></p>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small mb-1" for="inputFirstName">Date</label>

@@ -117,7 +117,7 @@
                                             {% for  vehicule in  park.Vehicules %}
                                                 <tr>
                                                     <td width="45%">
-                                                        <a href="{{ url }}/vehicule/{{ vehicule.id }}">{{  vehicule.Matricule }}</a>
+                                                        <a href="{{ path('vehicule_show',{'id' : vehicule.id}) }}">{{  vehicule.Matricule }}</a>
                                                     </td>
                                                     <td width="45%">
                                                         {{  vehicule.Marque }}

@@ -114,7 +114,7 @@
                                             {% for  location in  client.Locations %}
                                                 <tr>
                                                     <td width="10%">
-                                                        <a href="{{ url }}/location/{{ location.id }}">{{  location.Num }}</a>
+                                                        <a href="{{ path('location_show', {'id' : location.id}) }}">{{  location.Num }}</a>
                                                     </td>
                                                     <td width="15%">
                                                         {{  location.Date_Res }}
@@ -126,7 +126,7 @@
                                                         {{  location.Date_Retour }}
                                                     </td>
                                                     <td width="20%">
-                                                        <a href="{{ url }}/vehicule/{{ location.Vehicule.id }}">{{ location.Vehicule.Modele }} : {{ location.Vehicule.Matricule }}</a>
+                                                        <a href="{{ path('vehicule_show', {'id' : location.Vehicule.id}) }}">{{ location.Vehicule.Modele }} : {{ location.Vehicule.Matricule }}</a>
                                                     </td>
                                                 </tr>
                                             {% else %}
@@ -166,10 +166,10 @@
                                             {% for  payment in  client.payments %}
                                                 <tr>
                                                     <td width="30%">
-                                                        <a href="{{ url }}/payment/{{ payment.id }}">{{  payment.sessionId }}</a>
+                                                        <a href="{{ path('payment_show',{'id' : payment.id}) }}">{{  payment.sessionId }}</a>
                                                     </td>
                                                     <td width="30%">
-                                                        <a href="{{ url }}/location/{{ payment.Location }}">{{  payment.Location.Num }}</a>
+                                                        <a href="{{ path('location_show', {'id' : payment.Location.id}) }}">{{  payment.Location.Num }}</a>
                                                     </td>
                                                     <td width="20%">
                                                         {{  payment.Status }}
