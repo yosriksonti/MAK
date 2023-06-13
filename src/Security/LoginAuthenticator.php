@@ -46,7 +46,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
         $route = isset($_GET["route"]) ? $_GET["route"] : "home_index"; 
-
+        
         return new RedirectResponse($this->urlGenerator->generate($route,$_GET));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
