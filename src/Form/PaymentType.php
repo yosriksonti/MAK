@@ -17,7 +17,14 @@ class PaymentType extends AbstractType
     {
         $builder
             ->add('sessionId')
-            ->add('status')
+            ->add('status',ChoiceType::class,[
+                'choices' => [
+                    'pending' => 'pending',
+                    'paid' => 'paid',
+                    'cancelled' => 'cancelled',
+                    'refused' => 'refused',
+                ]
+            ])
             ->add('total')
             ->add('createdOn',DateType::class, [ 
                 'widget' => 'single_text',
