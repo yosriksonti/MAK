@@ -35,7 +35,11 @@ class VehiculeRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($vehicule);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            try {
+                $this->getEntityManager()->flush();
+            } catch (\Exception $e) {
+            
+            }
         }
     }
 

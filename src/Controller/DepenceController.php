@@ -17,9 +17,27 @@ class DepenceController extends AbstractController
     #[Route('/', name: 'depence_index', methods: ['GET'])]
     public function index(DepenceRepository $depenceRepository, NotificationRepository $notificationRepo): Response
     {
+        $depences = $depenceRepository->findAll();
+        if(isset($_GET['from']) && isset($_GET['to']) && !empty($_GET['from']) && !empty($_GET['to'])) {
+            $tmp = [];
+            foreach($depences as $depence) {
+                if($depence->getDate() >= new \DateTime($_GET['from']) && $depence->getDate() <= new \DateTime($_GET['to'])) {
+                    $tmp[] = $depence;
+                }
+            }
+            $depences = $tmp;
+        }
+        $dpns = [];
+        foreach($depences as $depence) {
+            if(!isset($dpns[$depence->getDate()->format('Y-m-d')])) {
+                $dpns[$depence->getDate()->format('Y-m-d')] = [];
+            }
+            $dpns[$depence->getDate()->format('Y-m-d')][] = $depence;
+        }
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('depence/index.html.twig', [
-            'depences' => $depenceRepository->findAll(),
+            'depences' => $depences ,
+            'dpns' => $dpns,
             'url' => $_ENV["APP_URL"],
             'notifications' => $notifications
         ]);

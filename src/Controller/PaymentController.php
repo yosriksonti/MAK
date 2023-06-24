@@ -17,11 +17,31 @@ class PaymentController extends AbstractController
     #[Route('/', name: 'payment_index', methods: ['GET'])]
     public function index(PaymentRepository $paymentRepository, NotificationRepository $notificationRepo): Response
     {
+        $payments = $paymentRepository->findAll();
+        if(isset($_GET['from']) && isset($_GET['to']) && !empty($_GET['from']) && !empty($_GET['to'])) {
+            $tmp = [];
+            foreach($payments as $payment) {
+                if($payment->getCreatedOn() >= new \DateTime($_GET['from']) && $payment->getCreatedOn() <= new \DateTime($_GET['to'])) {
+                    $tmp[] = $payment;
+                }
+            }
+            $payments = $tmp;
+        }
+
+        $pymnts = [];
+        foreach($payments as $payment) {
+            if(!isset($pymnts[$payment->getCreatedOn()->format('Y-m-d')])) {
+                $pymnts[$payment->getCreatedOn()->format('Y-m-d')] = [];
+            }
+            $pymnts[$payment->getCreatedOn()->format('Y-m-d')][] = $payment;
+        }
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('payment/index.html.twig', [
-            'payments' => $paymentRepository->findAll(),
+            'payments' => $payments,
+            'pymnts' => $pymnts,
             'url' => $_ENV["APP_URL"],
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'GET' => $_GET
         ]);
     }
 

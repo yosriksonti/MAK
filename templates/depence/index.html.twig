@@ -27,6 +27,33 @@
         <div class="container-fluid px-4">
             <div class="card">
                 <div class="card-body">
+                <hr>  
+                    <form method="GET">
+                    <div class="row gx-3 mb-3">
+                        <!-- Form Group (first name)-->
+                        <div class="col-md-4">
+                            <h2 class="small mb-1" for="inputFirstName">Début</h2>
+                            <input class="form-control" type="date" name="from" required {% if GET['from'] is defined and GET['from'] is not null %} value="{{ GET['from'] |date('Y-m-d') }}" {% endif %}></input>
+                        </div>
+                        <div class="col-md-4">
+                            <h2 class="small mb-1" for="inputFirstName">Fin</h2>
+                            <input class="form-control" type="date" name="to" required {% if GET['to'] is defined and GET['to'] is not null %} value="{{ GET['to'] |date('Y-m-d') }}" {% endif %}></input>
+                        </div>
+                        <div class="col-md-4">
+                            <br>
+                            <button class="btn btn-outline-success" type="submit" style="float:left">Filter</button>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="row gx-3 mb-3">
+                        <!-- Form Group (first name)-->
+                        <div class="col-md-12">
+                            <hr>
+                            <h2 class="small mb-1" for="inputFirstName">Encaissements</h2>
+                            <div id="area-chart" ></div>
+                            <hr>  
+                        </div>
+                    </div>
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
@@ -87,4 +114,35 @@
             </div>
         </div>
     </main>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+var data = [
+    {% set sum = 0 %}
+    {% for date,dpn in dpns|sort((a, b) => a[0].Date <=> b[0].Date) %}
+        {% for depence in dpn %}
+            {% set sum = sum + depence.Prix %}
+        {% endfor %}
+        { y: '{{ date|date("Y-m-d") }}', a: {{ sum }} },
+    {% endfor %}
+    ],
+    config = {
+        data: data,
+        xkey: 'y',
+        ykeys: [ 'a'],
+        labels: [ 'Payé'],
+        fillOpacity: 0.6,
+        hideHover: 'auto',
+        behaveLikeLine: true,
+        resize: true,
+        pointFillColors:['#ffffff'],
+        pointStrokeColors: ['black'],
+        lineColors:['red']
+    };
+    config.element = 'area-chart';
+    Morris.Area(config);
+</script>
+
 {% endblock %}

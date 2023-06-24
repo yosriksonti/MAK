@@ -192,7 +192,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% set sum = 0 %}
                                             {% for  location in  vehicule.locations %}
+                                                {% set sum = sum + location.Montant %}
                                                 <tr>
                                                     <td width="40%">
                                                         <a href="{{ path('location_show',{'id' : location.id}) }}">{{  location.Num }}</a>
@@ -216,6 +218,7 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                    <h2 class="small mb-1" for="inputFirstName"><b>Total : <span style="float:right"> {{ sum }} DT </span></b></h2>
                                 </div>
                             </div>
                             <hr>
@@ -239,7 +242,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% set sum = 0 %}
                                             {% for  depence in  vehicule.depences %}
+                                                {% set sum = sum + depence.Prix %}
+
                                                 <tr>
                                                     <td width="40%">
                                                         <a href="{{ path('depence_show',{'id' : depence.id}) }}">{{  depence.Designation }}</a>
@@ -260,6 +266,8 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                    <br>
+                                    <h2 class="small mb-1" for="inputFirstName"><b>Total : <span style="float:right"> {{ sum }} DT </span></b></h2>
                                 </div>
                             </div>
                             <!-- Form Group (email address)-->
