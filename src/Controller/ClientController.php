@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/client")
+ * @Route("/back/client")
  */
 class ClientController extends AbstractController
 {

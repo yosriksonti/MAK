@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/settings')]
+#[Route('/back/settings')]
 class SettingsController extends AbstractController
 {
     #[Route('/index', name: 'app_settings_index', methods: ['GET'])]

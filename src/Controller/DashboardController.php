@@ -19,7 +19,7 @@ use Symfony\Component\Mime\Address;
 class DashboardController extends AbstractController
 {
     /**
-     * @Route("/dashboard", name="dashboard_index") 
+     * @Route("/back/dashboard", name="dashboard_index") 
      */
     public function index(NotificationRepository $notificationRepo): Response
     {

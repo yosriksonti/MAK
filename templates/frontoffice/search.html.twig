@@ -53,11 +53,13 @@
                                  </div>
                               </div>
                               <hr>
+                              <h6>Marque</h6>
                               <div class="checkbox-group">
                               {% for marque in marques %}
                                  <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Mq[]" value="{{marque.Marque}}" {% if Mq[marque.Marque] is defined %}checked{% endif %}><span class="checkmark"></span>{{marque.Marque}}</label></div>
                               {% endfor %}
                               </div>
+                              <hr>
                               <button type="submit" class="btn-first btn-submit full-width btn-height">Rechercher</button>
                            </form>
                         </div>

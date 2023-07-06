@@ -37,7 +37,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use \DateTime;
 
 
-
+#[Route('/front')]
 class FrontofficeController extends AbstractController
 {
     private $passwordHasher;
@@ -59,8 +59,10 @@ class FrontofficeController extends AbstractController
      */
     public function index(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, SettingsRepository $settingsRepo): Response
     {
-        if ($this->isGranted('ROLE_MODERATOR')) {
-            return $this->redirectToRoute('dashboard_index');
+        if($this->getUser() != null) {
+            if (isset($this->getUser()->getRoles()['ROLE_MODERATOR']) || isset($this->getUser()->getRoles()['ROLE_ADMIN'])) {
+                return $this->redirectToRoute('dashboard_index');
+            }
         }
         $today = date("Y-m-d");
         $vehicules = $vehiculeRepository->findByModele();
@@ -98,7 +100,7 @@ class FrontofficeController extends AbstractController
                 'Accept' => 'application/json',
             ],
             'body' => [
-                    "receiverWallet" => "600216e6fd5f7e2d78da9bf4",
+                    "receiverWallet" => $_ENV['PAYMENT_RECEIVER_WALLET'],
                     "amount" => $_GET['amount'] * 1000,
                     "selectedPaymentMethod" => "gateway",
                     "firstName" => "Yosri",

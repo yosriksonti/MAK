@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user")
+ * @Route("/back/user")
  */
 class UserController extends AbstractController
 {
@@ -30,6 +30,9 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository, NotificationRepository $notificationRepo): Response
     {
+        if(isset($this->getUser()->getRoles()['ROLE_USER'])){
+            return $this->redirectToRoute('home_index');
+        }
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAdmins('ROLE_MODERATOR'),

@@ -16,7 +16,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
 /**
- * @Route("/location")
+ * @Route("/back/location")
  */
 class LocationController extends AbstractController
 {

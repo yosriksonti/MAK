@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/promo')]
+#[Route('/back/promo')]
 class PromoController extends AbstractController
 {
     #[Route('/', name: 'promo_index', methods: ['GET'])]
