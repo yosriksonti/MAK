@@ -530,7 +530,6 @@ class FrontofficeController extends AbstractController
                 }
             }
         }
-        $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
         $this->user = $user;
         $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/car.html.twig', [
