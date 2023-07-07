@@ -523,12 +523,14 @@ class FrontofficeController extends AbstractController
         $fbVehs = $vehiculesRepo->findByModele($vehicule->getModele());
         $feedbacks=[];
         foreach($fbVehs as $fbVeh) {
-            foreach($fbVeh->getFeedbacks() as $fb) {
-                if($fb->getVisible()) {
+            $fbs = $feedbackRepository->findBy(array('Vehicule' => $fbVeh->getId(), "Visible" => true));
+            foreach($fbs as $fb) {
+                if($fb->isVisible()) {
                     array_push($feedbacks,$fb);
                 }
             }
         }
+        $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
         $this->user = $user;
         $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/car.html.twig', [
