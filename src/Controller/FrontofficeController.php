@@ -520,7 +520,15 @@ class FrontofficeController extends AbstractController
             return strtotime($a->getStart()) - strtotime($b->getStart());
         });
         $filtered =  Disponibility::getUnique($dispoArray);
-        $feedbacks = $feedbackRepository->findBy(array('Vehicule' => $vehicule->getId(), "Visible" => true));
+        $fbVehs = $vehiculesRepo->findByModele($vehicule->getModele());
+        $feedbacks=[];
+        foreach($fbVehs as $fbVeh) {
+            foreach($fbVeh->getFeedbacks() as $fb) {
+                if($fb->getVisible()) {
+                    array_push($feedbacks,$fb);
+                }
+            }
+        }
         $this->user = $user;
         $setting = $settingsRepo->findFirst();
         return $this->render('frontoffice/car.html.twig', [
