@@ -42,9 +42,8 @@ security:
         - { path: ^/front/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/preview, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/back/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/back, roles: ROLE_ADMIN }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/back/*, roles: 'ROLE_MODERATOR' }
         
 
 

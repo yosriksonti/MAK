@@ -22,7 +22,7 @@ class SecurityController extends AbstractController
     {
 
         if ($this->getUser()) {
-            $route = $_GET["route"] ? $_GET["route"] : "home_index"; 
+            $route = $_GET["route"] ? $_GET["route"] : "home"; 
              return $this->redirectToRoute($route,$_GET);
         }
 
