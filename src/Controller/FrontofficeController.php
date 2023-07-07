@@ -520,14 +520,12 @@ class FrontofficeController extends AbstractController
             return strtotime($a->getStart()) - strtotime($b->getStart());
         });
         $filtered =  Disponibility::getUnique($dispoArray);
-        $fbVehs = $vehiculesRepo->findByModele($vehicule->getModele());
+        $fbVehs = $vehiculesRepo->findBy(array('Modele' => $vehicule->getModele()));
         $feedbacks=[];
         foreach($fbVehs as $fbVeh) {
             $fbs = $feedbackRepository->findBy(array('Vehicule' => $fbVeh->getId(), "Visible" => true));
             foreach($fbs as $fb) {
-                if($fb->isVisible()) {
                     array_push($feedbacks,$fb);
-                }
             }
         }
         $this->user = $user;
