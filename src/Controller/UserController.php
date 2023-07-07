@@ -30,7 +30,7 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository, NotificationRepository $notificationRepo): Response
     {
-        if(isset($this->getUser()->getRoles()['ROLE_USER'])){
+        if(!isset($this->getUser()->getRoles()['ROLE_ADMIN'])){
             return $this->redirectToRoute('home_index');
         }
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
