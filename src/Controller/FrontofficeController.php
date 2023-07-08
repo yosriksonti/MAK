@@ -359,10 +359,17 @@ class FrontofficeController extends AbstractController
         $vehicules = [];
         $marques = $vehiculeRepository->findByMarque();
         $Mq = [];
+        $Bt = [];
         $isset_mq = isset($_GET['Mq']);
+        $isset_bt = isset($_GET['Bt']);
         if($isset_mq) {
             foreach($_GET['Mq'] as $mq) {
                 $Mq[$mq] = $mq;
+            }
+        }
+        if($isset_bt) {
+            foreach($_GET['Bt'] as $bt) {
+                $Bt[$bt] = $bt;
             }
         }
         $start = $today;
@@ -377,6 +384,7 @@ class FrontofficeController extends AbstractController
             $push = false;
             $oldId = 0;
             $isMQ = false;
+            $isBT = false;
             $countTotal = 0;
             foreach($vehs as $veh){
                 if($oldId != $veh->getId()){
@@ -429,12 +437,22 @@ class FrontofficeController extends AbstractController
                 $vehDispo = false;
                 $isMQ = false;
             }
+
+            if($isset_bt && !isset($Bt[$veh->getBoite()])) {
+                $vehDispo = false;
+                $isBT = false;
+            }
             if($vehDispo) {
                 if(!$push) {
                     array_push($vehicules,$vehicule_raw);
                     $push = true;
                 }
             } else if (isset($Mq[$veh->getMarque()]) || !$isset_mq){
+                if(!$push) {
+                    array_push($otherCarsArray,$vehicule_raw);
+                    $push = true;
+                }
+            } else if (isset($Bt[$veh->getBoite()]) || !$isset_bt){
                 if(!$push) {
                     array_push($otherCarsArray,$vehicule_raw);
                     $push = true;
@@ -454,6 +472,7 @@ class FrontofficeController extends AbstractController
             'otherVehicules' => $otherCarsArray,
             'marques' => $marques,
             'Mq' => $Mq,
+            'Bt' => $Bt,
             'dispo' => $dispoCarsArray,
             'GET' => $_GET,
             'today' => $formattedTodayYMD,

@@ -161,7 +161,7 @@
                                     </div>
                                     <hr>
                                     <h5 class="text-custom-black">Reservez Maintenant</h5>
-                                    <form action="/booking/{{ vehicule.id }}" method="GET">
+                                       <form action="{{path('front_office_booking',{'id' : vehicule.id})  }}" method="GET">
                                        <div class="row">
                                           <div class="col-12">
                                              <div class="form-group">

@@ -26,31 +26,24 @@
                               <h5 class="no-margin text-custom-white">Modifier Recherche</h5>
                            </div>
                            <form>
-                              <div class="form-group"><label class="fs-14 text-custom-black fw-500">Depart</label>
-                                 <select class="custom-select form-control form-control-custom" name="AP" >
-                                    {% for  agence in  agences %}
-                                    <option value="{{  agence.id }}">{{  agence.Nom }}</option>
-                                    {% endfor %}
-                                 </select> 
-                              </div>
+                              
                               <div class="form-group">
                                  <label class="fs-14 text-custom-black fw-500">Date Depart</label>
                                  <div class="input-group group-form">
                                  <input type="date" name="DP" class="form-control form-control-custom"value = "{{ GET['DP'] }}" min="{{today}}">
                                  </div>
                               </div>
-                              <div class="form-group"><label class="fs-14 text-custom-black fw-500">Retour</label>
-                                 <select class="custom-select form-control form-control-custom" name="AD">
-                                    {% for  agence in  agences %}
-                                    <option value="{{  agence.id }}">{{  agence.Nom }}</option>
-                                    {% endfor %}
-                                 </select> 
-                              </div>
                               <div class="form-group">
                                  <label class="fs-14 text-custom-black fw-500">Date Retour</label>
                                  <div class="input-group group-form">
                                  <input type="date" name="DD" class="form-control form-control-custom"  value = "{{ GET['DD'] }}" min="{{today}}">
                                  </div>
+                              </div>
+                              <hr>
+                              <h6>Transmission</h6>
+                              <div class="checkbox-group">
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Bt[]" value="Automatique" {% if Bt['Automatique'] is defined %}checked{% endif %}><span class="checkmark"></span>Automatique<img src={{ asset('icons/automatic-transmission.png') }} style="float:right; width : 2em"></label></div>
+                                 <div class="form-group"><label class="custom-checkbox"><input type="checkbox" name="Bt[]" value="Manuelle" {% if Bt['Manuelle'] is defined %}checked{% endif %}><span class="checkmark"></span>Manuelle<img src={{ asset('icons/manual-transmission.png') }} style="float:right; width : 2em"></label></div>
                               </div>
                               <hr>
                               <h6>Marque</h6>
@@ -60,6 +53,11 @@
                               {% endfor %}
                               </div>
                               <hr>
+                              <div hidden>
+                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="AP" value="{{ GET['AP'] }}">                                           
+                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="AD" value="{{ GET['AD'] }}">                                           
+
+                              </div>
                               <button type="submit" class="btn-first btn-submit full-width btn-height">Rechercher</button>
                            </form>
                         </div>
@@ -107,7 +105,7 @@
                                        <div class="action"><a class="full-width" href="{{ path('front_office_car', {'id': vehicule.id, 'AD' : GET['AD'], 'AP' : GET['AP'], 'DD' : GET['DD'], 'DP' : GET['DP'] }) }}"><button class="btn-first btn-submit full-width btn-height" style="margin: 2px">Voir</button></a></div>
                                     </div>
                                      <div class="col-md-6">
-                                       <form action="/booking/{{ vehicule.id }}" method="GET">
+                                       <form action="{{path('front_office_booking',{'id' : vehicule.id})  }}" method="GET">
                                           <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="AP" value="{{ GET['AP'] }}">                                              
                                           <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="DP" value="{{ GET['DP'] }}">
                                           <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="AD" value="{{ GET['AD'] }}">                                           
@@ -121,7 +119,11 @@
                         </div>
                      </div>
                      {% endfor %}
-
+                     <div class="col-12">
+                        <div class="listing-top-heading mb-xl-20">
+                           <h6 class="no-margin text-custom-black">Autres Véhicules ({{ otherVehicules|length }})</h6>
+                        </div>
+                     </div>
                      {% for vehicule in otherVehicules %}
                      <div class="col-md-12">
                         <div class="car-grid mb-xl-30">
@@ -153,17 +155,8 @@
                                     </div>   
                                  </div>
                                  <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                        <div class="action"><a class="full-width" href="{{ path('front_office_car', {'id': vehicule.id, 'AD' : GET['AD'], 'AP' : GET['AP'], 'DD' : GET['DD'], 'DP' : GET['DP'] }) }}"><button class="btn-first btn-submit full-width btn-height" style="margin: 2px">Voir</button></a></div>
-                                    </div>
-                                     <div class="col-md-6">
-                                       <form action="/booking/{{ vehicule.id }}" method="GET">
-                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="AP" value="{{ GET['AP'] }}">                                              
-                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="DP" value="{{ GET['DP'] }}">
-                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="AD" value="{{ GET['AD'] }}">                                           
-                                          <input type="hidden" class="form-control form-control-custom datepickr" placeholder="dd/mm/yy" readonly="" name="DD" value="{{ GET['DD'] }}">
-                                          <div class="action"><button class="btn-second btn-submit full-width btn-height" type = "submit" disabled>Non Disponible</button></div>
-                                       </form>
                                     </div>
                                  </div>
                               </div>
