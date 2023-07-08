@@ -95,12 +95,13 @@ class FrontofficeController extends AbstractController
         $payment->setCreatedOn(new \DateTime($date));
         $payment->setStatus("pending");
         $payment = $paymentRepo->add($payment,true);
-        $response = $this->client->request('POST', 'https://api.preprod.konnect.network/api/v1/payments/init-payment', [
+        $response = $this->client->request('POST', 'https://api.preprod.konnect.network/api/v2/payments/init-payment', [
             'headers' => [
                 'Accept' => 'application/json',
+                'x-api-key' => $_ENV['PAYMENT_API_KEY'],
             ],
             'body' => [
-                    "receiverWallet" => $_ENV['PAYMENT_RECEIVER_WALLET'],
+                    "receiverWalletId" => $_ENV['PAYMENT_RECEIVER_WALLET'],
                     "amount" => $_GET['amount'] * 1000,
                     "selectedPaymentMethod" => "gateway",
                     "firstName" => "Yosri",
