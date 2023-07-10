@@ -278,7 +278,12 @@ class LocationType extends AbstractType
                 ])
             ->add('Montant')
             ->add('Avance')
-            ->add('Type')
+            ->add('Type',ChoiceType::class, [
+                'choices'  => [
+                    "À l'agence" => "À l'agence",
+                    "En ligne" => "En ligne",
+                ]
+            ])
             ->add('Etat')
             ->add('Status',ChoiceType::class, [
                 'choices'  => [
