@@ -723,7 +723,6 @@ class FrontofficeController extends AbstractController
                     $this->user = $user;
                     return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
                 } else {
-                    $loc = $locationRepository->add($location, true);
                     $date = date('Y-m-d H:i:s');
                     $notification = new Notification();
                     $notification->setTitle("Nouvelle Reservation.");
@@ -733,10 +732,13 @@ class FrontofficeController extends AbstractController
                     $notificationRepo->add($notification,true);
                     $this->user = $user;
                     if($_POST['METHD'] == "EL") {
+                        $loc->setType('En ligne');
+                        $loc = $locationRepository->add($location, true);
                         return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
                     } else {
+                        $loc->setType("À l'agence");
+                        $loc = $locationRepository->add($location, true);
                         return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
-
                     }
                 }
                 
