@@ -30,6 +30,9 @@
                                  {% elseif paymentFail %}
                                     <h5 class="fw-600"><a href="#" class="text-custom-black">Paiement Echoué</a></h5>
                                  {% endif %}
+                                 {% if GET['err'] is defined %}
+                                    <h5 class="fw-600"><a href="#" class="text-custom-black">{{ GET['err'] }}</a></h5>
+                                 {% endif %}
                                     <hr>
                                     <!-- tags & social -->
                                     

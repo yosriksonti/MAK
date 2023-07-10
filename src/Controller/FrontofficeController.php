@@ -210,6 +210,7 @@ class FrontofficeController extends AbstractController
         return $this->render('frontoffice/profile.html.twig', [
             'form' => $form->createView(),
             'today' => $today,
+            'GET' => $_GET,
             'paymentSuccess' => $paymentSuccess,
             'paymentFail' => $paymentFail,
             'setting' => $setting
@@ -719,10 +720,14 @@ class FrontofficeController extends AbstractController
             $location->setAvance($amount);
             if($form->isValid()) {
                 $client = $location->getClient();
-                if( strtotime($today." - 2 years") < strtotime($client->getDate_Permis()) || strtotime($today." - 25 years") < strtotime($client->getDateNaissance()->format('Y-m-d')) ) {
+                if( strtotime($today." - 2 years") < strtotime($client->getDatePermis()->format('Y-m-d'))) {
                     $this->user = $user;
-                    return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
-                } else {
+                    return $this->redirectToRoute('front_office_profile',["err"=>"Le permis doit avoir au moins 2 ans"], Response::HTTP_SEE_OTHER);
+                
+                } else if (strtotime($today." - 25 years") < strtotime($client->getDateNaissance()->format('Y-m-d')) ) {
+                    $this->user = $user;
+                    return $this->redirectToRoute('front_office_profile',["err"=>"Vous devez avoir au moins 25 ans"], Response::HTTP_SEE_OTHER);                }
+                else {
                     $date = date('Y-m-d H:i:s');
                     $notification = new Notification();
                     $notification->setTitle("Nouvelle Reservation.");
@@ -732,11 +737,11 @@ class FrontofficeController extends AbstractController
                     $notificationRepo->add($notification,true);
                     $this->user = $user;
                     if($_POST['METHD'] == "EL") {
-                        $loc->setType('En ligne');
+                        $location->setType('En ligne');
                         $loc = $locationRepository->add($location, true);
                         return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
                     } else {
-                        $loc->setType("À l'agence");
+                        $location->setType("À l'agence");
                         $loc = $locationRepository->add($location, true);
                         return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
                     }
