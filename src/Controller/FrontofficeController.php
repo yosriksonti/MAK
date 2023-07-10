@@ -719,7 +719,7 @@ class FrontofficeController extends AbstractController
             $location->setAvance($amount);
             if($form->isValid()) {
                 $client = $location->getClient();
-                if( strtotime($today." - 2 years") < strtotime($client->getDate_Permis()) || strtotime($today." - 21 years") < strtotime($client->getDateNaissance()->format('Y-m-d')) ) {
+                if( strtotime($today." - 2 years") < strtotime($client->getDate_Permis()) || strtotime($today." - 25 years") < strtotime($client->getDateNaissance()->format('Y-m-d')) ) {
                     $this->user = $user;
                     return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
                 } else {
