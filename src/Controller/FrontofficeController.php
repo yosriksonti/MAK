@@ -95,7 +95,7 @@ class FrontofficeController extends AbstractController
         $payment->setCreatedOn(new \DateTime($date));
         $payment->setStatus("pending");
         $payment = $paymentRepo->add($payment,true);
-        $response = $this->client->request('POST', 'https://api.preprod.konnect.network/api/v2/payments/init-payment', [
+        $response = $this->client->request('POST', 'https://api.konnect.network/api/v2/payments/init-payment', [
             'headers' => [
                 'Accept' => 'application/json',
                 'x-api-key' => $_ENV['PAYMENT_API_KEY'],
@@ -104,13 +104,13 @@ class FrontofficeController extends AbstractController
                     "receiverWalletId" => $_ENV['PAYMENT_RECEIVER_WALLET'],
                     "amount" => $_GET['amount'] * 1000,
                     "selectedPaymentMethod" => "gateway",
-                    "firstName" => "Yosri",
-                    "lastName" => "Kossontini",
+                    "firstName" => $user->getName(),
+                    "lastName" => $user->getLastName(),
                     "phoneNumber" => "+21658557726",
                     "token" => "TND",
                     "orderId" => $payment->getId(),
-                    "successUrl" => "http://127.0.0.1:8000/paymentsuccess/".$payment->getId(),
-                    "failUrl" => "http://127.0.0.1:8000/profile?paymentFail=true"
+                    "successUrl" => $_ENV['APP_URL']."paymentsuccess/".$payment->getId(),
+                    "failUrl" => $_ENV['APP_URL']."profile?paymentFail=true"
             ]
         ]);
         $content = json_decode($response->getContent(),true);
@@ -127,7 +127,7 @@ class FrontofficeController extends AbstractController
     public function paymentSuccess($id,PaymentRepository $paymentRepo,LocationRepository $locationRepo, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
-        $response = $this->client->request('GET', 'https://api.preprod.konnect.network/api/v1/payments/'.$id, [
+        $response = $this->client->request('GET', 'https://api.konnect.network/api/v1/payments/'.$id, [
             'headers' => [
                 'Accept' => 'application/json',
             ]
@@ -135,7 +135,7 @@ class FrontofficeController extends AbstractController
         $content = json_decode($response->getContent(),true);
         $payment = $paymentRepo->findBy(["id" => $content["orderId"]])[0];
         print_r($content);
-        if($payment->getStatus() == "pending" && $content["status"] == "pending") {
+        if($payment->getStatus() == "pending" && $content["status"] == "paid") {
             $payment->setStatus("paid");
             $payment->setCreatedOn(new \DateTime("now"));
             $paymentRepo->add($payment, true);
