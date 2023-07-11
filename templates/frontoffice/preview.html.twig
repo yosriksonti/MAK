@@ -94,7 +94,17 @@
                                                 </select>
                                              </div>
                                           </div>
-                                          <div class="action"><button class="btn-first btn-submit full-width btn-height" type = "submit">Reserver</a></div>
+                                          <div class="action">
+
+                                          {% if GET['err'] is defined %}
+                                             <h5 class="fw-600"><a href="#" class="text-custom-red">{{ GET['err'] }}</a></h5>
+                                             <button class="btn-first btn-submit full-width btn-height" type = "submit" disabled >Reserver
+                                             </button>
+                                          {% else %}
+                                             <button class="btn-first btn-submit full-width btn-height" type = "submit">Reserver
+                                             </button>
+                                          {% endif %}
+                                          </div>
                                        </div>
                                     </div>
                                                                                                                                 

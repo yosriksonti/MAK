@@ -722,12 +722,35 @@ class FrontofficeController extends AbstractController
                 $client = $location->getClient();
                 if( strtotime($today." - 2 years") < strtotime($client->getDatePermis()->format('Y-m-d'))) {
                     $this->user = $user;
-                    return $this->redirectToRoute('front_office_profile',["err"=>"Le permis doit avoir au moins 2 ans"], Response::HTTP_SEE_OTHER);
-                
+                    return $this->redirectToRoute('front_office_preview', [
+                        'id' => $vehicule->getId(),
+                        'BS' => $vehicule->getPark()->getPrixBabySeat(),
+                        'STW' => $vehicule->getPark()->getPrixSTW(),
+                        'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
+                        'SD' => $vehicule->getPark()->getPrixSecondDriver(),
+                        'RS' => $vehicule->getReservoire(),
+                        'DP' => $_GET['DP'],
+                        'DD' => $_GET['DD'],
+                        'AD' => $_GET['AD'],
+                        'AP' => $_GET['AP'],
+                        'err' => 'Le permis doit avoir au moins 2 ans'
+                    ], Response::HTTP_SEE_OTHER);              
                 } else if (strtotime($today." - 25 years") < strtotime($client->getDateNaissance()->format('Y-m-d')) ) {
                     $this->user = $user;
-                    return $this->redirectToRoute('front_office_profile',["err"=>"Vous devez avoir au moins 25 ans"], Response::HTTP_SEE_OTHER);                }
-                else {
+                    return $this->redirectToRoute('front_office_preview', [
+                        'id' => $vehicule->getId(),
+                        'BS' => $vehicule->getPark()->getPrixBabySeat(),
+                        'STW' => $vehicule->getPark()->getPrixSTW(),
+                        'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
+                        'SD' => $vehicule->getPark()->getPrixSecondDriver(),
+                        'RS' => $vehicule->getReservoire(),
+                        'DP' => $_GET['DP'],
+                        'DD' => $_GET['DD'],
+                        'AD' => $_GET['AD'],
+                        'AP' => $_GET['AP'],
+                        'err' => 'Vous devez avoir au moins 25 ans'
+                    ], Response::HTTP_SEE_OTHER);
+                } else {
                     $date = date('Y-m-d H:i:s');
                     $notification = new Notification();
                     $notification->setTitle("Nouvelle Reservation.");
