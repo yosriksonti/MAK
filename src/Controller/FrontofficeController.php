@@ -710,14 +710,7 @@ class FrontofficeController extends AbstractController
             $location->setDateRes(new \DateTime());
             $location->setDateLoc(new \DateTime($location->getDate_Loc()));
             $location->setDateRetour(new \DateTime($location->getDate_Retour()));
-            $amount = 0;
             $montant = $location->getMontant();
-            if($isBS) {
-                $amount = ($montant*50)/100;
-            } else {
-                $amount += $montant;
-            }
-            $location->setAvance($amount);
             if($form->isValid()) {
                 $client = $location->getClient();
                 if( strtotime($today." - 2 years") < strtotime($client->getDatePermis()->format('Y-m-d'))) {
@@ -761,12 +754,14 @@ class FrontofficeController extends AbstractController
                     $this->user = $user;
                     if($_POST['METHD'] == "EL") {
                         $location->setType('En ligne');
+                        $location->setAvance($montant);
                         $loc = $locationRepository->add($location, true);
-                        return $this->redirectToRoute('pay_index',["amount" => $amount,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
+                        return $this->redirectToRoute('pay_index',["amount" => $montant,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
                     } else {
                         $location->setType("À l'agence");
+                        $location->setAvance($montant/5);
                         $loc = $locationRepository->add($location, true);
-                        return $this->redirectToRoute('front_office_profile',[], Response::HTTP_SEE_OTHER);
+                        return $this->redirectToRoute('pay_index',["amount" => $montant/5,"Num" => $location->getNum()], Response::HTTP_SEE_OTHER);
                     }
                 }
                 
