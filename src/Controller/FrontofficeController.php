@@ -69,7 +69,7 @@ class FrontofficeController extends AbstractController
         $today = date("Y-m-d",$today);
 
         $next = date("Y-m-d");
-        $next = strtotime($next." +2 day");
+        $next = strtotime($next." +4 day");
         $next = date("Y-m-d",$next);
 
         $vehicules = $vehiculeRepository->findByModele();
@@ -358,7 +358,14 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
-        $today = date("d/m/Y");
+        $today = date("Y-m-d");
+        $today = strtotime($today." +1 day");
+        $today = date("Y-m-d",$today);
+
+        $next = date("Y-m-d");
+        $next = strtotime($next." +4 day");
+        $next = date("Y-m-d",$next);
+                
         $formattedToday = date("m/d/Y");
         $formattedTodayYMD = date("Y-m-d");
         $DP = isset($_GET['DP']) ? strtotime($_GET['DP']) : $today;
@@ -488,6 +495,8 @@ class FrontofficeController extends AbstractController
             'today' => $formattedTodayYMD,
             'days' => $days,
             'setting' => $setting,
+            'today' => $today,
+            'next' => $next
         ]);
     }
 
@@ -499,7 +508,14 @@ class FrontofficeController extends AbstractController
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
         }
-        $today = date("d/m/Y");
+        $today = date("Y-m-d");
+        $today = strtotime($today." +1 day");
+        $today = date("Y-m-d",$today);
+
+        $next = date("Y-m-d");
+        $next = strtotime($next." +4 day");
+        $next = date("Y-m-d",$next);
+
         $formattedToday = date("m/d/Y");
         $formattedTodayYMD = date("Y-m-d");
         $formattedStart = $formattedToday;
@@ -568,6 +584,8 @@ class FrontofficeController extends AbstractController
             'dispo' => $filtered,
             'GET' => $_GET,
             'setting' => $setting,
+            'today' => $today,
+            'next' => $next
         ]);
     }
 
