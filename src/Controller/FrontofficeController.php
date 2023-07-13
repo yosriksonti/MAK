@@ -65,6 +65,13 @@ class FrontofficeController extends AbstractController
             }
         }
         $today = date("Y-m-d");
+        $today = strtotime($today." +1 day");
+        $today = date("Y-m-d",$today);
+
+        $next = date("Y-m-d");
+        $next = strtotime($next." +2 day");
+        $next = date("Y-m-d",$next);
+
         $vehicules = $vehiculeRepository->findByModele();
         $setting = $settingsRepo->findFirst();
         usort($vehicules, function($a, $b){
@@ -75,6 +82,7 @@ class FrontofficeController extends AbstractController
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
             'today' => $today,
+            'next' => $next,
             'setting' => $setting
         ]);
     }
