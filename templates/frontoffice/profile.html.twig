@@ -53,9 +53,7 @@
                                           <p class="fw-600"><b href="#" class="text-custom-black">Permis : </b>{{ app.user.Permis }} <small>livré le</small> {{ app.user.Date_Permis }}</p>
                                           <p class="fw-600"><b href="#" class="text-custom-black">CIN/Passeport : </b>{{ app.user.CIN }} <small>livré le</small> {{ app.user.Date_CIN }}</p>
                                           <hr>
-                                          <div class="col-6" style="float:left;">
-                                             <a class="col-6" href="{{ path('front_office_profile_edit') }}"><button type="submit" class="btn-first btn-submit full-width btn-height">Modifier</button></a>
-                                          </div>
+                                          <a class="col-6" href="{{ path('front_office_profile_edit') }}"><button type="submit" class="btn-first btn-submit full-width btn-height">Modifier</button></a>
                                        </div>
                                     </div>
                                     <div class="comment-respond" id="respond">
