@@ -310,7 +310,7 @@ class LocationType extends AbstractType
             ->add('Vehicule', EntityType::class, [
                 'class' => Vehicule::class,
                 'choice_label' => function($nom){
-                    return $nom->getMarque() ." : ". $nom->getModele();
+                    return $nom->getModelete() ." : ". $nom->getMatricule();
                 },
             ])
             ->add('Agence_Depart', EntityType::class, [
