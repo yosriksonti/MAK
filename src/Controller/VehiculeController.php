@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Vehicule;
 use App\Form\VehiculeType;
 use App\Repository\VehiculeRepository;
+use App\Repository\LocationRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +23,27 @@ class VehiculeController extends AbstractController
     public function index(VehiculeRepository $vehiculeRepository, NotificationRepository $notificationRepo): Response
     {
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
+        $vehicules = $vehiculeRepository->findAll();
+        $dispos = [];
+        foreach($vehicules as $vehicule){
+            $locations = $vehicule->getLocations();
+            $dispo = true;
+            foreach($locations as $location){
+                if($location->getEtat() == "En Cours"){
+                    $dispo = false;
+                }
+            }
+            if($dispo){
+                if(isset($dispos[$vehicule->getModele()])){
+                    $dispos[$vehicule->getModele()]++;
+                }else{
+                    $dispos[$vehicule->getModele()] = 1;
+                }
+            }
+        }
         return $this->render('vehicule/index.html.twig', [
-            'vehicules' => $vehiculeRepository->findAll(),
+            'vehicules' => $vehicules,
+            'dispos' => $dispos,
             'url' => $_ENV["APP_URL"],
             'notifications' => $notifications
         ]);

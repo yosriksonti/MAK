@@ -101,7 +101,7 @@ class FrontofficeController extends AbstractController
         $payment->setTotal($_GET['amount']);
         $date = date("m/d/Y");
         $payment->setCreatedOn(new \DateTime($date));
-        $payment->setStatus("pending");
+        $payment->setStatus("En Cours");
         $payment = $paymentRepo->add($payment,true);
         $response = $this->client->request('POST', 'https://api.konnect.network/api/v2/payments/init-payment', [
             'headers' => [
@@ -143,24 +143,24 @@ class FrontofficeController extends AbstractController
         $content = json_decode($response->getContent(),true);
         $payment = $paymentRepo->findBy(["id" => $content["orderId"]])[0];
         print_r($content);
-        if($payment->getStatus() == "pending" && $content["status"] == "paid") {
-            $payment->setStatus("paid");
+        if($payment->getStatus() == "En Cours" && $content["status"] == "paid") {
+            $payment->setStatus("Payé");
             $payment->setCreatedOn(new \DateTime("now"));
             $paymentRepo->add($payment, true);
             $location = $payment->getLocation();
-            $location->setStatus("Confirmée");
-            $location->setEtat("Avance Payée");
+            $location->setStatus("Payé");
+            $location->setEtat("Confirmée");
             $locationRepo->add($location, true);
             $pendingLocations = $locationRepo->findBy(["Vehicule" => $location->getVehicule()->getId(),"Status" => "Non Confirmée"]);
             foreach( $pendingLocations as $loc) {
                 if(strtotime($location->getDate_Loc()) >= strtotime($loc->getDate_Loc()) && strtotime($location->getDate_Loc()) <= strtotime($loc->getDate_Retour())) {
                     $loc->setStatus("Annulée");
-                    $loc->setEtat("canceled");
+                    $loc->setEtat("Annulée");
                     $locationRepo->add($loc, true);
                 }
                 if(strtotime($location->getDate_Retour()) >= strtotime($loc->getDate_Loc()) && strtotime($location->getDate_Retour()) <= strtotime($loc->getDate_Retour())) {
                     $loc->setStatus("Annulée");
-                    $loc->setEtat("canceled");
+                    $loc->setEtat("Annulée");
                     $locationRepo->add($loc, true);
                 }
             }

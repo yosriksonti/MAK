@@ -284,14 +284,21 @@ class LocationType extends AbstractType
                     "En ligne" => "En ligne",
                 ]
             ])
-            ->add('Etat')
-            ->add('Status',ChoiceType::class, [
+            ->add('Etat',ChoiceType::class, [
                 'choices'  => [
                     "Non Confirmée" => "Non Confirmée",
                     "Confirmée" => "Confirmée",
                     "En Cours" => "En Cours",
                     "Validée" => "Validée",
                     "Annulée" => "Annulée"
+                ]
+            ])
+            ->add('Status',ChoiceType::class, [
+                'choices' => [
+                    'En Cours' => 'En Cours',
+                    'Payé' => 'Payé',
+                    'Annulé' => 'Annulé',
+                    'Réfusé' => 'Réfusé',
                 ]
             ])
             ->add('Client', EntityType::class, [
