@@ -110,7 +110,7 @@
             <div class="row">
                <div class="col-12">
                   <div class="car-slider arrow-layout-2 row">
-                  {% for vehicule in vehicules %}
+                  {% for vehicule in vehicules|sort((a, b) => a.Prix <=> b.Prix) %}
                      <div class="slide-item col-12">
                         <div class="car-grid">
                            <div class="car-grid-wrapper car-grid bx-wrapper">
