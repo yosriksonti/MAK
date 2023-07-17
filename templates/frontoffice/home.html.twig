@@ -117,7 +117,7 @@
                               <div class="image-sec animate-img"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}"><img src="{{ vich_uploader_asset(vehicule, 'Def') }}" class="full-width" alt="img"></a></div>
                               <div class="car-grid-caption padding-20 bg-custom-white p-relative">
                                  <h4 class="title fs-16"><a href="{{ path('front_office_car', {'id': vehicule.id}) }}" class="text-custom-black">{{vehicule.Marque}} : {{vehicule.Modele}}<small class="text-light-dark">Par jour</small></a></h4>
-                                 <span class="price"><small>a partir de</small>{{vehicule.Prix}} DT {{vehicule.isVAT ? "TTC" : ""}}</span>
+                                 <span class="price"><small>a partir de</small>{{ vehicule.Park.FinBS|date('Y-m-d') >=today ? vehicule.Prix : vehicule.PrixHS}} DT {{vehicule.isVAT ? "TTC" : ""}}</span>
                                  <p>{{vehicule.Description}}</p>
                                  <div class="action"><a class="btn-second btn-small" href="{{ path('front_office_car', {'id': vehicule.id}) }}">Voir</a></div>
                               </div>

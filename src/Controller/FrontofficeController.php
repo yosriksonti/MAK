@@ -77,13 +77,12 @@ class FrontofficeController extends AbstractController
         usort($vehicules, function($a, $b){
             return count($a->getFeedback()) < count($b->getFeedback());
         });
-
         return $this->render('frontoffice/home.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
             'today' => $today,
             'next' => $next,
-            'setting' => $setting
+            'setting' => $setting,
         ]);
     }
 
@@ -101,7 +100,7 @@ class FrontofficeController extends AbstractController
         $payment->setTotal($_GET['amount']);
         $date = date("m/d/Y");
         $payment->setCreatedOn(new \DateTime($date));
-        $payment->setStatus("En Cours");
+        $payment->setStatus("pending");
         $payment = $paymentRepo->add($payment,true);
         $response = $this->client->request('POST', 'https://api.konnect.network/api/v2/payments/init-payment', [
             'headers' => [
@@ -143,8 +142,8 @@ class FrontofficeController extends AbstractController
         $content = json_decode($response->getContent(),true);
         $payment = $paymentRepo->findBy(["id" => $content["orderId"]])[0];
         print_r($content);
-        if($payment->getStatus() == "En Cours" && $content["status"] == "paid") {
-            $payment->setStatus("Payé");
+        if($payment->getStatus() == "pending" && $content["status"] == "paid") {
+            $payment->setStatus("paid");
             $payment->setCreatedOn(new \DateTime("now"));
             $paymentRepo->add($payment, true);
             $location = $payment->getLocation();
@@ -481,8 +480,8 @@ class FrontofficeController extends AbstractController
         $date2 = new \DateTime($DD2);
         $interval = $date1->diff($date2);
         $days = $interval->days > 0 ? $interval->days : 1;
-        $this->user=$user;
         $setting = $settingsRepo->findFirst();
+        $this->user=$user;
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
@@ -496,7 +495,7 @@ class FrontofficeController extends AbstractController
             'days' => $days,
             'setting' => $setting,
             'today' => $today,
-            'next' => $next
+            'next' => $next,
         ]);
     }
 
@@ -585,7 +584,7 @@ class FrontofficeController extends AbstractController
             'GET' => $_GET,
             'setting' => $setting,
             'today' => $today,
-            'next' => $next
+            'next' => $next,
         ]);
     }
 
@@ -664,7 +663,7 @@ class FrontofficeController extends AbstractController
             $this->user = $user;
             return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
-
+        
         $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
         foreach($vehicules as $veh) {
             $dispo = true;
@@ -729,7 +728,7 @@ class FrontofficeController extends AbstractController
         $today = date('Y-m-d');
         $caut = $vehicule->getCaut();
         $park = $vehicule->getPark();
-        $isBS = strtotime($park->getDebut_HS())>strtotime($today) || strtotime($park->getFin_HS())<strtotime($today);
+        $isBS = strtotime($park->getFin_BS()) >= strtotime($_GET['DP']);
         if ($form->isSubmitted() ) {
             $location->setVehicule($vehicule);
             $location->setClient($this->getUser());
@@ -813,8 +812,11 @@ class FrontofficeController extends AbstractController
                 $date2 = new \DateTime($DD);
                 $interval = $date1->diff($date2);
 
-                    
-                $prix = $vehicule->getPrix();
+                if($isBS) {
+                    $prix = $vehicule->getPrix();
+                } else {
+                    $prix = $vehicule->getPrixHS();
+                }
                 $optionsPrice = 0;
                 $prix = $_GET['BS'] ? $prix+$vehicule->getPark()->getPrixBabySeat() : $prix ;
                 $optionsPrice += $_GET['BS'] ? $vehicule->getPark()->getPrixBabySeat() : 0 ;

@@ -187,6 +187,11 @@ class Vehicule
     /**
      * @ORM\Column(type="float")
      */
+    private $PrixHS;
+
+    /**
+     * @ORM\Column(type="float")
+     */
     private $Reservoire;
 
     /**
@@ -586,6 +591,17 @@ class Vehicule
     public function setPrix(float $Prix): self
     {
         $this->Prix = $Prix;
+
+        return $this;
+    }
+    public function getPrixHS(): ?float
+    {
+        return $this->PrixHS;
+    }
+
+    public function setPrixHS(float $PrixHS): self
+    {
+        $this->PrixHS = $PrixHS;
 
         return $this;
     }
