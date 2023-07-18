@@ -69,6 +69,52 @@
                                           </div>
                                        </div>
                                        
+                                       {% if GET['SD'] == 1 %}
+                                       <div class="col-12">
+                                          <hr>
+                                       </div>
+                                       <div class="col-12">
+                                          <h5 class="text-custom-black">Deuxiéme Conducteur</h5>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Carte d'Identité Nationale</label>
+                                             {{ form_widget(form.SecondDriverCIN, {'attr':{'class':'form-control form-control-custom','required':true }}) }}                                                 
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Date de Livraison</label>
+                                             {{ form_widget(form.SecondDriverDateCIN, {'attr':{'class':'form-control form-control-custom','required':true }}) }}                                                 
+                                          </div>
+                                       </div>
+
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Permis</label>
+                                             {{ form_widget(form.SecondDriverPermis, {'attr':{'class':'form-control form-control-custom','required':true }}) }}                                                 
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Date de Livraison</label>
+                                             {{ form_widget(form.SecondDriverDatePermis, {'attr':{'class':'form-control form-control-custom','required':true }}) }}                                                 
+                                          </div>
+                                       </div>
+
+                                       <div class="col-md-12">
+                                          <div class="form-group">
+                                             <label class="fs-14 text-custom-black fw-500">Date de Naissance</label>
+                                             {{ form_widget(form.SecondDriverDN, {'attr':{'class':'form-control form-control-custom','required':true }}) }}                                                 
+                                          </div>
+                                       </div>
+                                       {% else %}
+                                       <div hidden>
+                                             {{ form_widget(form.SecondDriverCIN, {'attr':{'class':'form-control form-control-custom' }}) }}                                                 
+                                             {{ form_widget(form.SecondDriverPermis, {'attr':{'class':'form-control form-control-custom' }}) }}  
+                                             {{ form_widget(form.SecondDriverDN, {'attr':{'class':'form-control form-control-custom' }}) }}                                                 
+                                       </div>
+                                       {% endif %}
                                        <div class="col-12">
                                           <hr>
                                        </div>

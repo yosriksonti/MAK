@@ -7,6 +7,7 @@ use App\Entity\Location;
 use App\Entity\Vehicule;
 use App\Entity\Agence;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -348,12 +349,29 @@ class LocationType extends AbstractType
                     'Non' => '0'
                 ]
             ])
-
             ->add('isReservoire', ChoiceType::class, [
                 'choices' => [
                     'Oui' => '1',
                     'Non' => '0'
                 ]
+            ])
+            ->add('SecondDriverCIN', TextType::class, [
+                'required' => false,
+            ])
+            ->add('SecondDriverPermis', TextType::class, [
+                'required' => false,
+            ])
+            ->add('SecondDriverDN', DateType::class, [ 
+                'widget' => 'single_text',
+                'required' => false
+            ])
+            ->add('SecondDriverDateCIN', DateType::class, [ 
+                'widget' => 'single_text',
+                'required' => false
+            ])
+            ->add('SecondDriverDatePermis', DateType::class, [ 
+                'widget' => 'single_text',
+                'required' => false
             ])
         ;
     }

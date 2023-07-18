@@ -129,6 +129,39 @@
                                 </div>
                             </div>
                             <hr>
+                            {% if location.isSecondDriver %}
+                            <h2 class=" mb-1" for="inputFirstName">Deuxiéme Conducteur</h2>
+                            <hr>
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">CIN</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.SecondDriverCIN }}</p>                              
+                                </div>
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">Date de livraison</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.SecondDriverDateCIN|date('d/m/Y') }}</p>                              
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">Permis</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.SecondDriverPermis }}</p>                              
+                                </div>
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">Date de livraison</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.SecondDriverDatePermis|date('d/m/Y') }}</p>                              
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <h2 class="small mb-1" for="inputFirstName">Date de naissance</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ location.SecondDriverDN|date('d/m/Y') }}</p>                              
+                                </div>
+                            </div>
+                            <hr>
+                            {% endif %}
                             <div class="row gx-3 mb-3">
                                 <!-- Form Group (first name)-->
                                 <div class="col-md-12">

@@ -11,6 +11,7 @@ use App\Entity\Notification;
 use App\Entity\Disponibility;
 use App\Entity\Payment;
 use App\Entity\Settings;
+use App\Entity\Blacklist;
 use App\Form\FeedbackType;
 use App\Form\LocationType;
 use App\Form\UserType;
@@ -24,6 +25,7 @@ use App\Repository\NotificationRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
+use App\Repository\BlacklistRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,6 +74,10 @@ class FrontofficeController extends AbstractController
         $next = strtotime($next." +4 day");
         $next = date("Y-m-d",$next);
 
+        $max = date("Y-m-d");
+        $max = strtotime($max." +3 months");
+        $max = date("Y-m-d",$max);
+
         $vehicules = $vehiculeRepository->findByModele();
         $setting = $settingsRepo->findFirst();
         usort($vehicules, function($a, $b){
@@ -82,6 +88,7 @@ class FrontofficeController extends AbstractController
             'vehicules' => $vehicules,
             'today' => $today,
             'next' => $next,
+            'max' => $max,
             'setting' => $setting,
         ]);
     }
@@ -364,6 +371,10 @@ class FrontofficeController extends AbstractController
         $next = date("Y-m-d");
         $next = strtotime($next." +4 day");
         $next = date("Y-m-d",$next);
+
+        $max = date("Y-m-d");
+        $max = strtotime($max." +3 months");
+        $max = date("Y-m-d",$max);
                 
         $formattedToday = date("m/d/Y");
         $formattedTodayYMD = date("Y-m-d");
@@ -496,6 +507,7 @@ class FrontofficeController extends AbstractController
             'setting' => $setting,
             'today' => $today,
             'next' => $next,
+            'max' => $max,
         ]);
     }
 
@@ -514,6 +526,10 @@ class FrontofficeController extends AbstractController
         $next = date("Y-m-d");
         $next = strtotime($next." +4 day");
         $next = date("Y-m-d",$next);
+
+        $max = date("Y-m-d");
+        $max = strtotime($max." +3 months");
+        $max = date("Y-m-d",$max);
 
         $formattedToday = date("m/d/Y");
         $formattedTodayYMD = date("Y-m-d");
@@ -585,6 +601,7 @@ class FrontofficeController extends AbstractController
             'setting' => $setting,
             'today' => $today,
             'next' => $next,
+            'max' => $max,
         ]);
     }
 
@@ -710,7 +727,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/preview/{id}", name="front_office_preview", methods={"GET", "POST"})
      */
-    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request, SettingsRepository $settingsRepo): Response
+    public function preview( Vehicule $vehicule, LocationRepository $locationRepository, AgenceRepository $agenceRepository, PromoRepository $promoRepository,NotificationRepository $notificationRepo, Request $request, SettingsRepository $settingsRepo, BlacklistRepository $blacklistRepo): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -722,13 +739,13 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('login', $GET);
         }
         $user = $this->getUser();
-        $location = new Location();
-        $form = $this->createForm(LocationType::class, $location);
-        $form->handleRequest($request);
         $today = date('Y-m-d');
         $caut = $vehicule->getCaut();
         $park = $vehicule->getPark();
         $isBS = strtotime($park->getFin_BS()) >= strtotime($_GET['DP']);
+        $location = new Location();
+        $form = $this->createForm(LocationType::class, $location);
+        $form->handleRequest($request);
         if ($form->isSubmitted() ) {
             $location->setVehicule($vehicule);
             $location->setClient($this->getUser());
@@ -742,11 +759,11 @@ class FrontofficeController extends AbstractController
                     $this->user = $user;
                     return $this->redirectToRoute('front_office_preview', [
                         'id' => $vehicule->getId(),
-                        'BS' => $vehicule->getPark()->getPrixBabySeat(),
-                        'STW' => $vehicule->getPark()->getPrixSTW(),
-                        'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
-                        'SD' => $vehicule->getPark()->getPrixSecondDriver(),
-                        'RS' => $vehicule->getReservoire(),
+                        'BS' => $_GET['BS'],
+                        'STW' => $_GET['STW'],
+                        'PD' => $_GET['PD'],
+                        'SD' => $_GET['SD'],
+                        'RS' => $_GET['RS'],
                         'DP' => $_GET['DP'],
                         'DD' => $_GET['DD'],
                         'AD' => $_GET['AD'],
@@ -757,11 +774,11 @@ class FrontofficeController extends AbstractController
                     $this->user = $user;
                     return $this->redirectToRoute('front_office_preview', [
                         'id' => $vehicule->getId(),
-                        'BS' => $vehicule->getPark()->getPrixBabySeat(),
-                        'STW' => $vehicule->getPark()->getPrixSTW(),
-                        'PD' => $vehicule->getPark()->getPrixPersonalDriver(),
-                        'SD' => $vehicule->getPark()->getPrixSecondDriver(),
-                        'RS' => $vehicule->getReservoire(),
+                        'BS' => $_GET['BS'],
+                        'STW' => $_GET['STW'],
+                        'PD' => $_GET['PD'],
+                        'SD' => $_GET['SD'],
+                        'RS' => $_GET['RS'],
                         'DP' => $_GET['DP'],
                         'DD' => $_GET['DD'],
                         'AD' => $_GET['AD'],
@@ -769,6 +786,112 @@ class FrontofficeController extends AbstractController
                         'err' => 'Vous devez avoir au moins 25 ans'
                     ], Response::HTTP_SEE_OTHER);
                 } else {
+                    $blacklist = $blacklistRepo->findOneBy(array("CIN" => $user->getCIN()));
+                    if($blacklist) {
+                        $this->user = $user;
+                        return $this->redirectToRoute('front_office_preview', [
+                            'id' => $vehicule->getId(),
+                            'BS' => $_GET['BS'],
+                            'STW' => $_GET['STW'],
+                            'PD' => $_GET['PD'],
+                            'SD' => $_GET['SD'],
+                            'RS' => $_GET['RS'],
+                            'DP' => $_GET['DP'],
+                            'DD' => $_GET['DD'],
+                            'AD' => $_GET['AD'],
+                            'AP' => $_GET['AP'],
+                            'err' => 'Vous êtes dans la liste noire, vous ne pouvez pas réserver de véhicule'
+                        ], Response::HTTP_SEE_OTHER);            
+                    } else {
+                        $blacklist = $blacklistRepo->findOneBy(array("Permis" => $user->getPermis()));
+                        if($blacklist) {
+                            $this->user = $user;
+                            return $this->redirectToRoute('front_office_preview', [
+                                'id' => $vehicule->getId(),
+                                'BS' => $_GET['BS'],
+                                'STW' => $_GET['STW'],
+                                'PD' => $_GET['PD'],
+                                'SD' => $_GET['SD'],
+                                'RS' => $_GET['RS'],
+                                'DP' => $_GET['DP'],
+                                'DD' => $_GET['DD'],
+                                'AD' => $_GET['AD'],
+                                'AP' => $_GET['AP'],
+                                'GET'=> $_GET,
+                                'err' => 'Vous êtes dans la liste noire, vous ne pouvez pas réserver de véhicule'
+                            ], Response::HTTP_SEE_OTHER); 
+                        }
+                    }
+                    if($_GET['SD'] == 1) {
+                        $blacklist = $blacklistRepo->findOneBy(array("CIN" => $location->getSecondDriverCIN()));
+                        if($blacklist) {
+                            $this->user = $user;
+                            return $this->redirectToRoute('front_office_preview', [
+                                'id' => $vehicule->getId(),
+                                'BS' => $_GET['BS'],
+                                'STW' => $_GET['STW'],
+                                'PD' => $_GET['PD'],
+                                'SD' => $_GET['SD'],
+                                'RS' => $_GET['RS'],
+                                'DP' => $_GET['DP'],
+                                'DD' => $_GET['DD'],
+                                'AD' => $_GET['AD'],
+                                'AP' => $_GET['AP'],
+                                'GET'=> $_GET,
+                                'err' => 'Deuxième conducteur est dans la liste noire, vous ne pouvez pas réserver de véhicule'
+                            ], Response::HTTP_SEE_OTHER);            
+                        } else {
+                            $blacklist = $blacklistRepo->findOneBy(array("Permis" => $location->getSecondDriverPermis()));
+                            if($blacklist) {
+                                $this->user = $user;
+                                return $this->redirectToRoute('front_office_preview', [
+                                    'id' => $vehicule->getId(),
+                                    'BS' => $_GET['BS'],
+                                    'STW' => $_GET['STW'],
+                                    'PD' => $_GET['PD'],
+                                    'SD' => $_GET['SD'],
+                                    'RS' => $_GET['RS'],
+                                    'DP' => $_GET['DP'],
+                                    'DD' => $_GET['DD'],
+                                    'AD' => $_GET['AD'],
+                                    'AP' => $_GET['AP'],
+                                    'err' => 'Deuxième conducteur est dans la liste noire, vous ne pouvez pas réserver de véhicule'
+                                ], Response::HTTP_SEE_OTHER); 
+                            }
+                        }
+
+                        if( strtotime($today." - 2 years") < strtotime($location->getSecondDriverDatePermis()->format('Y-m-d'))) {
+                            $this->user = $user;
+                            return $this->redirectToRoute('front_office_preview', [
+                                'id' => $vehicule->getId(),
+                                'BS' => $_GET['BS'],
+                                'STW' => $_GET['STW'],
+                                'PD' => $_GET['PD'],
+                                'SD' => $_GET['SD'],
+                                'RS' => $_GET['RS'],
+                                'DP' => $_GET['DP'],
+                                'DD' => $_GET['DD'],
+                                'AD' => $_GET['AD'],
+                                'AP' => $_GET['AP'],
+                                'err' => 'Le permis doit du deuxième conducteur avoir au moins 2 ans'
+                            ], Response::HTTP_SEE_OTHER);              
+                        } else if (strtotime($today." - 25 years") < strtotime($location->getSecondDriverDN()->format('Y-m-d')) ) {
+                            $this->user = $user;
+                            return $this->redirectToRoute('front_office_preview', [
+                                'id' => $vehicule->getId(),
+                                'BS' => $_GET['BS'],
+                                'STW' => $_GET['STW'],
+                                'PD' => $_GET['PD'],
+                                'SD' => $_GET['SD'],
+                                'RS' => $_GET['RS'],
+                                'DP' => $_GET['DP'],
+                                'DD' => $_GET['DD'],
+                                'AD' => $_GET['AD'],
+                                'AP' => $_GET['AP'],
+                                'err' => 'Le deuxième conducteur devez avoir au moins 25 ans'
+                            ], Response::HTTP_SEE_OTHER);
+                        }
+                    }
                     $date = date('Y-m-d H:i:s');
                     $notification = new Notification();
                     $notification->setTitle("Nouvelle Reservation.");

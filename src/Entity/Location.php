@@ -108,6 +108,31 @@ class Location
     private $isSecondDriver;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $SecondDriverCIN;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $SecondDriverPermis;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $SecondDriverDN;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $SecondDriverDateCIN;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $SecondDriverDatePermis;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $isSTW;
@@ -413,6 +438,63 @@ class Location
     public function setAgenceArrive(?Agence $Agence_Arrive): self
     {
         $this->Agence_Arrive = $Agence_Arrive;
+
+        return $this;
+    }
+
+    public function getSecondDriverCIN(): ?string
+    {
+        return $this->SecondDriverCIN;
+    }
+    public function setSecondDriverCIN(?string $CIN): self
+    {
+        $this->SecondDriverCIN = $CIN;
+
+        return $this;
+    }
+
+    public function getSecondDriverPermis(): ?string
+    {
+        return $this->SecondDriverPermis;
+    }
+    public function setSecondDriverPermis(?string $Permis): self
+    {
+        $this->SecondDriverPermis = $Permis;
+        
+        return $this;
+    }
+
+    public function getSecondDriverDN(): ?DateTimeInterface
+    {
+        return $this->SecondDriverDN;
+    }
+
+    public function setSecondDriverDN(?DateTimeInterface $dateTime): self
+    {
+        $this->SecondDriverDN = $dateTime;
+
+        return $this;
+    }
+
+    public function getSecondDriverDateCIN(): ?DateTimeInterface
+    {
+        return $this->SecondDriverDateCIN;
+    }
+
+    public function setSecondDriverDateCIN(?DateTimeInterface $dateTime): self
+    {
+        $this->SecondDriverDateCIN = $dateTime;
+
+        return $this;
+    }
+    public function getSecondDriverDatePermis(): ?DateTimeInterface
+    {
+        return $this->SecondDriverDatePermis;
+    }
+
+    public function setSecondDriverDatePermis(?DateTimeInterface $dateTime): self
+    {
+        $this->SecondDriverDatePermis = $dateTime;
 
         return $this;
     }
