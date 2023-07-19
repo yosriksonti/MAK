@@ -129,17 +129,6 @@ class Picture implements \Serializable
         return $this;
     }
 
-    public function getClubid(): ?Club
-    {
-        return $this->clubid;
-    }
-
-    public function setClubid(?Club $clubid): self
-    {
-        $this->clubid = $clubid;
-
-        return $this;
-    }
 
     public function serialize()
     {
