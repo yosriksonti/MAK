@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Vehicule;
+use App\Entity\Auto;
 use App\Entity\Client;
 use App\Entity\Agence;
 use App\Entity\Feedback;
@@ -18,6 +19,7 @@ use App\Form\UserType;
 use App\Form\ClientType;
 use App\Repository\AgenceRepository;
 use App\Repository\VehiculeRepository;
+use App\Repository\AutoRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\LocationRepository;
 use App\Repository\ClientRepository;
@@ -989,6 +991,75 @@ class FrontofficeController extends AbstractController
                 ]);  
             }
         }
+    }
+
+    /**
+     * @Route("/auto/{id}", name="front_office_auto")
+     */
+    public function auto(Auto $vehicule, FeedbackRepository $feedbackRepository, AgenceRepository $agenceRepository, LocationRepository $locationRepo, VehiculeRepository $vehiculesRepo, Request $request, SettingsRepository $settingsRepo): Response
+    {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
+        $user = $this->getUser();
+        $setting = $settingsRepo->findFirst();
+        $this->user = $user;
+        return $this->render('frontoffice/auto.html.twig', [
+            'auto' => $vehicule,
+            'setting' => $setting,
+        ]);
+    }
+
+    /**
+     * @Route("/autos", name="front_office_autos")
+     */
+    public function autos( AutoRepository $vehiculeRepository, SettingsRepository $settingsRepo): Response
+    {
+        if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('dashboard_index');
+        }
+        $Mq = [];
+        $isset_mq = isset($_GET['Mq']);
+        if($isset_mq) {
+            foreach($_GET['Mq'] as $mq) {
+                $Mq[$mq] = $mq;
+            }
+        }
+
+        $Bt = [];
+        $isset_bt = isset($_GET['Bt']);
+        if($isset_bt) {
+            foreach($_GET['Bt'] as $bt) {
+                $Bt[$bt] = $bt;
+            }
+        }
+        $marques = $vehiculeRepository->findByMarque();
+        $vehicules = $vehiculeRepository->findByModele();
+        $vehsDispo = [];
+        foreach($vehicules as $vehicule) {
+            if($isset_mq && isset($Mq[$vehicule->getMarque()])) {
+                if($isset_bt && isset($Bt[$vehicule->getBoite()])) {
+                    array_push($vehsDispo, $vehicule);
+                } else if(!$isset_bt) {
+                    array_push($vehsDispo, $vehicule);
+                }
+            } else if(!$isset_mq) {
+                if($isset_bt && isset($Bt[$vehicule->getBoite()])) {
+                    array_push($vehsDispo, $vehicule);
+                } else if(!$isset_bt) {
+                    array_push($vehsDispo, $vehicule);
+                }
+            }
+
+        }
+        $setting = $settingsRepo->findFirst();
+        return $this->render('frontoffice/autos.html.twig', [
+            'autos' => $vehsDispo,
+            'marques' => $marques,
+            'Mq' => $Mq,
+            'Bt' => $Bt,
+            'setting' => $setting,
+        ]);
     }
 
     
