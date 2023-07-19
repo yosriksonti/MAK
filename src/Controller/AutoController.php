@@ -53,7 +53,7 @@ class AutoController extends AbstractController
             }
             $autoRepository->add($auto, true);
 
-            return $this->redirectToRoute('auto_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('auto_show', ['id'=>$auto->getId()], Response::HTTP_SEE_OTHER);
         }
 
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
@@ -96,7 +96,7 @@ class AutoController extends AbstractController
             }
             $autoRepository->add($auto, true);        
 
-            return $this->redirectToRoute('auto_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('auto_show', ['id'=>$auto->getId()], Response::HTTP_SEE_OTHER);
         }
 
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
