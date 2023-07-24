@@ -14,9 +14,24 @@
             <link href="{{ asset('back-office/css/styles.css') }}" rel="stylesheet" />
             <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
+            <style>
+            .bg-img {
+            /* The image used */
+            background-image: url("{{ vich_uploader_asset(setting, 'Couverture') }}");
+
+            /* Control the height of the image */
+            min-height: 380px;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            }
+            </style>
         {% endblock %}
     </head>
-    <body style="background-color: #F2F3F5">
+    <body style="background-color: #F2F3F5" class="bg-img">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
