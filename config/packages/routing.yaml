@@ -4,7 +4,7 @@ framework:
 
         # Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
         # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
-        base_url: '%env(APP_URL)%'
+    base_url: '%env(APP_URL)%'
 
 when@prod:
     framework:
