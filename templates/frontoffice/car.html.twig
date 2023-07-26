@@ -70,9 +70,9 @@
                                                       <li class="text-light-dark"><label class="no-margin text-custom-blue">Cautionnement</label>{{vehicule.Caut}} DT</li>
                                                       <li class="text-light-dark"><label class="no-margin text-custom-blue">Prix</label>
                                                       {% if GET['DP'] is defined %}
-                                                      {{ vehicule.Park.FinBS|date('m-d') >= GET['DP']|date('m-d') ? vehicule.Prix : vehicule.PrixHS}} DT {{vehicule.isVAT ? "TTC" : "" }}
+                                                      {{ vehicule.Park.FinHS|date('m-d') >= GET['DP']|date('m-d') and vehicule.Park.DebutHS|date('m-d') <= GET['DP']|date('m-d') ? vehicule.PrixHS : vehicule.Prix}} DT {{vehicule.isVAT ? "TTC" : "" }}
                                                       {% else %}
-                                                      {{ vehicule.Park.FinBS|date('m-d') >= today|date('m-d') ? vehicule.Prix : vehicule.PrixHS}} DT {{vehicule.isVAT ? "TTC" : "" }}
+                                                      {{ vehicule.Park.FinHS|date('m-d') >= today|date('m-d') and vehicule.Park.DebutHS|date('m-d') <= today|date('m-d') ? vehicule.PrixHS : vehicule.Prix}} DT {{vehicule.isVAT ? "TTC" : "" }}
                                                       {% endif %}
                                                       </li>
                                                    </ul>
