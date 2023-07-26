@@ -43,7 +43,7 @@ security:
         - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/preview, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/back, roles: ROLE_ADMIN }
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         
 
 
