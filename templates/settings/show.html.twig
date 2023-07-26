@@ -56,6 +56,13 @@
                                 </div>
                             </div>
                             <hr>
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-12">
+                                    <h2 class="small mb-1" for="inputFirstName">Annonce ({{ setting.Banner ? 'Visible' : 'Invisible' }})</h2>
+                                    <p class=" mb-1" for="inputFirstName">{{ setting.Ad|raw }}</p>                              
+                                </div>
+                            </div>
+                            <hr>
                             <a href= "{{ path('app_settings_edit', {'id': setting.id}) }}" class="fw-500 btn btn-warning">
                                 {{ button_label|default('Modifier') }}
                             </a>
