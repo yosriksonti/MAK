@@ -471,7 +471,7 @@ class FrontofficeController extends AbstractController
                 $vehDispo = false;
                 $isBT = false;
             }
-            if($vehDispo) {
+            if($vehDispo && $vehicule_raw->isDispo()) {
                 if(!$push) {
                     array_push($vehicules,$vehicule_raw);
                     $push = true;
@@ -486,6 +486,10 @@ class FrontofficeController extends AbstractController
                     array_push($otherCarsArray,$vehicule_raw);
                     $push = true;
                 }
+            }
+            if(!$vehicule_raw->isDispo()) {
+                unset($dispoCarsArray[$vehicule_raw->getId()]);
+                $dispoCarsArray[$vehicule_raw->getId()] = [];
             }
             
         }
@@ -551,7 +555,7 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('front_office_car', array('id' => $vehicule->getId()), Response::HTTP_SEE_OTHER);
         }
         $locations = [];
-        $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
+        $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele(),"Dispo" => true));
         foreach($vehicules as $veh) {
             $start = $today;
             foreach( $veh->getLocations() as $location) {
@@ -683,11 +687,12 @@ class FrontofficeController extends AbstractController
             return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
         
-        $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele()));
+        $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele(),"Dispo" => true));
+        $dispo = false;
         foreach($vehicules as $veh) {
             $dispo = true;
             foreach($veh->getLocations() as $location) { 
-                if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée") {
+                if($location->getEtat() != "Non Confirmée" && $location->getEtat() != "Annulée") {
                     $location_DP = strtotime($location->getDate_Loc());
                     $location_DD = strtotime($location->getDate_Retour());
                     if($location_DP<=$DP && $location_DD>=$DP) {
@@ -697,7 +702,6 @@ class FrontofficeController extends AbstractController
                         $dispo = false;
                     }
                 }
-                
             }
             if($dispo) {
                 $this->user = $user;
@@ -722,8 +726,6 @@ class FrontofficeController extends AbstractController
             $this->user = $user;
             return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP']], Response::HTTP_SEE_OTHER);
         }
-           
-        
     }
 
     /**

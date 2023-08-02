@@ -62,11 +62,15 @@ class ParkController extends AbstractController
         $vehicules = $vehiculeRepository->findBy(['Park' => $park->getId()]);
         $dispos = [];
         foreach($vehicules as $vehicule){
-            $locations = $vehicule->getLocations();
             $dispo = true;
-            foreach($locations as $location){
-                if($location->getEtat() == "En Cours"){
-                    $dispo = false;
+            if($vehicule->isDispo() == false){
+                $dispo = false;
+            } else {
+                $locations = $vehicule->getLocations();
+                foreach($locations as $location){
+                    if($location->getEtat() == "En Cours"){
+                        $dispo = false;
+                    }
                 }
             }
             if($dispo){
