@@ -37,13 +37,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/front/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/preview, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/back, roles: ROLE_ADMIN }
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/front/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY, requires_channel: https }
+        - { path: ^/preview, roles: IS_AUTHENTICATED_FULLY, requires_channel: https }
+        - { path: ^/back, roles: ROLE_ADMIN, requires_channel: https }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         
 
 
