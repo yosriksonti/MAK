@@ -148,9 +148,13 @@
                                     <div class="col-6">
                                        <label><b>Disponibilité</b></label>
                                        <select class = "form-control form-control-custom">
+                                       {% if dispo[vehicule.id]|length > 0 %}
                                        {% for dsp in dispo[vehicule.id] %}
                                           <option>à partir du {{ dsp.start }} {% if dsp.end %} jusqu'à {{ dsp.end }} {% endif %} </option>
                                        {% endfor %}
+                                       {% else %}
+                                          <option> Indisponible </option>
+                                       {% endif %}
                                        </select> 
                                     </div>   
                                  </div>

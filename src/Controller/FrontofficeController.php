@@ -407,7 +407,7 @@ class FrontofficeController extends AbstractController
         $otherCarsArray = [];
         $user = $this->getUser();
         foreach($vehicules_raw as $vehicule_raw) {
-            $vehs = $vehiculeRepository->findBy(array("Modele" => $vehicule_raw->getModele()));
+            $vehs = $vehiculeRepository->findBy(array("Modele" => $vehicule_raw->getModele(),'Dispo' => true));
             $dispoArray = [];
             $vehDispo = false;
             $push = false;
@@ -418,13 +418,13 @@ class FrontofficeController extends AbstractController
             foreach($vehs as $veh){
                 if($oldId != $veh->getId()){
                     $oldId = $veh->getId();
-                    $start = $today;
+                    $start = date('d/m/Y',strtotime($today));
                     $formattedStart = $formattedToday;
                 }
                 $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId()),array('Date_Loc' => "ASC"));
                 $countTotal += count($locations);
                 foreach($locations as $location) {
-                    if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée" && strtotime($location->getDate_Retour()) > strtotime($formattedTodayYMD) ) {
+                    if($location->getEtat() == "Confirmée" || $location->getEtat() == "En Cours" && strtotime($location->getDate_Retour()) > strtotime($formattedTodayYMD) ) {
                         $formattedDP = $formattedStart;
                         $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
                         $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
@@ -445,7 +445,7 @@ class FrontofficeController extends AbstractController
                 if(strtotime($formattedStart) >= strtotime($formattedToday)) {
                     $disponibility->setStart($start);
                 } else {
-                    $disponibility->setStart($today);
+                    $disponibility->setStart(date('d/m/Y',strtotime($today)));
                 }
                 array_push($dispoArray,$disponibility);
                 if($DP >= strtotime($formattedStart)) {
@@ -462,6 +462,9 @@ class FrontofficeController extends AbstractController
             if($countTotal == 0) {
                 $vehDispo = true;
             }
+            if(count($dispoCarsArray[$vehicule_raw->getId()]) == 0) {
+                $vehDispo = false;
+            }
             if($isset_mq && !isset($Mq[$veh->getMarque()])) {
                 $vehDispo = false;
                 $isMQ = false;
@@ -471,7 +474,7 @@ class FrontofficeController extends AbstractController
                 $vehDispo = false;
                 $isBT = false;
             }
-            if($vehDispo && $vehicule_raw->isDispo()) {
+            if($vehDispo) {
                 if(!$push) {
                     array_push($vehicules,$vehicule_raw);
                     $push = true;
@@ -487,10 +490,6 @@ class FrontofficeController extends AbstractController
                     $push = true;
                 }
             }
-            if(!$vehicule_raw->isDispo()) {
-                unset($dispoCarsArray[$vehicule_raw->getId()]);
-                $dispoCarsArray[$vehicule_raw->getId()] = [];
-            }
             
         }
         $date1 = new \DateTime($DP2);
@@ -498,6 +497,24 @@ class FrontofficeController extends AbstractController
         $interval = $date1->diff($date2);
         $days = $interval->days > 0 ? $interval->days : 1;
         $setting = $settingsRepo->findFirst();
+        foreach($vehicules as $veh) {
+            foreach($otherCarsArray as $key=>$otherCar) {
+                if($veh->getModele() == $otherCar->getModele()) {
+                    unset($otherCarsArray[$key]);
+                }
+            }
+        }
+        foreach($otherCarsArray as $key1=>$veh) {
+            foreach($otherCarsArray as $key2=>$otherCar) {
+                if($veh->getModele() == $otherCar->getModele()) {
+                    if(array_key_exists($key1,$dispoCarsArray) && $veh->isDispo()) {
+                        unset($otherCarsArray[$key2]);
+                    } else if(array_key_exists($key2,$dispoCarsArray) && $otherCar->isDispo()){
+                        unset($otherCarsArray[$key1]);
+                    }
+                }
+            }
+        }
         $this->user=$user;
         return $this->render('frontoffice/search.html.twig', [
             'agences' => $agenceRepository->findAll(),
@@ -557,9 +574,9 @@ class FrontofficeController extends AbstractController
         $locations = [];
         $vehicules = $vehiculesRepo->findBy(array("Modele" => $vehicule->getModele(),"Dispo" => true));
         foreach($vehicules as $veh) {
-            $start = $today;
+            $start = date('d/m/Y',strtotime($today));
             foreach( $veh->getLocations() as $location) {
-                if($location->getStatus() != "Non Confirmée" && $location->getStatus() != "Annulée") {
+                if($location->getEtat() == "Confirmée" || $location->getEtat() == "En Cours") {
                     $formattedDP = $formattedStart;
                     $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
                     $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
@@ -577,7 +594,7 @@ class FrontofficeController extends AbstractController
             if(strtotime($formattedStart) >= strtotime($formattedToday)) {
                 $disponibility->setStart($start);
             } else {
-                $disponibility->setStart($today);
+                $disponibility->setStart(date('d/m/Y',strtotime($today)));
             }
             array_push($dispoArray,$disponibility);
 
