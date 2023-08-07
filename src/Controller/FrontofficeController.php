@@ -29,7 +29,6 @@ use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
 use App\Repository\BlacklistRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Cache\Cache;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -363,7 +362,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/search", name="front_office_search", methods={"GET", "POST"})
      */
-    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo, SettingsRepository $settingsRepo, EntityManagerInterface $entityManager, Cache $doctrineCache): Response
+    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo, SettingsRepository $settingsRepo, EntityManagerInterface $entityManager): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -481,12 +480,12 @@ class FrontofficeController extends AbstractController
                     array_push($vehicules,$vehicule_raw);
                     $push = true;
                 }
-            } else if (isset($Mq[$veh->getMarque()]) || !$isset_mq){
+            } else if (isset($Mq[$vehicule_raw->getMarque()]) || !$isset_mq){
                 if(!$push) {
                     array_push($otherCarsArray,$vehicule_raw);
                     $push = true;
                 }
-            } else if (isset($Bt[$veh->getBoite()]) || !$isset_bt){
+            } else if (isset($Bt[$vehicule_raw->getBoite()]) || !$isset_bt){
                 if(!$push) {
                     array_push($otherCarsArray,$vehicule_raw);
                     $push = true;
