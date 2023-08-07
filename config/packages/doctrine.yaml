@@ -35,6 +35,7 @@ when@prod:
 
     framework:
         cache:
+            app: cache.adapter.redis
             pools:
                 doctrine.result_cache_pool:
                     adapter: cache.app
