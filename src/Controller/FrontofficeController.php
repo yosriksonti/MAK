@@ -423,10 +423,10 @@ class FrontofficeController extends AbstractController
                     $start = date('d/m/Y',strtotime($today));
                     $formattedStart = $formattedToday;
                 }
-                $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId()),array('Date_Loc' => "ASC"));
+                $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId(),"Etat" => "Confirmée", "Etat" => "En Cours",),array('Date_Loc' => "ASC"));
                 $countTotal += count($locations);
                 foreach($locations as $location) {
-                    if($location->getEtat() == "Confirmée" || $location->getEtat() == "En Cours" && strtotime($location->getDate_Retour()) > strtotime($formattedTodayYMD) ) {
+                    if(strtotime($location->getDate_Retour()) > strtotime($formattedTodayYMD) ) {
                         $formattedDP = $formattedStart;
                         $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
                         $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
@@ -492,12 +492,6 @@ class FrontofficeController extends AbstractController
                     $push = true;
                 }
             }
-            $entityManager->flush();
-            // Clear Doctrine cache
-            $doctrineCache->clear();
-
-        // Optionally, clear the metadata cache in the entity manager
-            $entityManager->getMetadataFactory()->clearCache();
         }
         $date1 = new \DateTime($DP2);
         $date2 = new \DateTime($DD2);
