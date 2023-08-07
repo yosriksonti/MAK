@@ -466,12 +466,12 @@ class FrontofficeController extends AbstractController
             if(count($dispoCarsArray[$vehicule_raw->getId()]) == 0) {
                 $vehDispo = false;
             }
-            if($isset_mq && !isset($Mq[$veh->getMarque()])) {
+            if($isset_mq && !isset($Mq[$vehicule_raw->getMarque()])) {
                 $vehDispo = false;
                 $isMQ = false;
             }
 
-            if($isset_bt && !isset($Bt[$veh->getBoite()])) {
+            if($isset_bt && !isset($Bt[$vehicule_raw->getBoite()])) {
                 $vehDispo = false;
                 $isBT = false;
             }
