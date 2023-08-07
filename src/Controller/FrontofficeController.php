@@ -29,6 +29,7 @@ use App\Repository\PaymentRepository;
 use App\Repository\PromoRepository;
 use App\Repository\BlacklistRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Cache\Cache;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -362,7 +363,7 @@ class FrontofficeController extends AbstractController
     /**
      * @Route("/search", name="front_office_search", methods={"GET", "POST"})
      */
-    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo, SettingsRepository $settingsRepo, EntityManagerInterface $entityManager): Response
+    public function search(AgenceRepository $agenceRepository, VehiculeRepository $vehiculeRepository, LocationRepository $locationRepo, SettingsRepository $settingsRepo, EntityManagerInterface $entityManager, Cache $doctrineCache): Response
     {
         if ($this->isGranted('ROLE_MODERATOR')) {
             return $this->redirectToRoute('dashboard_index');
@@ -492,6 +493,11 @@ class FrontofficeController extends AbstractController
                 }
             }
             $entityManager->flush();
+            // Clear Doctrine cache
+            $doctrineCache->clear();
+
+        // Optionally, clear the metadata cache in the entity manager
+            $entityManager->getMetadataFactory()->clearCache();
         }
         $date1 = new \DateTime($DP2);
         $date2 = new \DateTime($DD2);
