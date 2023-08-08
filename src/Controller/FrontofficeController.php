@@ -405,6 +405,7 @@ class FrontofficeController extends AbstractController
         $start = $today;
         $formattedStart = $formattedToday;
         $dispoCarsArray = [];
+        $otherCarsFoundArray = [];
         $otherCarsArray = [];
         $user = $this->getUser();
         foreach($vehicules_raw as $vehicule_raw) {
@@ -422,21 +423,20 @@ class FrontofficeController extends AbstractController
                     $start = date('d/m/Y',strtotime($today));
                     $formattedStart = $formattedToday;
                 }
-                $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId(),"Etat" => "Confirmée", "Etat" => "En Cours",),array('Date_Loc' => "ASC"));
+                $locations = $locationRepo->findBy(array("Vehicule" => $veh->getId()),array('Date_Loc' => "ASC"));
                 $countTotal += count($locations);
                 foreach($locations as $location) {
-                    if(strtotime($location->getDate_Retour()) > strtotime($formattedTodayYMD) ) {
+                    if($location->getEtat() == "Confirmée" || $location->getEtat() == "En Cours") {
                         $formattedDP = $formattedStart;
                         $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
-                        $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
-                        if($DP >= strtotime($formattedDP) && $DP < strtotime($formattedDD) && $DD >= strtotime($formattedDP) && $DD <= strtotime($formattedDD)) {
-                            $vehDispo = true;
-                        }
-                        if(strtotime($formattedStart) >= strtotime($formattedToday) && strtotime($formattedStart) < strtotime($formattedDD)) {
-                                $disponibility = new Disponibility();
-                                $disponibility->setStart($start);
-                                $disponibility->setEnd($end);
-                                array_push($dispoArray,$disponibility);
+                        if ($start != $end){
+                            $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
+                            if(strtotime($formattedStart) >= strtotime($formattedToday) && strtotime($formattedStart) < strtotime($formattedDD)) {
+                                    $disponibility = new Disponibility();
+                                    $disponibility->setStart($start);
+                                    $disponibility->setEnd($end);
+                                    array_push($dispoArray,$disponibility);
+                            }
                         }
                         $start = date('d/m/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                         $formattedStart = date('m/d/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
@@ -480,12 +480,17 @@ class FrontofficeController extends AbstractController
                     array_push($vehicules,$vehicule_raw);
                     $push = true;
                 }
-            } else if (isset($Mq[$vehicule_raw->getMarque()]) || !$isset_mq){
+            } else if (isset($Mq[$vehicule_raw->getMarque()])){
                 if(!$push) {
-                    array_push($otherCarsArray,$vehicule_raw);
+                    array_push($otherCarsFoundArray,$vehicule_raw);
                     $push = true;
                 }
-            } else if (isset($Bt[$vehicule_raw->getBoite()]) || !$isset_bt){
+            } else if (isset($Bt[$vehicule_raw->getBoite()])){
+                if(!$push) {
+                    array_push($otherCarsFoundArray,$vehicule_raw);
+                    $push = true;
+                }
+            } else {
                 if(!$push) {
                     array_push($otherCarsArray,$vehicule_raw);
                     $push = true;
@@ -520,6 +525,7 @@ class FrontofficeController extends AbstractController
             'agences' => $agenceRepository->findAll(),
             'vehicules' => $vehicules,
             'otherVehicules' => $otherCarsArray,
+            'otherFoundVehicules' => $otherCarsFoundArray,
             'marques' => $marques,
             'Mq' => $Mq,
             'Bt' => $Bt,
@@ -579,15 +585,18 @@ class FrontofficeController extends AbstractController
                 if($location->getEtat() == "Confirmée" || $location->getEtat() == "En Cours") {
                     $formattedDP = $formattedStart;
                     $end = date("d/m/Y", strtotime($location->getDate_Loc()." - 1 days"));
-                    $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
-                    if(strtotime($formattedStart) >= strtotime($formattedToday) && strtotime($formattedStart) < strtotime($formattedDD)) {
-                            $disponibility = new Disponibility();
-                            $disponibility->setStart($start);
-                            $disponibility->setEnd($end);
-                            array_push($dispoArray,$disponibility);
+                    if ($start != $end){
+                        $formattedDD = date("m/d/Y", strtotime($location->getDate_Loc()." - 1 days"));
+                        if(strtotime($formattedStart) >= strtotime($formattedToday) && strtotime($formattedStart) < strtotime($formattedDD)) {
+                                $disponibility = new Disponibility();
+                                $disponibility->setStart($start);
+                                $disponibility->setEnd($end);
+                                array_push($dispoArray,$disponibility);
+                        }
                     }
                     $start = date('d/m/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
                     $formattedStart = date('m/d/Y', strtotime($location->getDate_Retour(). ' + 1 days'));
+                   
                 }
             }
             $disponibility = new Disponibility();

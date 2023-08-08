@@ -39,9 +39,9 @@ class VehiculeController extends AbstractController
             }
             if($dispo){
                 if(isset($dispos[$vehicule->getModele()])){
-                    $dispos[$vehicule->getModele()]++;
+                    array_push($dispos[$vehicule->getModele()],$vehicule);
                 }else{
-                    $dispos[$vehicule->getModele()] = 1;
+                    $dispos[$vehicule->getModele()] = [$vehicule];
                 }
             }
         }
