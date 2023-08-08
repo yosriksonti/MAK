@@ -750,7 +750,7 @@ class FrontofficeController extends AbstractController
         }
         if(!$dispo) {
             $this->user = $user;
-            return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP'], 'err' => "Véhicule Indisponible"], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_office_car', ['id'=> $vehicule->getId(),'AD' => $_GET['AD'],'AP' => $_GET['AP'],'DD' => $_GET['DD'],'DP' => $_GET['DP'], 'err' => "Véhicule indisponible pendant la durée spécifiée"], Response::HTTP_SEE_OTHER);
         }
     }
 
