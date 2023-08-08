@@ -157,19 +157,12 @@
                            <div class="row">
                               <div class="col-12">
                                  <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
+                                 {% if GET['err'] is defined %}
                                     <div>
-                                    <h5 class="text-custom-black">Disponibilité</h5>
-                                       <select class = "form-control form-control-custom">
-                                       {% if dispo|length > 0 %}
-                                       {% for dsp in dispo %}
-                                          <option>à partir du {{ dsp.start }} {% if dsp.end %} jusqu'à {{ dsp.end }} {% endif %} </option>
-                                       {% endfor %}
-                                       {% else %}
-                                          <option> Indisponible </option>
-                                       {% endif %}
-                                       </select> 
+                                    <h5 class="text-custom-black">{{ GET['err'] }}</h5>
                                     </div>
                                     <hr>
+                                 {% endif %}
                                     <h5 class="text-custom-black">Reservez Maintenant</h5>
                                        <form action="{{path('front_office_booking',{'id' : vehicule.id})  }}" method="GET">
                                        <div class="row">
