@@ -155,11 +155,18 @@
 
                 </div>
                 <div class="row gx-3 mb-3">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         {{ form_label(form.Matricule, 'Matricule', {'label_attr':{'class':'small mb-1' }}) }}                             
                         {{ form_widget(form.Matricule, {'attr':{'class':'form-control' }}) }}                              
                         <div class="invalid-feedback">
                             {{ form_errors(form.Matricule) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.Dispo, 'Disponible ?', {'label_attr':{'class':'small mb-1' }}) }}                             
+                        {{ form_widget(form.Dispo, {'attr':{'class':'form-control' }}) }}                              
+                        <div class="invalid-feedback">
+                            {{ form_errors(form.Dispo) }}
                         </div>
                     </div>
                 </div>

@@ -43,6 +43,16 @@ class VehiculeRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByModeleDispo(bool $dispo) : array {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $str = $dispo?'1':'0';
+        $qb->select('v')
+        ->from(Vehicule::class,'v')
+        ->andWhere('v.Dispo = '.$str)
+        ->groupBy('v.Modele');
+        return $qb->getQuery()->getResult();
+    }
     public function findByModele() : array {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -59,6 +69,7 @@ class VehiculeRepository extends ServiceEntityRepository
 
         $qb->select('v.Marque')
         ->from(Vehicule::class,'v')
+        ->andWhere('v.Dispo = 1')
         ->groupBy('v.Marque');
         return $qb->getQuery()->getResult();
     }

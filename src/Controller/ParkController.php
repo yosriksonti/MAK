@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Park;
+use App\Entity\Vehicule;
 use App\Form\ParkType;
 use App\Repository\ParkRepository;
+use App\Repository\VehiculeRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,11 +56,34 @@ class ParkController extends AbstractController
     /**
      * @Route("/{id}", name="park_show", methods={"GET"})
      */
-    public function show(Park $park, NotificationRepository $notificationRepo): Response
+    public function show(Park $park, NotificationRepository $notificationRepo, VehiculeRepository $vehiculeRepository): Response
     {
         $notifications = $notificationRepo->findBy(array(),array('createdOn' => "DESC"));
+        $vehicules = $vehiculeRepository->findBy(['Park' => $park->getId()]);
+        $dispos = [];
+        foreach($vehicules as $vehicule){
+            $dispo = true;
+            if($vehicule->isDispo() == false){
+                $dispo = false;
+            } else {
+                $locations = $vehicule->getLocations();
+                foreach($locations as $location){
+                    if($location->getEtat() == "En Cours"){
+                        $dispo = false;
+                    }
+                }
+            }
+            if($dispo){
+                if(isset($dispos[$vehicule->getModele()])){
+                    $dispos[$vehicule->getModele()]++;
+                }else{
+                    $dispos[$vehicule->getModele()] = 1;
+                }
+            }
+        }
         return $this->render('park/show.html.twig', [
             'park' => $park,
+            'dispos' => $dispos,
             'url' => $_ENV["APP_URL"],
             'notifications' => $notifications
         ]);

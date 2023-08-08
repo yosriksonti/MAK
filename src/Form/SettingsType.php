@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -27,6 +28,21 @@ class SettingsType extends AbstractType
             ->add('Propos',CKEditorType::class,[
                 'attr' => [
                     'placeholder' => 'Contenu',
+                ],
+                'required' => true
+            ])
+
+            ->add('Ad',CKEditorType::class,[
+                'attr' => [
+                    'placeholder' => 'Contenu',
+                ],
+                'required' => true
+            ])
+
+            ->add('Banner',ChoiceType::class,[
+                'choices' => [
+                    "Oui" => true,
+                    "Non" => false
                 ],
                 'required' => true
             ])

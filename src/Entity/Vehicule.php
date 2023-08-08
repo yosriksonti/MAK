@@ -170,6 +170,11 @@ class Vehicule
     private $isVAT;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $Dispo;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $Matricule;
@@ -346,6 +351,18 @@ class Vehicule
     public function setClim(bool $Clim): self
     {
         $this->Clim = $Clim;
+
+        return $this;
+    }
+
+    public function isDispo(): ?bool
+    {
+        return $this->Dispo;
+    }
+
+    public function setDispo(bool $Dispo): self
+    {
+        $this->Dispo = $Dispo;
 
         return $this;
     }

@@ -143,6 +143,24 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+            {% for modele,dispo in dispos %}
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                            <div class="media d-flex">
+                                <div class="media-body text-right">
+                                <h3>{{ modele }}</h3>
+                                <span>{{ dispo }} Disponible(s)</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
         </div>
     </main>
 {% endblock %}

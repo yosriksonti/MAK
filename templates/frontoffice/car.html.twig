@@ -70,9 +70,9 @@
                                                       <li class="text-light-dark"><label class="no-margin text-custom-blue">Cautionnement</label>{{vehicule.Caut}} DT</li>
                                                       <li class="text-light-dark"><label class="no-margin text-custom-blue">Prix</label>
                                                       {% if GET['DP'] is defined %}
-                                                      {{ vehicule.Park.FinBS|date('Y-m-d') >= GET['DP'] ? vehicule.Prix : vehicule.PrixHS}} DT {{vehicule.isVAT ? "TTC" : "" }}
+                                                      {{ vehicule.Park.FinHS|date('m-d') >= GET['DP']|date('m-d') and vehicule.Park.DebutHS|date('m-d') <= GET['DP']|date('m-d') ? vehicule.PrixHS : vehicule.Prix}} DT {{vehicule.isVAT ? "TTC" : "" }}
                                                       {% else %}
-                                                      {{ vehicule.Park.FinBS|date('Y-m-d') >= today ? vehicule.Prix : vehicule.PrixHS}} DT {{vehicule.isVAT ? "TTC" : "" }}
+                                                      {{ vehicule.Park.FinHS|date('m-d') >= today|date('m-d') and vehicule.Park.DebutHS|date('m-d') <= today|date('m-d') ? vehicule.PrixHS : vehicule.Prix}} DT {{vehicule.isVAT ? "TTC" : "" }}
                                                       {% endif %}
                                                       </li>
                                                    </ul>
@@ -157,15 +157,12 @@
                            <div class="row">
                               <div class="col-12">
                                  <div class="quick-quote bx-wrapper padding-20 mb-xl-30">
+                                 {% if GET['err'] is defined %}
                                     <div>
-                                    <h5 class="text-custom-black">Disponibilité</h5>
-                                       <select class = "form-control form-control-custom">
-                                       {% for dsp in dispo %}
-                                          <option>à partir du {{ dsp.start }} {% if dsp.end %} jusqu'à {{ dsp.end }} {% endif %}</option>
-                                       {% endfor %}
-                                       </select> 
+                                    <h5 class="text-custom" style="color:red">{{ GET['err'] }}</h5>
                                     </div>
                                     <hr>
+                                 {% endif %}
                                     <h5 class="text-custom-black">Reservez Maintenant</h5>
                                        <form action="{{path('front_office_booking',{'id' : vehicule.id})  }}" method="GET">
                                        <div class="row">
@@ -207,7 +204,7 @@
                                     <h5 class="text-custom-black">Besoin d'aide ?</h5>
                                     <p class="text-light-dark">Nous serions plus qu'heureux de vous aider. Notre équipe de conseillers est à votre service 24h/24 et 7j/7 pour vous aider.</p>
                                     <ul class="custom">
-                                       <li class="text-custom-blue fs-18"> <i class="fas fa-phone-alt"></i> <a href="#" class="text-light-dark"> {{ setting.Tel }}</a> </li>
+                                       <li class="text-custom-blue fs-18"> <i class="fas fa-phone-alt"></i> <a href="#" class="text-light-dark">(+216) {{ setting.Tel }}</a> </li>
                                        <li class="text-custom-blue fs-18"> <i class="fas fa-envelope"></i> <a href="#" class="text-light-dark fs-14">{{ setting.Email }}</a> </li>
                                     </ul>
                                  </div>

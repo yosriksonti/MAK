@@ -7,6 +7,8 @@
         <meta name="keywords" content="#">
         <meta name="description" content="#">
         <title>Car Rental</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('front-office/assets/images/mini-logo.png') }}">
+
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('front-office/assets/images/favicon.ico') }}">
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('front-office/assets/images/favicon.ico') }}">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('front-office/assets/images/favicon.ico') }}">
@@ -30,7 +32,7 @@
           left: 0;
           bottom: 0;
           width: 100%;
-          background-color: #2d3e52;
+          background-color: #f00;
           color: white;
           text-align: center;
           }
@@ -44,6 +46,9 @@
         {% include 'frontoffice/navbar.html.twig' %}
         {% block content %} {% endblock %}
         {% include 'frontoffice/footer.html.twig' %}
+        {% if setting.banner == 1 %} 
+        {% include 'frontoffice/banner.html.twig' %}
+        {% endif %}
         <div id="back-top" class="back-top"> <a href="#top"><i class="flaticon-arrows"></i></a> </div>
         <!-- jQuery -->
         <script src="{{ asset('front-office/assets/js/jquery.min.js') }}"></script>

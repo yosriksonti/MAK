@@ -41,6 +41,16 @@ class Settings
     private $Propos;
 
     /**
+     * @ORM\Column(type="string", length=501)
+     */
+    private $Ad;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $Banner = false;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $Tel;
@@ -80,6 +90,30 @@ class Settings
     public function setPropos(string $Propos): self
     {
         $this->Propos = $Propos;
+
+        return $this;
+    }
+
+    public function getAd(): ?string
+    {
+        return $this->Ad;
+    }
+
+    public function setAd(string $Ad): self
+    {
+        $this->Ad = $Ad;
+
+        return $this;
+    }
+
+    public function getBanner(): ?bool
+    {
+        return $this->Banner;
+    }
+
+    public function setBanner(bool $Banner): self
+    {
+        $this->Banner = $Banner;
 
         return $this;
     }

@@ -40,6 +40,13 @@ class VehiculeType extends AbstractType
             ->add('PrixHS', NumberType::class)
             ->add('Reservoire', NumberType::class)
             ->add('Clim')
+            ->add('Dispo',ChoiceType::class,[
+                'choices' => [
+                    "Oui" => true,
+                    "Non" => false
+                ],
+                'required' => true
+            ])
             ->add('isUnlimitedMileage')
             ->add('isCarInsurance')
             ->add('isPassengerInsurance')
